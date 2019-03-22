@@ -106,7 +106,8 @@ public class Main extends HttpServlet {
         return false;
     }
     private void getCourse(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        response.getWriter().print(new GetCourseModel(dB).retrive());
+      //wrap the arrayList in a Json, and return it as response
+        response.getWriter().print(new JSONObject().put("courseList",new GetCourseModel(dB).retrive()));
     }
     @Override
     public void init(ServletConfig config) throws ServletException {

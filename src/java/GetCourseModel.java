@@ -1,6 +1,7 @@
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONObject;
@@ -19,16 +20,16 @@ public class GetCourseModel {
     private final DataBase dB;
     public GetCourseModel(DataBase dB){this.dB = dB;}
     
-    public JSONObject retrive(){
-        JSONObject res = new JSONObject();
+    public ArrayList retrive(){
+        ArrayList<String> res = new ArrayList();
         try {
             ResultSet rs = dB.query("SELECT nome FROM public.corso");
             while(rs.next()){
-                res.put("course",rs.getString("nome"));
+                res.add(rs.getString("nome"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(GetCourseModel.class.getName()).log(Level.SEVERE, null, ex);
-            res.put("error", ex.toString());
+            res.add("ERROR : "+ex.toString());
         } finally {
             dB.closeConnection();
         }
