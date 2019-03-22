@@ -8,7 +8,7 @@ var myApp = angular.module('login', []).controller('loginController', function (
                         nameElement.reportValidity();
                         nameElement.validity = false;
                     } else {
-                        nameElement.setCustomValidity("");
+                        nameElement.setCustomValidity("wdwdw");
                         nameElement.validity = true;
                     }
                 }).catch(error => console.log(error));

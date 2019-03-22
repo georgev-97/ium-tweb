@@ -22,7 +22,7 @@ import org.json.JSONObject;
  */
 public class Main extends HttpServlet {
     
-    Model model;
+    DataBase dB;
     ServletContext context;
 
     /**
@@ -39,13 +39,10 @@ public class Main extends HttpServlet {
         HttpSession s = request.getSession();
         this.context = request.getServletContext();
         String action = (String) request.getParameter("action");
+        context.log("prova");
         switch (action) {
             case "login":
                 loginHandler(request, response);
-                break;
-            default:
-                context.log("There was some problem");
-                response.getWriter().print("Error, unrecognized input");
                 break;
             case "checkUser":
                 checkUser(request, response);
@@ -54,6 +51,9 @@ public class Main extends HttpServlet {
                 response.getWriter().print(new JSONObject().put("user", s.getAttribute("user")));
                 System.out.println(s.getAttribute("user")+ "AAA");
                 break;
+            default:
+                context.log("There was some problem");
+                response.getWriter().print("Error, unrecognized input");
         }
     }
     
@@ -61,7 +61,7 @@ public class Main extends HttpServlet {
         String account = request.getParameter("user");
         String password = request.getParameter("password");
         try {
-            if (model.checkLogin(account, password)) {
+            if (new LoginModel(dB).checkLogin(account, password)) {
                 request.getSession().setAttribute("user", account);
                 response.getWriter().print(new JSONObject().put("error", ""));
                 return true;
@@ -81,7 +81,7 @@ public class Main extends HttpServlet {
             String url = config.getInitParameter("dbUrl");
             String account = config.getInitParameter("account");
             String password = config.getInitParameter("password");
-            this.model = new Model(url, account, password);
+            dB = new DataBase(url, account, password);
         }
     }
 
@@ -123,24 +123,27 @@ public class Main extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private boolean checkUser(HttpServletRequest request, HttpServletResponse response) {
+    private boolean checkUser(HttpServletRequest request, HttpServletResponse response) throws IOException{
         String account = request.getParameter("user");
         context.log(account);
         if (account != null) {
             try {
-                JSONObject obj = new JSONObject();
-                if (model.checkAccountExistance(account)) {
-                    obj.put("response", "true");
-                    response.getWriter().print(obj);
+                JSONObject res = new JSONObject();
+                if (new LoginModel(dB).checkAccountExistance(account)) {
+                    res.put("response", "true");
+                    response.getWriter().print(res);
                     return true;
                 } else {
-                    obj.put("response", "false");
-                    response.getWriter().print(obj);
+                    res.put("response", "false");
+                    response.getWriter().print(res);
                     return false;
                 }
             } catch (IOException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }                    
+                return true;
+        } else {
+
         }
         return false;
     }
