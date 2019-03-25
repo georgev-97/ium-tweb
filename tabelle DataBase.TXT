@@ -1,0 +1,39 @@
+create table role(
+	id serial primary key,
+	name varchar not null unique)
+
+create table users(
+	id serial primary key,
+	account varchar not null unique,
+	password varchar not null,
+	role integer references role(id))
+
+create table course(
+	id serial primary key,
+	name varchar not null unique)
+
+create table professors(
+	id serial primary key,
+	name varchar not null unique)
+
+create table slot(
+	id serial primary key,
+	day date not null,
+	startHour integer not null,
+	endHour integer not null)
+
+create table course_professor(
+	id serial primary key,
+	course integer references course(id),
+	professor integer references professors(id))
+
+create table reservations(
+	id serial primary key,
+	course_professor integer references course_professor(id),
+	slot integer references slot(id),
+	state varchar not null)
+
+create table reservations_user(
+	id serial primary key,
+	reservation integer references reservation(id),
+	userId integer references users(id))
