@@ -20,7 +20,7 @@ import org.json.JSONObject;
  *
  * @author george
  */
-public class Main extends HttpServlet {
+public class Controller extends HttpServlet {
     
     DataBase dB;
     ServletContext context;
@@ -51,6 +51,12 @@ public class Main extends HttpServlet {
             case "getCourse":
                 getCourse(request, response);
                 break;
+            case "addCourse":
+                addCourse(request, response);
+                break;
+            case "addProfessor":
+                addProfessor(request, response);
+                break;
             case "getSession":
                 response.getWriter().print(new JSONObject().put("user", s.getAttribute("user")));
                 System.out.println(s.getAttribute("user")+ "AAA");
@@ -77,7 +83,7 @@ public class Main extends HttpServlet {
                 return false;
             }
         } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -97,7 +103,7 @@ public class Main extends HttpServlet {
                     return false;
                 }
             } catch (IOException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }                    
                 return true;
         } else {
@@ -107,10 +113,23 @@ public class Main extends HttpServlet {
     }
     private void getCourse(HttpServletRequest request, HttpServletResponse response) throws IOException{
       //wrap the arrayList in a Json, and return it as response
-        response.getWriter().print(new JSONObject().put("courseList",new GetCourseModel(dB).retrive()));
+        response.getWriter().print(new JSONObject().put("courseList",new ReservationModel(dB).getCourse()));
     }
+    private void addCourse(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        if(!new AdminModel(dB).addCourse(request.getParameter("course"))){
+            //show error message on the web page
+        }
+    }
+    private void addProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        if(!new AdminModel(dB).addProfessor(request.getParameter("professor"))){
+            //show error message on the web page
+        }
+    }
+    
+    
+    
     @Override
-    public void init(ServletConfig config) throws ServletException {
+    public void init(ServletConfig config) throws ServletException  {
         if (config != null) {
             String url = config.getInitParameter("dbUrl");
             String account = config.getInitParameter("account");

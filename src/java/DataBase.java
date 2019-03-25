@@ -21,8 +21,8 @@ public class DataBase{
   //After this method is called, should be//
   //recalled closeConnection() method//
   public ResultSet query(String query) throws SQLException{
-    ResultSet queryResult;
-    
+    ResultSet queryResult;      
+            
     try{
       Class.forName("org.postgresql.Driver");//driver
     }catch ( ClassNotFoundException e ) {
