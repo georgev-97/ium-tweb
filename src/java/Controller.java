@@ -21,7 +21,7 @@ import org.json.JSONObject;
  * @author george
  */
 public class Controller extends HttpServlet {
-    
+
     DataBase dB;
     ServletContext context;
 
@@ -38,62 +38,63 @@ public class Controller extends HttpServlet {
             throws ServletException, IOException {
         HttpSession s = request.getSession();
         this.context = request.getServletContext();
-        String command= (String) request.getParameter("command");
-        if(command!=null){
+        String command = (String) request.getParameter("command");
+        if (command != null) {
             switch (command) {
-            case "login":
-                loginHandler(request, response);
-                break;
-            case "checkUser":
-                checkUser(request, response);
-                break;
-            case "getCourse":
-                getCourse(request, response);
-                break;
-            case "addCourse":
-                addCourse(request, response);
-                break;
-            case "addProfessor":
-                addProfessor(request, response);
-                break;
-            case "getSession":
-                response.getWriter().print(new JSONObject().put("user", s.getAttribute("user")));
-                System.out.println(s.getAttribute("user")+ "AAA");
-                break;
-            default:
-                context.log("ERROR : Recived invalid action!");
-                response.getWriter().print(new JSONObject().put("ERROR", "unrecognized input"));
+                case "login":
+                    loginHandler(request, response);
+                    break;
+                case "register":
+                    registerHandler(request, response);
+                case "checkUser":
+                    checkUser(request, response);
+                    break;
+                case "getCourse":
+                    getCourse(request, response);
+                    break;
+                case "addCourse":
+                    addCourse(request, response);
+                    break;
+                case "addProfessor":
+                    addProfessor(request, response);
+                    break;
+                case "getSession":
+                    response.getWriter().print(new JSONObject().put("user", s.getAttribute("user")));
+                    break;
+                default:
+                    context.log("ERROR : Received invalid action!");
+                    response.getWriter().print(new JSONObject().put("ERROR", "unrecognized input"));
             }
-        }else{
+        } else {
             context.log("ERROR : Recived NULL action!");
         }
     }
-    
+
     private boolean loginHandler(HttpServletRequest request, HttpServletResponse response) {
-        String account = request.getParameter("user");
+        String account = request.getParameter("account");
         String password = request.getParameter("password");
         try {
             if (new LoginModel(dB).checkLogin(account, password)) {
                 request.getSession().setAttribute("user", account);
                 response.getWriter().print(new JSONObject().put("error", ""));
-                return true;
-            } else {
-                response.getWriter().print(new JSONObject().put("error", "Wrong password"));
                 try {
                     request.getRequestDispatcher("home.html").forward(request, response);
                 } catch (ServletException ex) {
                     Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                return true;
+            } else {
+                response.getWriter().print(new JSONObject().put("error", "Wrong password"));
                 return false;
             }
         } catch (IOException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
-    private boolean checkUser(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        String account = request.getParameter("user");
-        context.log(account);
+
+    private boolean checkUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String account = request.getParameter("account");
+        context.log("account: "+account);
         if (account != null) {
             try {
                 JSONObject res = new JSONObject();
@@ -108,32 +109,33 @@ public class Controller extends HttpServlet {
                 }
             } catch (IOException ex) {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-            }                    
-                return true;
+            }
+            return true;
         } else {
 
         }
         return false;
     }
-    private void getCourse(HttpServletRequest request, HttpServletResponse response) throws IOException{
-      //wrap the arrayList in a Json, and return it as response
-        response.getWriter().print(new JSONObject().put("courseList",new ReservationModel(dB).getCourse()));
+
+    private void getCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //wrap the arrayList in a Json, and return it as response
+        response.getWriter().print(new JSONObject().put("courseList", new ReservationModel(dB).getCourse()));
     }
-    private void addCourse(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        if(!new AdminModel(dB).addCourse(request.getParameter("course"))){
+
+    private void addCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (!new AdminModel(dB).addCourse(request.getParameter("course"))) {
             //show error message on the web page
         }
     }
-    private void addProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        if(!new AdminModel(dB).addProfessor(request.getParameter("professor"))){
+
+    private void addProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (!new AdminModel(dB).addProfessor(request.getParameter("professor"))) {
             //show error message on the web page
         }
     }
-    
-    
-    
+
     @Override
-    public void init(ServletConfig config) throws ServletException  {
+    public void init(ServletConfig config) throws ServletException {
         if (config != null) {
             String url = config.getInitParameter("dbUrl");
             String account = config.getInitParameter("account");
@@ -180,5 +182,22 @@ public class Controller extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    
+    private void registerHandler(HttpServletRequest request, HttpServletResponse response) {
+        String account = request.getParameter("account");
+        String password = Hash.md5(request.getParameter("password"));
+        if (new RegisterModel(dB).addUser(account, password)) {
+            try {
+                request.getRequestDispatcher("login.html").forward(request, response);
+            } catch (ServletException | IOException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                response.getWriter().print(new JSONObject().put("error", "errore creazione account"));
+            } catch (IOException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
 }

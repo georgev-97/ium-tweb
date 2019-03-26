@@ -36,8 +36,8 @@ and open the template in the editor.
                         </span>
 
                         <div class ="input-field m-b-20">
-                            <input class="input" type ="text" id="name"
-                                   ng-model="user" placeholder="username or email"
+                            <input class="input" type ="text" id="name" name="account"
+                                   ng-model="account" placeholder="username or email"
                                    required  
                                    ng-blur ="ajaxCheckUser()" onchange="try {
                                                        setCustomValidity('');
@@ -51,7 +51,7 @@ and open the template in the editor.
                             <span class="focus-input"></span>
                         </div>
                         <div class ="input-field m-b-25">
-                            <input  class="input" type ="password" id = "password" 
+                            <input  class="input" type ="password" name = "password" id ="password"
                                     placeholder="Enter password" required
                                     ng-model="password"
                                     onchange="try {

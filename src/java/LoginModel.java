@@ -1,8 +1,6 @@
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -34,7 +32,10 @@ public class LoginModel {
     }
 
     public boolean checkLogin(String account, String password) {
-            User user = retrieveUser(account, password);
+            String p = Hash.md5(password);
+            System.out.println(p);
+            System.out.println(password);
+            User user = retrieveUser(account, p);
             if (user != null) {
                 System.out.println("Correct");
                 return true;
@@ -46,14 +47,16 @@ public class LoginModel {
 
     private User retrieveUser(String account, String password) {
         try {
-            ResultSet rs = dB.query("Select * FROM public.user WHERE account = '" + account + "' AND password = '" + password + "'");
+            String query = "select * from public.user where account = '"+account+"' and password = '"+password+"'";
+            ResultSet rs = dB.query(query);
             if (rs.next()) {
-                User user = new User(rs.getInt("id"),rs.getString("account"), rs.getInt("role"));
+                User user = new User(rs.getString("id"),rs.getString("account"), rs.getInt("role"));
+                System.out.println(user.getAccount());
                 dB.closeConnection();
                 return user;
-            }
+            }else{System.out.println("PORCOILDIO");}
         } catch (SQLException ex) {
-            Logger.getLogger(LoginModel.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
             return null;
         } finally {
             dB.closeConnection();
@@ -65,7 +68,7 @@ public class LoginModel {
 
     public class User {
 
-        private int id;
+        private String id;
         private String account;
         private int role;
 
@@ -77,17 +80,17 @@ public class LoginModel {
             this.role = role;
         }
 
-        public User(int id, String account, int role) {
+        public User(String id, String account, int role) {
             this.id = id;
             this.account = account;
             this.role = role;
         }
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 

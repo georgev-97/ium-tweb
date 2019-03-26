@@ -46,7 +46,7 @@ public class DataBase{
     try{
       Class.forName("org.postgresql.Driver");//driver
     }catch ( ClassNotFoundException e ) {
-      //TO DO HANDLE ERROR
+      //TODO HANDLE ERROR
     }
 
     connection = DriverManager.getConnection(url, user, pass);//connection

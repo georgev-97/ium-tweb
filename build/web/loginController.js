@@ -1,6 +1,6 @@
 var myApp = angular.module('login', []).controller('loginController', function ($scope, $http) {
     $scope.ajaxCheckUser = function () {
-        $http.get("/Ripetizioni/Controller", {params: {command: 'checkUser', user: $scope.user}})
+        $http.get("/Ripetizioni/Controller", {params: {command: 'checkUser', account: $scope.account}})
                 .then(response => {
                     nameElement = document.getElementById("name");
             console.log(response.data.response);
