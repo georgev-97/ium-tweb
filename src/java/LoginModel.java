@@ -23,7 +23,7 @@ public class LoginModel {
 
     public boolean checkAccountExistance(String account) {
         try {
-            ResultSet rs = dB.query("Select * FROM public.users WHERE account = '" + account + "'");
+            ResultSet rs = dB.query("Select * FROM public.user WHERE account = '" + account + "'");
             return rs.first(); 
             
         } catch (SQLException ex) {
@@ -46,7 +46,7 @@ public class LoginModel {
 
     private User retrieveUser(String account, String password) {
         try {
-            ResultSet rs = dB.query("Select * FROM public.users WHERE account = '" + account + "' AND password = '" + password + "'");
+            ResultSet rs = dB.query("Select * FROM public.user WHERE account = '" + account + "' AND password = '" + password + "'");
             if (rs.next()) {
                 User user = new User(rs.getInt("id"),rs.getString("account"), rs.getInt("role"));
                 dB.closeConnection();

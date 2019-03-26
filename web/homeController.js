@@ -1,5 +1,5 @@
 var myApp = angular.module('home', []).controller('homeController', function ($scope, $http) {
-    $http.get("/Ripetizioni/Main", {params:{action: 'getSession'}})
+    $http.get("/Ripetizioni/Controller", {params:{command: 'getSession'}})
             .then(response => {
                 if(response.data !== ""){
                     console.log(response);

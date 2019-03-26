@@ -6,20 +6,52 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Login</title>
+        <title>TrovaRipetizioni.it</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="Style/index.css" rel="stylesheet" />
+        <link rel="icon" href="images/favicon.png" type="image/png" />
     </head>
+ 
     <body>
-        
-        <div>
-            <span>Questa sarà lal pagina di presentazione</span>
-            <button name="login" onClick="buttonClick()"> Login! </button>
+
+        <!-- inizio blocco container -->
+        <div id="container">
+
+            <!--inizio menu navigazione -->
+            <div class="topnav" id="myTopnav">
+                <a href="registrazione.html" >Registrati</a>
+                <a href="login.html">Accedi</a>
+
+            </div>
+            <!--fine menu navigazione -->
+            
+            <!-- inizio blocco header -->
+            <header>
+                <img class="logo" src="images/logo.png" />
+            </header>
+            <!-- fine blocco header -->
+
+            <!-- inizio blocco footer -->
+            <footer id="footer">
+                <div id="footer-wrapper">&nbsp;
+                    <p class="prova2">&copy; Designed by Marietta Lorenzo, Mkhalfi Camelia, Varga George Andrei</p>
+                    <p class="prova2">Università degli Studi di Torino, 10121 Torino</p>
+                    <p>
+                        <a href="https://jigsaw.w3.org/css-validator/check/referer">
+                            <img style="border:0;width:88px;height:31px" src="https://jigsaw.w3.org/css-validator/images/vcss-blue" alt="CSS Valido!"/>
+                        </a>
+                            <a href="https://validator.w3.org/nu/?doc=https%3A%2F%2Fagenzia-marketing.net%2Fmiosito%2F">
+                                <img alt="w3c-html5" height="31" src="https://agenzia-marketing.net/w3c-html5.jpg" width="88" />
+                            </a>
+                    </p>
+                </div>
+            </footer>
+            <!-- fine blocco footer -->
+            
         </div>
-        <script>
-            function buttonClick(){
-                window.location.assign("loginPage.html");
-            }
-        </script>
+        <!-- fine blocco container -->
+
     </body>
 </html>
+

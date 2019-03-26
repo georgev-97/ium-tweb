@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
-        <servlet-name>Main</servlet-name>
-        <servlet-class>Main</servlet-class>
+        <servlet-name>Ripetizioni</servlet-name>
+        <servlet-class>Controller</servlet-class>
         <init-param>
             <description>account db</description>
             <param-name>account</param-name>
@@ -20,8 +20,8 @@
         </init-param>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Main</servlet-name>
-        <url-pattern>/Main</url-pattern>
+        <servlet-name>Ripetizioni</servlet-name>
+        <url-pattern>/Controller</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

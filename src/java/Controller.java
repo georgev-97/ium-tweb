@@ -38,10 +38,9 @@ public class Controller extends HttpServlet {
             throws ServletException, IOException {
         HttpSession s = request.getSession();
         this.context = request.getServletContext();
-        String action = (String) request.getParameter("action");
-        context.log("prova");
-        if(action!=null){
-            switch (action) {
+        String command= (String) request.getParameter("command");
+        if(command!=null){
+            switch (command) {
             case "login":
                 loginHandler(request, response);
                 break;
@@ -80,6 +79,11 @@ public class Controller extends HttpServlet {
                 return true;
             } else {
                 response.getWriter().print(new JSONObject().put("error", "Wrong password"));
+                try {
+                    request.getRequestDispatcher("home.html").forward(request, response);
+                } catch (ServletException ex) {
+                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 return false;
             }
         } catch (IOException ex) {

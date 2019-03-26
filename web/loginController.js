@@ -1,20 +1,21 @@
 var myApp = angular.module('login', []).controller('loginController', function ($scope, $http) {
     $scope.ajaxCheckUser = function () {
-        $http.get("/Ripetizioni/Main", {params: {action: 'checkUser', user: $scope.user}})
+        $http.get("/Ripetizioni/Controller", {params: {command: 'checkUser', user: $scope.user}})
                 .then(response => {
                     nameElement = document.getElementById("name");
+            console.log(response.data.response);
                     if (response.data.response === "false") {
                         nameElement.setCustomValidity("L'utente non esiste");
                         nameElement.reportValidity();
                         nameElement.validity = false;
                     } else {
-                        nameElement.setCustomValidity("wdwdw");
+                        nameElement.setCustomValidity("");
                         nameElement.validity = true;
                     }
                 }).catch(error => console.log(error));
     };
-    $scope.login = function () {
-        $http.get("/Ripetizioni/Main", {params: {action: 'login', user: $scope.user, password: $scope.password}})
+   /* $scope.login = function () {
+        $http.get("/Ripetizioni/Controller", {params: {action: 'login', user: $scope.user, password: $scope.password}})
                 .then(response => {
                     if (response.data.error === "") {
                         console.log(response);
@@ -28,5 +29,5 @@ var myApp = angular.module('login', []).controller('loginController', function (
                         }
                     }
                 }).catch(error => console.log(error));
-    };
+    };*/
 });
