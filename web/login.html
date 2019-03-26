@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html ng-app="login" >
+    <head>
+        <title>Accedi</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script
+            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
+        </script>
+        <script src="loginController.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="Style/util.css">
+        <link rel="stylesheet" type="text/css" href="Style/accedi-registrazione.css">
+        <link rel="icon" href="images/favicon.png" type="image/png" />
+    </head>
+
+
+
+
+
+    <body ng-controller ="loginController" bgcolor="00aeef">
+
+        <article>
+            <center>
+                <br><br><br><br> <br>
+                <div class="login p-l-55 p-r-55 p-t-80 p-b-30">
+                    <form class="login-form validate-form" action ="Main" method="POST">
+                        <span class="login-form-title p-b-37">
+                            <br>
+                            <div class="container-login" style="background: url('images/logo.png') no-repeat; background-size:  200px; align:center;"> </div>
+                        </span>
+
+                        <div class ="input-field m-b-20">
+                            <input class="input" type ="text" id="name"
+                                   ng-model="user" placeholder="username or email"
+                                   required  
+                                   ng-blur ="ajaxCheckUser()" onchange="try {
+                                                       setCustomValidity('');
+                                                   } catch (e) {
+                                                   }"
+                                   onkeydown="try {
+                                                       setCustomValidity('');
+                                                   } catch (e) {
+                                                   }"
+                                   />
+                            <span class="focus-input"></span>
+                        </div>
+                        <div class ="input-field m-b-25">
+                            <input  class="input" type ="password" id = "password" 
+                                    placeholder="Enter password" required
+                                    ng-model="password"
+                                    onchange="try {
+                                                       setCustomValidity('');
+                                                   } catch (e) {
+                                                   }"
+                                    onkeydown="try {
+                                                       setCustomValidity('');
+                                                   } catch (e) {
+                                                   }"/>
+                            <span class="focus-input"></span>
+                        </div>
+                        <div class ="button">
+                            <button class="form-button">
+                                Sign In
+                            </button>
+                        </div> 
+                        <br><br>
+                        <p>Non hai ancora un account? <a href ="registrazione.html"/> <font color="00aeef"><b>Crea un account</b></font></a>.
+                            Creando un account accetti <a href ="condizioni.html"/> <font color="00aeef"><b>termini e le condizioni d'uso</b></font></a>. Leggi la nostra informativa 
+                            sulla <a href ="privacy.html"/><font color="00aeef"><b>Privacy</b></font></a> e sui <a href ="cookie.html"><font color="00aeef"><b>Cookie</b></font></a>.
+                        </p>
+                    </form>
+                </div>
+        </article>
+    </body>
+</html>
