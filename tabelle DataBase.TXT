@@ -2,7 +2,7 @@ create table role(
 	id serial primary key,
 	name varchar not null unique)
 
-create table users(
+create table user(
 	id serial primary key,
 	account varchar not null unique,
 	password varchar not null,
@@ -36,4 +36,4 @@ create table reservations(
 create table reservations_user(
 	id serial primary key,
 	reservation integer references reservation(id),
-	userId integer references users(id))
+	userId integer references user(id))
