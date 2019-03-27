@@ -1,7 +1,6 @@
-
-<html ng-app = "admin">
+<html>
     <head>
-        <title>Inserimento corso</title>
+        <title>Associazione docente-corso</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport" /><!-- visualizzazione ottimale per le su device iphone che adotta browser Safari -->
         <meta content="Il mio primo sito web responsive" name="description" />
@@ -9,13 +8,9 @@
         <link href="Style/docente.css" rel="stylesheet" />
         <link href="Style/util.css" rel="stylesheet" />
         <link rel="icon" href="images/favicon.png" type="images/png" />
-        <script
-            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
-        </script>
-        <script src="adminController.js"></script>
     </head>
 
-    <body ng-controller ="adminController">
+    <body>
 
         <!-- inizio blocco container -->
         <div id="container">
@@ -37,35 +32,45 @@
 
             </div>
             <!--fine menu navigazione -->
-             <br><br>
+            <br><br>
             <center>
                 <br><br>
-            <table  width="200">
-                <tr>
-                    <th colspan ="2"><img src="images/03.png" width="45" height="45" ></th>
-                    <th><b>Inserisci corso</b></th>
-                </tr>
-            </table>
+                <table  width="350">
+                    <tr>
+                        <th colspan ="2"><img src="images/04.png" width="45" height="45" ></th>
+                        <th><b>Associazione corso-docente</b></th>
+                    </tr>
+                </table>
             </center>
             <center>
-          <div class="login p-l-55 p-r-55 p-t-30 p-b-30">
-                <form class="login-form validate-form" method="POST">
-                <div class ="input-field m-b-20">
-                    <input class="input" type ="text" id="name" name="name" placeholder="name" ng-model ="name"/>
-                    <span class="focus-input"></span>
+                <div class="login p-l-55 p-r-55 p-t-30 p-b-30">
+                    <form class="login-form validate-form" method="POST">
+                        <div class ="input-field m-b-20">
+                            <label> <b>Scegli il docente</b> <br>
+                                <select class="input">
+                                    <option>
+                                        
+                                    </option>
+                                   
+                                </select>
+                            </label>
+                        </div>
+                        <label><b>Scegli il corso</b>
+                            <select class="input">
+                                <option>
+
+                                </option>
+                               
+                            </select>
+                        </label>
+                        <br><br>
+                        <div class ="button">
+                            <button class="form-button">
+                                Collega
+                            </button>
+                        </div> 
+                    </form>
                 </div>
-                <div class ="input-field m-b-25">
-                    <input  class="input" type ="text" name = "descrizione" id ="username" placeholder="descrizione" ng-model="description" />
-                    <span class="focus-input"></span>
-                </div>
-                
-                <div class ="button">
-                    <button class="form-button" ng-click = "add()">
-                        Aggiungi corso
-                    </button>
-                </div> 
-                </form>
-          </div>
             </center>
         </div>
 
