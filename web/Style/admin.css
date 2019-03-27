@@ -143,7 +143,7 @@ ul#menu ul a:hover {
 /*contento giocare sulla percentuale per allargare o stringere
 l'area del contenuto. Il "content" è il 90% del 100% che è il container*/
 #content {
-width: 90%;
+width: 100%;
 margin: 0 auto;
 padding-top:10px;
 height: auto;
@@ -153,7 +153,7 @@ height: auto;
 /*contento giocare sulla percentuale per allargare o stringere
 l'area del contenuto. l'"inner content" è IL 70% DEL 100% che è il container*/
 #innerContent {
-width: 70%;
+width: 98%;
 padding-top:10px;
 margin: 0 auto;
 padding-top:10px;
@@ -165,12 +165,10 @@ text-align: justify;
 
 #footer {
 text-align: center;
-
 color:white;
 clear: both;
 margin-top: 1.25em;
 }
-
 
 /*footer*/
 
