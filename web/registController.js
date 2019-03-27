@@ -11,9 +11,16 @@ var myApp = angular.module('regist', []).controller("registController",
             }
         };
         $scope.submit = function(){
-            if(window.regForm.account.value == "" || window.regForm.password.value == ""){
+            if(window.regForm.account.value === "" || 
+                    window.regForm.password.value === "" ||
+                    window.regForm.passwordConfirm.value === ""){
+                
                 window.alert("compilare tutti i campi");
                 return;
+            }else if(window.regForm.password.value !== 
+                    window.regForm.passwordConfirm.value){
+                
+                window.alert("le password non corrispondono");
             }else{
                 window.regForm.submit();
             }
