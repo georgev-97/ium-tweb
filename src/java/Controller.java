@@ -59,7 +59,8 @@ public class Controller extends HttpServlet {
                     addProfessor(request, response);
                     break;
                 case "getSession":
-                    response.getWriter().print(new JSONObject().put("user", s.getAttribute("user")));
+                    System.out.println(s.getAttribute("account")+ "session");
+                    response.getWriter().print(new JSONObject().put("account", s.getAttribute("account")));
                     break;
                 default:
                     context.log("ERROR : Received invalid action!");
@@ -74,15 +75,18 @@ public class Controller extends HttpServlet {
         String account = request.getParameter("account");
         String password = request.getParameter("password");
         try {
-            if (new LoginModel(dB).checkLogin(account, password)) {
-                request.getSession().setAttribute("user", account);
-                response.getWriter().print(new JSONObject().put("error", ""));
-                try {
-                    request.getRequestDispatcher("home.html").forward(request, response);
-                } catch (ServletException ex) {
-                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            int res = new LoginModel(dB).checkLogin(account, password);
+            if (res != -1) {
+                request.getSession().setAttribute("account", account);
+                JSONObject resp = new JSONObject();
+                resp.put("account", account);
+                resp.put("error", "");
+                if (res == 0) {
+                    resp.put("role", "admin");
+                } else {
+                    resp.put("role", "basic");
                 }
-                return true;
+                response.getWriter().print(resp);
             } else {
                 response.getWriter().print(new JSONObject().put("error", "Wrong password"));
                 return false;
@@ -94,7 +98,7 @@ public class Controller extends HttpServlet {
 
     private boolean checkUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String account = request.getParameter("account");
-        context.log("account: "+account);
+        context.log("account: " + account);
         if (account != null) {
             try {
                 JSONObject res = new JSONObject();
@@ -123,8 +127,12 @@ public class Controller extends HttpServlet {
     }
 
     private void addCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (!new AdminModel(dB).addCourse(request.getParameter("course"))) {
+        if (!new AdminModel(dB).addCourse(request.getParameter("course"), request.getParameter("description"))) {
+            response.getWriter().print(new JSONObject().put("error", ""));
             //show error message on the web page
+        }
+        else{
+            response.getWriter().print(new JSONObject().put("error", "errore inserimento"));
         }
     }
 

@@ -29,7 +29,7 @@ and open the template in the editor.
             <center>
                 <br><br><br><br> <br>
                 <div class="login p-l-55 p-r-55 p-t-80 p-b-30">
-                    <form class="login-form validate-form" action ="Controller" method="POST">
+                    <form class="login-form validate-form" method="POST">
                         <span class="login-form-title p-b-37">
                             <br>
                             <div class="container-login" style="background: url('images/logo.png') no-repeat; background-size:  200px; align:center;"> </div>
@@ -37,7 +37,7 @@ and open the template in the editor.
 
                         <div class ="input-field m-b-20">
                             <input class="input" type ="text" id="name" name="account"
-                                   ng-model="account" placeholder="username or email"
+                                   ng-model="account" placeholder="username"
                                    required  
                                    ng-blur ="ajaxCheckUser()" onchange="try {
                                                        setCustomValidity('');
@@ -66,7 +66,7 @@ and open the template in the editor.
                         </div>
                         <input type="hidden" name="command" value ="login"/>
                         <div class ="button">
-                            <button class="form-button">
+                            <button class="form-button" ng-click="login()">
                                 Sign In
                             </button>
                         </div> 

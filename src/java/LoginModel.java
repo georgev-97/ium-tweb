@@ -31,17 +31,22 @@ public class LoginModel {
         }
     }
 
-    public boolean checkLogin(String account, String password) {
+    public int checkLogin(String account, String password) {
             String p = Hash.md5(password);
             System.out.println(p);
             System.out.println(password);
             User user = retrieveUser(account, p);
             if (user != null) {
                 System.out.println("Correct");
-                return true;
+                if(user.getRole() == 0){
+                    return 0;
+                }
+                else {
+                    return 1;
+                }
             } else {
                 System.out.println("Not very correct");
-                return false;
+                return -1;
             }
     }
 
@@ -54,7 +59,7 @@ public class LoginModel {
                 System.out.println(user.getAccount());
                 dB.closeConnection();
                 return user;
-            }else{System.out.println("PORCOILDIO");}
+            }else{System.out.println("Errore password");}
         } catch (SQLException ex) {
             System.out.println(ex);
             return null;

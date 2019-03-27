@@ -1,7 +1,5 @@
 
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -30,15 +28,14 @@ public class AdminModel {
         }
     }
     
-    public boolean addCourse(String course){
+    public boolean addCourse(String course, String description){
         try {
-            String insertion = "insert into course(name)"+
-                                "values('"+course+"')";
+            String insertion = "insert into course(name,description)"+
+                                "values('"+course+"' ,'"+description+"')";
             dB.update(insertion);
+            return true;
         } catch (SQLException ex) {
             return false;
-        }finally{
-            return true;
         }
     }
     

@@ -6,7 +6,7 @@ var myApp = angular.module('home', []).controller('homeController', function ($s
                     $scope.user = response.data.user;
                 }
                 else{
-                    $scope.user = "PORCOILDIO";
+                    $scope.user = "azz";
                 }
     }).catch(error => console.log(error));
 });

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" ng-app = "admin">
     <head>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
         <title>Admin</title>
@@ -7,9 +7,13 @@
         <meta content="Il mio primo sito web responsive" name="description" />
         <link href="Style/admin.css" rel="stylesheet" />
         <link rel="icon" href="images/favicon.png" type="images/png" />
+        <script
+            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
+        </script>
+        <script src="adminController.js"></script>
     </head>
 
-    <body>
+    <body ng-controller="adminController">
 
         <!-- inizio blocco container -->
         <div id="container">
@@ -21,10 +25,14 @@
             <div class="topnav" id="myTopnav">
 
                 <ul id ="menu"> <!-- MENU PRINCIPALE -->
+                    
                     <li><a href = "#"><img src ="images/01.png"  width="30" height="30" ></a>
                         <ul> <!-- PRIMO SOTTOMENU -->
                             <li><a href="index.html">Log out</a></li>
                         </ul> <!-- FINE PRIMO SOTTOMENU -->
+                    </li>
+                    <li>
+                        <div>{{user}}</div>
                     </li>
                 </ul>
 
