@@ -24,7 +24,7 @@
                 </span>
 
                 <div class="input-field validate-input m-b-20" data-validate="Enter username or email">
-                    <input class="input" type="text" name="account" placeholder="username or email">
+                    <input id="account" class="input" type="text" name="account" placeholder="username or email" ng-model="account" ng-blur="checkUser()">
                     <span class="focus-input"></span>
                 </div>
 
