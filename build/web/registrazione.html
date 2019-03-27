@@ -17,7 +17,7 @@
     <center>
         <br><br><br>
         <div class="login p-l-55 p-r-55 p-t-80 p-b-30">
-            <form class="login1-form validate-form" action="Controller">
+            <form id='regForm' class="login1-form validate-form" action="Controller">
                 <span class="login-form-title p-b-37">
                     <br>
                     <div class="container-login" style="background: url('images/logo.png') no-repeat; background-size:  200px; align:center;"></div>
@@ -35,14 +35,14 @@
                     
                 </div>
                 <div class="input-field validate-input m-b-25" data-validate = "Confirm password" >
-                    <input class="input" type="password" name="pass" placeholder="Confirm password" ng-model="passwordConfirm" 
+                    <input class="input" type="password" name="passwordConfirm" placeholder="Confirm password" ng-model="passwordConfirm" 
                            ng-change="checkPassword()" ng-click="showConfirm=true">
                     <span class="focus-input"></span>
                 </div>
-                <p ng-show="showConfirm"> {{equal}} </p>
+                <p ng-style="colour" ng-show="showConfirm"> {{equal}} </p>
                 <input type="hidden" name ="command" value ="register"/>
                 <div class="button">
-                    <button class="form-button">
+                    <button type="button" ng-click="submit()" class="form-button">
                         Registrati
                     </button>
                 </div>
