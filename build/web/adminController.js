@@ -9,16 +9,16 @@ var myApp = angular.module('admin', []).controller('adminController', function (
                     $scope.user = "anonimo";
                 }
     }).catch(error => console.log(error));
-    $scope.add = function(){
+    $scope.addCourse = function(){
             $http.get("/Ripetizioni/Controller", {params:{command: 'addCourse', course: $scope.name, description: $scope.description}})
-                    .then(function(response){
+                    .then(response =>{
                         console.log(response.data);
                         if(response.data !==  ""){
                             if(response.data.error === ""){
                                 window.location.assign("admin.html");
                                 alert("inserimento andato a buon fine");
                             }
-                            else alert(response.data.error);
+                            else {alert(response.data.error);}
                         }
             });
 

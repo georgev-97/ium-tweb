@@ -127,7 +127,7 @@ public class Controller extends HttpServlet {
     }
 
     private void addCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (!new AdminModel(dB).addCourse(request.getParameter("course"), request.getParameter("description"))) {
+        if (new AdminModel(dB).addCourse(request.getParameter("course"), request.getParameter("description"))) {
             response.getWriter().print(new JSONObject().put("error", ""));
             //show error message on the web page
         }
