@@ -1,0 +1,181 @@
+
+html, body {
+overflow-x: hidden;
+}
+
+body {
+color: grey;
+font-size: 17px;
+font-family: Raleway , Arial ;
+}
+
+/*con questa classe blocco la testatina comprendente il logo*/
+.logo{
+margin-top: 0px;
+float: left;
+	width: 358px;
+}
+
+/*instruzioni per linea di separazione orizzontale*/
+.linea {
+margin-left: auto;
+margin-right: auto;
+width: 100%;
+}
+
+#wrapper{
+width:100%;
+height:auto;
+background-color: white;
+}
+
+#container {
+width: auto;
+height: auto;
+max-width:1870px;
+/* se inserisco "auto", relativamente a "width" ed a "height" la larghezza e
+l'altezza dell'area del contenuto viene decisa dal browser in automatico */
+margin: 1.25em auto; /*1.25em = 20px*/
+/* primo valore: marg. sup. + inf.; secondo valore: marg. sin. + dest.(auto)
+per far si che la pag. sia centrata orizzontalmente nel browser*/
+padding: 0.625em 0.625em 0em 0.625em;
+}
+
+
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+img.displayed {
+display: block;
+margin-left: auto;
+margin-right: auto;
+}
+
+
+/*SPECIFICHE MENU' NAVIGAZIONE*/
+.topnav {
+
+  background-color: #EEEEEE;
+  margin: 0 auto;
+  
+}
+
+/*menu*/
+
+ul#menu {
+width: 100%;
+	padding: 0;
+	list-style: none;
+	float:left;
+ background-color: #EEEEEE;
+	font-size:80%
+}
+
+ul#menu li {
+	margin:0;
+	padding:0;
+	float:right;
+	display: block;
+	
+	position: relative;
+}
+
+ul#menu li a {
+	float: left;
+	padding:6px 34px;
+	color: #000000;
+	text-transform: uppercase;
+	text-decoration:none;
+	display: inline-block;
+}
+
+ul#menu li a:hover {
+	background: #00aeef;
+	color:#000000
+}
+
+ul#menu ul {
+	margin:2px 0 0;
+	padding:0;
+	display:inline-block;
+	list-style: none;
+	opacity: 0;
+	visibility: hidden;
+	position: absolute;
+	top: 38px;
+	left: 0;
+	z-index:9999;
+	background: #EEEEEE;
+}
+
+ul#menu li:hover ul {
+	opacity: 1;
+	visibility: visible;
+}
+
+ul#menu ul li {
+	float: none;
+	display: block;
+	border: 0;
+}
+
+ul#menu ul a {
+	
+	width: 130px;
+	display: block;
+	white-space: nowrap;
+	float: none;
+	text-transform: none;
+}
+
+ul#menu ul a:hover {
+	background-color: #0186ba;
+	color:#fff
+}
+
+/*FINE SPECIFICHE MENU' NAVIGAZIONE*/
+
+
+/*contento giocare sulla percentuale per allargare o stringere
+l'area del contenuto. Il "content" è il 90% del 100% che è il container*/
+#content {
+width: 90%;
+margin: 0 auto;
+padding-top:10px;
+height: auto;
+}
+
+
+/*contento giocare sulla percentuale per allargare o stringere
+l'area del contenuto. l'"inner content" è IL 70% DEL 100% che è il container*/
+#innerContent {
+width: 70%;
+padding-top:10px;
+margin: 0 auto;
+padding-top:10px;
+height: auto;
+text-align: justify;
+}
+/*fine per larghezza contenuto*/
+
+
+#footer {
+text-align: center;
+
+color:white;
+clear: both;
+margin-top: 1.25em;
+}
+
+
+/*footer*/
+
+#footer-wrapper{
+width:100%;
+height:150px;
+background-color:#00aeef;
+}
