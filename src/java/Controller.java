@@ -132,7 +132,7 @@ public class Controller extends HttpServlet {
     private void getCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             response.getWriter().print(new JSONObject().put("courseList", new ReservationModel(dB).getCourse()));
-            response.getWriter().print(new JSONObject().put("error", ""));
+            //response.getWriter().print(new JSONObject().put("error", ""));
         } catch (SQLException ex) {
             response.getWriter().print(new JSONObject().put("error", "sql error"));
             context.log(ex.toString());
@@ -141,7 +141,7 @@ public class Controller extends HttpServlet {
     private void getProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             response.getWriter().print(new JSONObject().put("professorList", new ReservationModel(dB).getProfessor()));
-            response.getWriter().print(new JSONObject().put("error", ""));
+            //response.getWriter().print(new JSONObject().put("error", ""));
         } catch (SQLException ex) {
             response.getWriter().print(new JSONObject().put("error", "sql error"));
             context.log(ex.toString());
