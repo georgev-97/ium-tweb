@@ -20,8 +20,8 @@ public class RegisterModel {
 
     boolean addUser(String account, String password) {
         try {
-            String insertion = "INSERT INTO public.user(id, account,password,role)"
-                    + "VALUES('"+Hash.sha1(account+password)+"','"+account+"','"+password+"',1)";
+            String insertion = "INSERT INTO public.user(account,password,role)"
+                    + "VALUES('"+account+"','"+password+"',1)";
             /*INSERT INTO public."user"(
 	id, account, password, role)
 	VALUES (?, ?, ?, ?);*/
