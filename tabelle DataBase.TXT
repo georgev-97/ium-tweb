@@ -2,6 +2,12 @@ create table role(
 	id serial primary key,
 	name varchar not null unique);
 
+insert into role(id, name)
+	values('0','admin');
+
+insert into role(id, name)
+	values('1','base');
+
 create table public.user(
 	id serial primary key,
 	account varchar not null unique,
@@ -28,7 +34,8 @@ create table slot(
 create table course_professor(
 	id serial primary key,
 	course integer references course(id),
-	professor integer references professor(id));
+	professor integer references professor(id),
+	unique(course, professor));
 
 create table reservation(
 	id serial primary key,
