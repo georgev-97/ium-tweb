@@ -1,21 +1,21 @@
-
+<!DOCTYPE html>
 <html ng-app = "admin">
     <head>
-        <title>Inserimento corso</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+        <title>Admin</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport" /><!-- visualizzazione ottimale per le su device iphone che adotta browser Safari -->
         <meta content="Il mio primo sito web responsive" name="description" />
         <link href="Style/admin.css" rel="stylesheet" />
-        <link href="Style/docente.css" rel="stylesheet" />
+       <link href="Style/docente.css" rel="stylesheet" />
         <link href="Style/util.css" rel="stylesheet" />
-        <link rel="icon" href="images/favicon.png" type="images/png" />
+       <link rel="icon" href="images/favicon.png" type="images/png" />
         <script
             src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
         </script>
         <script src="adminController.js"></script>
     </head>
 
-    <body ng-controller ="adminController">
+    <body ng-controller="adminController">
 
         <!-- inizio blocco container -->
         <div id="container">
@@ -27,48 +27,56 @@
             <div class="topnav" id="myTopnav">
 
                 <ul id ="menu"> <!-- MENU PRINCIPALE -->
-                    <li><a href = "#"><img src ="images/01.png"  width="30" height="30" ></a>
+                    
+                    <li><a href = "#"><img src ="images/01.png"  width="25" height="25" ></a>
                         <ul> <!-- PRIMO SOTTOMENU -->
-                            <li><a href="index.html">Log out</a></li>
+                            <li><a href="index.html">Esci</a></li>
                         </ul> <!-- FINE PRIMO SOTTOMENU -->
                     </li>
-                    <li><a href = "admin.html"><img src ="images/05.png"  width="30" height="30" ></a></li>
+                     <li><a href = "admin.html"><img src ="images/05.png"  width="25" height="25" ></a></li>
+                    <li>
+                        <div>{{user}}</div>
+                    </li>
                 </ul>
 
             </div>
             <!--fine menu navigazione -->
-             <br><br>
-            <center>
-                <br><br>
-            <table  width="200">
-                <tr>
-                    <th colspan ="2"><img src="images/03.png" width="45" height="45" ></th>
-                    <th><b>Inserisci corso</b></th>
-                </tr>
-            </table>
+
+             <center>
+              <br><br><br>
+                <table  width="200">
+                    <tr>
+                        <th colspan ="2"><img src="images/02.png" width="45" height="45" ></th>
+                        <th><b>Inserisci docente</b></th>
+                    </tr>
+                </table>
             </center>
             <center>
-          <div class="login p-l-55 p-r-55 p-t-30 p-b-30">
-                <form class="login-form validate-form" method="POST">
-                <div class ="input-field m-b-20">
-                    <input class="input" type ="text" id="name" name="name" placeholder="name" ng-model ="name"/>
-                    <span class="focus-input"></span>
+                <div class="login p-l-55 p-r-55 p-t-30 p-b-30">
+                    <form class="login-form validate-form" method="POST">
+                        <div class ="input-field m-b-20">
+                            <input class="input" type ="text" id="name" name="name" placeholder="name" ng-model="name"/>
+                            <span class="focus-input"></span>
+                        </div>
+                        <div class ="input-field m-b-25">
+                            <input  class="input" type ="text" name = "username" id ="username" placeholder="username" ng-model="username"/>
+                            <span class="focus-input"></span>
+                        </div>
+                        <div class ="input-field m-b-25">
+                            <input  class="input" type ="text" name = "email" id ="username" placeholder="email" ng-model="email"/>
+                            <span class="focus-input"></span>
+                        </div>
+                        <div class ="button">
+                            <button type="button" class="form-button" ng-click="addProfessor()">
+                                Aggiungi docente
+                            </button>
+                        </div> 
+                    </form>
                 </div>
-                <div class ="input-field m-b-25">
-                    <input  class="input" type ="text" name = "descrizione" id ="username" placeholder="descrizione" ng-model="description" />
-                    <span class="focus-input"></span>
-                </div>
-                
-                <div class ="button">
-                    <button class="form-button" ng-click = "addCourse()">
-                        Aggiungi corso
-                    </button>
-                </div> 
-                </form>
-          </div>
             </center>
         </div>
 
-
+      
     </body>
+
 </html>
