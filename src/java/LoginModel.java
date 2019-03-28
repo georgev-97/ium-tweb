@@ -31,22 +31,17 @@ public class LoginModel {
         }
     }
 
-    public int checkLogin(String account, String password) {
+    public User checkLogin(String account, String password) {
             String p = Hash.md5(password);
             System.out.println(p);
             System.out.println(password);
             User user = retrieveUser(account, p);
             if (user != null) {
                 System.out.println("Correct");
-                if(user.getRole() == 0){
-                    return 0;
-                }
-                else {
-                    return 1;
-                }
+                return user;
             } else {
                 System.out.println("Not very correct");
-                return -1;
+                return null;
             }
     }
 
@@ -67,44 +62,5 @@ public class LoginModel {
             dB.closeConnection();
         }
         return null;
-    }
-
-    
-
-    public class User {
-
-        private String id;
-        private String account;
-        private int role;
-
-        public int getRole() {
-            return role;
-        }
-
-        public void setRole(int role) {
-            this.role = role;
-        }
-
-        public User(String id, String account, int role) {
-            this.id = id;
-            this.account = account;
-            this.role = role;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getAccount() {
-            return account;
-        }
-
-        public void setAccount(String account) {
-            this.account = account;
-        }
     }
 }

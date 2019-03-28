@@ -52,11 +52,17 @@ public class Controller extends HttpServlet {
                 case "getCourse":
                     getCourse(request, response);
                     break;
+                case "getProfessor":
+                    getProfessor(request, response);
+                    break;
                 case "addCourse":
                     addCourse(request, response);
                     break;
                 case "addProfessor":
                     addProfessor(request, response);
+                    break;
+                case "courseProfessor":
+                    courseProfessor(request, response);
                     break;
                 case "getSession":
                     System.out.println(s.getAttribute("account")+ "session");
@@ -67,21 +73,21 @@ public class Controller extends HttpServlet {
                     response.getWriter().print(new JSONObject().put("ERROR", "unrecognized input"));
             }
         } else {
-            context.log("ERROR : Recived NULL action!");
+            context.log("ERROR : Recived NULL command!");
         }
     }
 
     private boolean loginHandler(HttpServletRequest request, HttpServletResponse response) {
         String account = request.getParameter("account");
         String password = request.getParameter("password");
+        JSONObject resp = new JSONObject();
         try {
-            int res = new LoginModel(dB).checkLogin(account, password);
-            if (res != -1) {
-                request.getSession().setAttribute("account", account);
-                JSONObject resp = new JSONObject();
+            User res = new LoginModel(dB).checkLogin(account, password);
+            if (res != null) {
+                request.getSession().setAttribute("id", res.getId());
                 resp.put("account", account);
                 resp.put("error", "");
-                if (res == 0) {
+                if (res.getRole() == 0) {
                     resp.put("role", "admin");
                 } else {
                     resp.put("role", "basic");
@@ -92,6 +98,7 @@ public class Controller extends HttpServlet {
                 return false;
             }
         } catch (IOException ex) {
+            resp.put("error", "sql error");
         }
         return false;
     }
@@ -125,20 +132,35 @@ public class Controller extends HttpServlet {
         //wrap the arrayList in a Json, and return it as response
         response.getWriter().print(new JSONObject().put("courseList", new ReservationModel(dB).getCourse()));
     }
+    private void getProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //wrap the arrayList in a Json, and return it as response
+        response.getWriter().print(new JSONObject().put("professorList", new ReservationModel(dB).getProfessor()));
+    }
 
     private void addCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (new AdminModel(dB).addCourse(request.getParameter("course"), request.getParameter("description"))) {
-            response.getWriter().print(new JSONObject().put("error", ""));
-            //show error message on the web page
-        }
-        else{
+        if (!new AdminModel(dB).addCourse(request.getParameter("course"), request.getParameter("description"))) {
+            
             response.getWriter().print(new JSONObject().put("error", "errore inserimento"));
+        }else{
+            response.getWriter().print(new JSONObject().put("error", ""));
         }
     }
 
     private void addProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (!new AdminModel(dB).addProfessor(request.getParameter("professor"))) {
-            //show error message on the web page
+        if (!new AdminModel(dB).addProfessor(request.getParameter("name"),
+                request.getParameter("username"),request.getParameter("email"))) {
+            
+            response.getWriter().print(new JSONObject().put("error", "errore inserimento"));
+        }else{
+            response.getWriter().print(new JSONObject().put("error", ""));
+        }
+    }
+    
+    private void courseProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        if(!new AdminModel(dB).courseProfessor(request.getParameter("course"),request.getParameter("professor"))){
+            response.getWriter().print(new JSONObject().put("error", "errore inserimento"));
+        }else{
+            response.getWriter().print(new JSONObject().put("error", ""));
         }
     }
 

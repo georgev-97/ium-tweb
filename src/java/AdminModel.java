@@ -1,5 +1,7 @@
-
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,16 +18,15 @@ public class AdminModel {
     private final DataBase dB;
     public AdminModel(DataBase dB){this.dB = dB;}
     
-    public boolean addProfessor(String professor){
+    public boolean addProfessor(String professor, String username, String email){
         try {
-            String insertion = "insert into professors(name)"+
-                                "values('"+professor+"')";
+            String insertion = "insert into professor(name, username, email)"+
+                                "values('"+professor+"','"+username+"','"+email+"')";
             dB.update(insertion);
         } catch (SQLException ex) {
             return false;
-        }finally{
-            return true;
         }
+        return true;
     }
     
     public boolean addCourse(String course, String description){
@@ -39,4 +40,21 @@ public class AdminModel {
         }
     }
     
+    public boolean courseProfessor(String course, String professorUsername){
+        try {
+            ResultSet r1 = dB.query("SELECT id FROM course WHERE name = '"+course+"'");
+            r1.next();
+            String courseId = r1.getString("id");
+            
+            ResultSet r2 = dB.query("SELECT id FROM professor WHERE username = '"+professorUsername+"'");
+            r2.next();
+            String professorId = r2.getString("id");
+            dB.update("INSERT INTO course_professor(course,professor)"
+                    + "VALUES('"+courseId+"','"+professorId+"')");
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            return false;
+        }
+        return true;
+    }
 }

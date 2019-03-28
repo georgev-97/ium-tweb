@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /*
@@ -21,15 +22,29 @@ public class ReservationModel {
     private final DataBase dB;
     public ReservationModel(DataBase dB){this.dB = dB;}
     
-    public ArrayList getCourse(){
-        ArrayList<String> res = new ArrayList();
+    public JSONArray getCourse(){
+        JSONArray res = new JSONArray();
         try {
-            ResultSet rs = dB.query("SELECT nome FROM public.corso");
+            ResultSet rs = dB.query("SELECT name FROM public.course");
             while(rs.next()){
-                res.add(rs.getString("nome"));
+                res.put(rs.getString("name"));
             }
         } catch (SQLException ex) {
-            res.add("ERROR : "+ex.toString());
+            res.put("ERROR : sql error ==> "+ex.toString());
+        } finally {
+            dB.closeConnection();
+        }
+        return res;
+    }
+    public JSONArray getProfessor(){
+        JSONArray res = new JSONArray();
+        try {
+            ResultSet rs = dB.query("select name, username from professor");
+            while(rs.next()){
+                res.put(rs.getString("name")+" ("+rs.getString("username")+")");
+            }
+        } catch (SQLException ex) {
+            res.put("ERROR : sql error ==> "+ex.toString());
         } finally {
             dB.closeConnection();
         }
