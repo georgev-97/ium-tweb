@@ -1,21 +1,18 @@
-<!DOCTYPE html>
-<html ng-app = "admin">
+<html ng-app="courseProfessor">
     <head>
+        <title>Associazione docente-corso</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-        <title>Admin</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport" /><!-- visualizzazione ottimale per le su device iphone che adotta browser Safari -->
         <meta content="Il mio primo sito web responsive" name="description" />
         <link href="Style/admin.css" rel="stylesheet" />
-       <link href="Style/docente.css" rel="stylesheet" />
+        <link href="Style/docente.css" rel="stylesheet" />
         <link href="Style/util.css" rel="stylesheet" />
-       <link rel="icon" href="images/favicon.png" type="images/png" />
-        <script
-            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
-        </script>
-        <script src="adminController.js"></script>
+        <link rel="icon" href="images/favicon.png" type="images/png" />
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="courseProfessorController.js"></script>
     </head>
 
-    <body ng-controller="adminController">
+    <body ng-controller="courseProfessorController">
 
         <!-- inizio blocco container -->
         <div id="container">
@@ -27,27 +24,23 @@
             <div class="topnav" id="myTopnav">
 
                 <ul id ="menu"> <!-- MENU PRINCIPALE -->
-                    
-                    <li><a href = "#"><img src ="images/01.png"  width="25" height="25" ></a>
+                    <li><a href = "#"><img src ="images/01.png"  width="30" height="30" ></a>
                         <ul> <!-- PRIMO SOTTOMENU -->
-                            <li><a href="index.html">Esci</a></li>
+                            <li><a href="index.html">Log out</a></li>
                         </ul> <!-- FINE PRIMO SOTTOMENU -->
                     </li>
-                     <li><a href = "admin.html"><img src ="images/05.png"  width="25" height="25" ></a></li>
-                    <li>
-                        <div>{{user}}</div>
-                    </li>
+                    <li><a href = "admin.html"><img src ="images/05.png"  width="30" height="30" ></a></li>
                 </ul>
 
             </div>
             <!--fine menu navigazione -->
-            <br><br><br>
-             <center>
+            <br><br>
+            <center>
                 <br><br>
-                <table  width="200">
+                <table  width="350">
                     <tr>
-                        <th colspan ="2"><img src="images/02.png" width="45" height="45" ></th>
-                        <th><b>Inserisci docente</b></th>
+                        <th colspan ="2"><img src="images/04.png" width="45" height="45" ></th>
+                        <th><b>Associazione corso-docente</b></th>
                     </tr>
                 </table>
             </center>
@@ -55,20 +48,21 @@
                 <div class="login p-l-55 p-r-55 p-t-30 p-b-30">
                     <form class="login-form validate-form" method="POST">
                         <div class ="input-field m-b-20">
-                            <input class="input" type ="text" id="name" name="name" placeholder="name" ng-model="name"/>
-                            <span class="focus-input"></span>
+                            <label> <b>Scegli il docente</b> <br>
+                                <select class="input" ng-model="professor" ng-change="updateCourse()">
+                                    <option ng-repeat="pro in professorList" value="{{pro}}">{{pro}}</option>
+                                </select>
+                            </label>
                         </div>
-                        <div class ="input-field m-b-25">
-                            <input  class="input" type ="text" name = "username" id ="username" placeholder="username" ng-model="username"/>
-                            <span class="focus-input"></span>
-                        </div>
-                        <div class ="input-field m-b-25">
-                            <input  class="input" type ="text" name = "email" id ="username" placeholder="email" ng-model="email"/>
-                            <span class="focus-input"></span>
-                        </div>
+                        <label><b>Scegli il corso</b>
+                            <select class="input" ng-model="course" >
+                                <option ng-repeat="cou in courseList" value="{{cou}}">{{cou}}</option>
+                            </select>
+                        </label>
+                        <br><br>
                         <div class ="button">
-                            <button type="button" class="form-button" ng-click="addProfessor()">
-                                Aggiungi docente
+                            <button type="button" class="form-button" ng-click="submit()">
+                                Collega
                             </button>
                         </div> 
                     </form>
@@ -76,7 +70,6 @@
             </center>
         </div>
 
-      
-    </body>
 
+    </body>
 </html>
