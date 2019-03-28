@@ -1,6 +1,6 @@
 <html ng-app="courseProfessor">
     <head>
-        <title>Associazione docente-corso</title>
+        <title>Admin</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport" /><!-- visualizzazione ottimale per le su device iphone che adotta browser Safari -->
         <meta content="Il mio primo sito web responsive" name="description" />
@@ -49,13 +49,13 @@
                     <form class="login-form validate-form" method="POST">
                         <div class ="input-field m-b-20">
                             <label> <b>Scegli il docente</b> <br>
-                                <select class="input" ng-model="professor" ng-change="updateCourse()">
+                                <select class="input" ng-model="professor">
                                     <option ng-repeat="pro in professorList" value="{{pro}}">{{pro}}</option>
                                 </select>
                             </label>
                         </div>
                         <label><b>Scegli il corso</b>
-                            <select class="input" ng-model="course" >
+                            <select class="input" ng-model="course">
                                 <option ng-repeat="cou in courseList" value="{{cou}}">{{cou}}</option>
                             </select>
                         </label>
