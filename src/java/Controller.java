@@ -5,6 +5,7 @@
  */
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletConfig;
@@ -129,12 +130,22 @@ public class Controller extends HttpServlet {
     }
 
     private void getCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //wrap the arrayList in a Json, and return it as response
-        response.getWriter().print(new JSONObject().put("courseList", new ReservationModel(dB).getCourse()));
+        try {
+            response.getWriter().print(new JSONObject().put("courseList", new ReservationModel(dB).getCourse()));
+            response.getWriter().print(new JSONObject().put("error", ""));
+        } catch (SQLException ex) {
+            response.getWriter().print(new JSONObject().put("error", "sql error"));
+            context.log(ex.toString());
+        }
     }
     private void getProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //wrap the arrayList in a Json, and return it as response
-        response.getWriter().print(new JSONObject().put("professorList", new ReservationModel(dB).getProfessor()));
+        try {
+            response.getWriter().print(new JSONObject().put("professorList", new ReservationModel(dB).getProfessor()));
+            response.getWriter().print(new JSONObject().put("error", ""));
+        } catch (SQLException ex) {
+            response.getWriter().print(new JSONObject().put("error", "sql error"));
+            context.log(ex.toString());
+        }
     }
 
     private void addCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
