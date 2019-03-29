@@ -23,7 +23,7 @@ var myApp = angular.module('login', []).controller('loginController', function (
                         if (response.data.role === "admin") {
                             window.location.assign("admin.html");
                         } else {
-                            window.location.assign("home.html");
+                            window.location.assign("utente.html");
                         }
                     } else {
                         if (response.data.error === "Wrong password") {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app = "courseProfessor">
+<html ng-app = "admin">
     <head>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
         <title>Admin</title>
@@ -13,10 +13,10 @@
         <script
             src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
         </script>
-        <script src="courseProfessorController.js"></script>
+        <script src="adminController.js"></script>
     </head>
 
-    <body ng-controller="courseProfessorController">
+    <body ng-controller="adminController">
         <div id="snackbar">Collegamento effettuato con successo</div>
         <!-- inizio blocco container -->
         <div id="container">
@@ -57,7 +57,7 @@
                     <form class="login-form validate-form" method="POST">
                         <div class ="input-field m-b-20">
                             <label> <b>Scegli il docente</b> <br>
-                                <select class="input" ng-model="professor">
+                                <select class="input" ng-model="professor" ng-change="updateCourse()">
                                     <option ng-repeat="pro in professorList" value="{{pro}}">{{pro}}</option>
                                 </select>
                             </label>
