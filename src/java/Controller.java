@@ -140,13 +140,10 @@ public class Controller extends HttpServlet {
             res.put("error", "");
             response.getWriter().print(res);
         } catch (SQLException ex) {
-<<<<<<< HEAD
             response.getWriter().print(new JSONObject().put("error", ex.getMessage()));
             context.log(ex.toString());
-=======
             context.log("getCourse : "+ex.toString());
-            response.getWriter().print(new JSONObject().put("error", "sql error"));
->>>>>>> 8857527a59596dd259a9d474c98274f5843cf42f
+            response.getWriter().print(new JSONObject().put("error", ex.getMessage()));
         }
     }
     private void getProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -155,13 +152,10 @@ public class Controller extends HttpServlet {
             res.put("error", "");
             response.getWriter().print(res);
         } catch (SQLException ex) {
-<<<<<<< HEAD
             response.getWriter().print(new JSONObject().put("error", ex.getMessage()));
             context.log(ex.toString());
-=======
             context.log("getProfessor : "+ex.toString());
-            response.getWriter().print(new JSONObject().put("error", "sql error"));
->>>>>>> 8857527a59596dd259a9d474c98274f5843cf42f
+            response.getWriter().print(new JSONObject().put("error", ex.getMessage()));
         }
     }
     private void getFreeProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -179,8 +173,11 @@ public class Controller extends HttpServlet {
         try {
             JSONArray ar = new AdminModel(dB).getFreeCourse(request.getParameter("professor"));
             JSONObject res = new JSONObject().put("courseList",ar);
-            if(ar.isNull(0))res.put("error", "no element");
-            else res.put("error", "");
+            if(ar.isNull(0)) {
+                res.put("error", "no element");
+            } else {
+                res.put("error", "");
+            }
             
             response.getWriter().print(res);
         } catch (SQLException ex) {
