@@ -9,6 +9,8 @@ var myApp = angular.module('courseProfessor', []).controller("courseProfessorCon
                         $scope.professorList = response.data.professorList;
                     });
 
+<<<<<<< HEAD
+=======
             $scope.updateCourse = function () {
                 $scope.prof = $scope.professor.match(/\(.*\)/)[0]
                         .replace(/\(/, "").replace(/\)/, "");
@@ -25,6 +27,7 @@ var myApp = angular.module('courseProfessor', []).controller("courseProfessorCon
                         });
             };
 
+>>>>>>> 8857527a59596dd259a9d474c98274f5843cf42f
             $scope.submit = function () {
                 $scope.prof = $scope.professor.match(/\(.*\)/)[0]
                         .replace(/\(/, "").replace(/\)/, "");
@@ -34,8 +37,13 @@ var myApp = angular.module('courseProfessor', []).controller("courseProfessorCon
                             if (response.data.error === "") {
                                 window.alert("inserimento avvenuto");
                                 window.location.assign("admin.html");
+<<<<<<< HEAD
+                            }else{
+                                window.alert("errore di inserimento");
+=======
                             } else {
                                 window.alert(response.data.error);
+>>>>>>> 8857527a59596dd259a9d474c98274f5843cf42f
                             }
                         });
             };
