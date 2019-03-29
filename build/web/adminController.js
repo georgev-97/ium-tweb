@@ -39,23 +39,5 @@ var myApp = angular.module('admin', []).controller('adminController', function (
                     }
                 });
 
-<<<<<<< HEAD
     };
-=======
-    }
-    $scope.addProfessor = function(){
-            $http.get("/Ripetizioni/Controller", {params:{command: 'addProfessor', name: $scope.name, username: $scope.username, email: $scope.email}})
-                    .then(response =>{
-                        console.log(response.data);
-                        if(response.data !==  ""){
-                            if(response.data.error === ""){
-                                window.location.assign("admin.html");
-                                alert("inserimento andato a buon fine");
-                            }
-                            else {alert(response.data.error);}
-                        }
-            });
-
-    }
->>>>>>> 8857527a59596dd259a9d474c98274f5843cf42f
 });
