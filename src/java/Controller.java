@@ -85,7 +85,7 @@ public class Controller extends HttpServlet {
         try {
             User res = new LoginModel(dB).checkLogin(account, password);
             if (res != null) {
-                request.getSession().setAttribute("id", res.getId());
+                request.getSession().setAttribute("account", res.getAccount());
                 resp.put("account", account);
                 resp.put("error", "");
                 if (res.getRole() == 0) {
@@ -134,7 +134,7 @@ public class Controller extends HttpServlet {
             response.getWriter().print(new JSONObject().put("courseList", new ReservationModel(dB).getCourse()));
             //response.getWriter().print(new JSONObject().put("error", ""));
         } catch (SQLException ex) {
-            response.getWriter().print(new JSONObject().put("error", "sql error"));
+            response.getWriter().print(new JSONObject().put("error", ex.getMessage()));
             context.log(ex.toString());
         }
     }
@@ -143,7 +143,7 @@ public class Controller extends HttpServlet {
             response.getWriter().print(new JSONObject().put("professorList", new ReservationModel(dB).getProfessor()));
             //response.getWriter().print(new JSONObject().put("error", ""));
         } catch (SQLException ex) {
-            response.getWriter().print(new JSONObject().put("error", "sql error"));
+            response.getWriter().print(new JSONObject().put("error", ex.getMessage()));
             context.log(ex.toString());
         }
     }
