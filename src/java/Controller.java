@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -55,6 +56,12 @@ public class Controller extends HttpServlet {
                     break;
                 case "getProfessor":
                     getProfessor(request, response);
+                    break;
+                case "getFreeCourse":
+                    getFreeCourse(request, response);
+                    break;
+                case "getFreeProfessor":
+                    getFreeProfessor(request, response);
                     break;
                 case "addCourse":
                     addCourse(request, response);
@@ -103,10 +110,9 @@ public class Controller extends HttpServlet {
         }
         return false;
     }
-
     private boolean checkUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String account = request.getParameter("account");
-        context.log("account: " + account);
+        context.log("logged as: " + account);
         if (account != null) {
             try {
                 JSONObject res = new JSONObject();
@@ -128,35 +134,60 @@ public class Controller extends HttpServlet {
         }
         return false;
     }
-
     private void getCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            response.getWriter().print(new JSONObject().put("courseList", new ReservationModel(dB).getCourse()));
-            //response.getWriter().print(new JSONObject().put("error", ""));
+            JSONObject res = new JSONObject().put("courseList", new AdminModel(dB).getCourse());
+            res.put("error", "");
+            response.getWriter().print(res);
         } catch (SQLException ex) {
+<<<<<<< HEAD
             response.getWriter().print(new JSONObject().put("error", ex.getMessage()));
             context.log(ex.toString());
+=======
+            context.log("getCourse : "+ex.toString());
+            response.getWriter().print(new JSONObject().put("error", "sql error"));
+>>>>>>> 8857527a59596dd259a9d474c98274f5843cf42f
         }
     }
     private void getProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            response.getWriter().print(new JSONObject().put("professorList", new ReservationModel(dB).getProfessor()));
-            //response.getWriter().print(new JSONObject().put("error", ""));
+            JSONObject res = new JSONObject().put("professorList", new AdminModel(dB).getProfessor());
+            res.put("error", "");
+            response.getWriter().print(res);
         } catch (SQLException ex) {
+<<<<<<< HEAD
             response.getWriter().print(new JSONObject().put("error", ex.getMessage()));
             context.log(ex.toString());
+=======
+            context.log("getProfessor : "+ex.toString());
+            response.getWriter().print(new JSONObject().put("error", "sql error"));
+>>>>>>> 8857527a59596dd259a9d474c98274f5843cf42f
         }
     }
-
-    private void addCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (!new AdminModel(dB).addCourse(request.getParameter("course"), request.getParameter("description"))) {
+    private void getFreeProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            JSONObject res = new JSONObject().put("professorList", new AdminModel(dB)
+                    .getFreeProfessor(request.getParameter("course")));
+            res.put("error", "");
+            response.getWriter().print(res);
+        } catch (SQLException ex) {
+            context.log("getFreeProfessor : "+ex.toString());
+            response.getWriter().print(new JSONObject().put("error", "sql error"));
+        }
+    }
+    private void getFreeCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            JSONArray ar = new AdminModel(dB).getFreeCourse(request.getParameter("professor"));
+            JSONObject res = new JSONObject().put("courseList",ar);
+            if(ar.isNull(0))res.put("error", "no element");
+            else res.put("error", "");
             
-            response.getWriter().print(new JSONObject().put("error", "errore inserimento"));
-        }else{
-            response.getWriter().print(new JSONObject().put("error", ""));
+            response.getWriter().print(res);
+        } catch (SQLException ex) {
+            context.log("getFreeCourse : "+ex.toString());
+            response.getWriter().print(new JSONObject().put("error", "sql error"));
         }
     }
-
     private void addProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (!new AdminModel(dB).addProfessor(request.getParameter("name"),
                 request.getParameter("username"),request.getParameter("email"))) {
@@ -166,12 +197,21 @@ public class Controller extends HttpServlet {
             response.getWriter().print(new JSONObject().put("error", ""));
         }
     }
-    
-    private void courseProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        if(!new AdminModel(dB).courseProfessor(request.getParameter("course"),request.getParameter("professor"))){
+    private void addCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (!new AdminModel(dB).addCourse(request.getParameter("course"), request.getParameter("description"))) {
+            
             response.getWriter().print(new JSONObject().put("error", "errore inserimento"));
         }else{
             response.getWriter().print(new JSONObject().put("error", ""));
+        }
+    }
+    private void courseProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        try {
+            new AdminModel(dB).courseProfessor(request.getParameter("course"),request.getParameter("professor"));
+            response.getWriter().print(new JSONObject().put("error", ""));
+        } catch (SQLException ex) {
+            context.log("courseProfessor : "+ex.toString());
+            response.getWriter().print(new JSONObject().put("error", "sql error"));
         }
     }
 
