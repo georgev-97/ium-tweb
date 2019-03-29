@@ -56,6 +56,18 @@ public class AdminModel {
         
         dB.update("INSERT INTO course_professor(course,professor)"
                 + "VALUES('" + courseId + "','" + professorId + "')");
+        
+        ResultSet courseProfessor = dB.query("select id from course_professor where course = "+courseId+" and professor = "+professorId);
+        courseProfessor.next();
+        String cP = courseProfessor.getString("id");
+        ResultSet slot = dB.query("select id from slot");
+        
+        String query = "";
+        while(slot.next()){
+            query = query + "INSERT INTO reservation(course_professor,slot,state) "
+                        + "VALUES("+cP+","+slot.getString("id")+", 'free');";
+        }
+        dB.update(query);
     }
     
     public JSONArray getCourse() throws SQLException {
