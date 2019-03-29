@@ -1,9 +1,9 @@
-<html ng-app = "admin">
+<!DOCTYPE html>
+<html lang="it" ng-app = "admin">
     <head>
-        <title>Ripetizioni.it</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-        <meta content="width=device-width, initial-scale=1.0" name="viewport" /><!-- visualizzazione ottimale per le su device iphone che adotta browser Safari -->
-        <meta content="Il mio primo sito web responsive" name="description" />
+        <title>Ripetizioni.it</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
         <link href="Style/admin.css" rel="stylesheet" />
         <link href="Style/docente.css" rel="stylesheet" />
         <link href="Style/util.css" rel="stylesheet" />
@@ -15,11 +15,12 @@
         <script src="adminController.js"></script>
     </head>
 
-    <body >
-         <!-- inizio blocco container -->
+    <body ng-controller="adminController">
+
+        <!-- inizio blocco container -->
         <div id="container">
 
-           <header><img alt="" class="logo" src="images/logo.png"> </header>
+            <header><img alt="" class="logo" src="images/logo.png"> </header>
             <br><br><br><br><br>
 
             <!--inizio menu navigazione -->
@@ -34,8 +35,10 @@
                     <li><a href = "utente.html"><img src ="images/05.png"  width="25" height="25" ></a></li>
                 </ul>
 
+
             </div>
             <!--fine menu navigazione -->
+
             <br><br>
             <center>
                 <br><br>
@@ -61,4 +64,5 @@
             </center>
         </div>
     </body>
+
 </html>
