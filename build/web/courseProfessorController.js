@@ -1,5 +1,14 @@
 var myApp = angular.module('courseProfessor', []).controller("courseProfessorController",
         function ($scope, $http) {
+            $http.get("/Ripetizioni/Controller", {params: {command: 'getSession'}})
+                    .then(response => {
+                        if (response.data !== "") {
+                            console.log(response.data);
+                            $scope.user = response.data.account;
+                        } else {
+                            $scope.user = "anonimo";
+                        }
+                    }).catch(error => console.log(error));
             $http.get("/Ripetizioni/Controller", {params: {command: 'getCourse'}})
                     .then(response => {
                         $scope.courseList = response.data.courseList;
@@ -8,9 +17,6 @@ var myApp = angular.module('courseProfessor', []).controller("courseProfessorCon
                     .then(response => {
                         $scope.professorList = response.data.professorList;
                     });
-
-<<<<<<< HEAD
-=======
             $scope.updateCourse = function () {
                 $scope.prof = $scope.professor.match(/\(.*\)/)[0]
                         .replace(/\(/, "").replace(/\)/, "");
@@ -26,8 +32,6 @@ var myApp = angular.module('courseProfessor', []).controller("courseProfessorCon
                             }
                         });
             };
-
->>>>>>> 8857527a59596dd259a9d474c98274f5843cf42f
             $scope.submit = function () {
                 $scope.prof = $scope.professor.match(/\(.*\)/)[0]
                         .replace(/\(/, "").replace(/\)/, "");
@@ -35,17 +39,15 @@ var myApp = angular.module('courseProfessor', []).controller("courseProfessorCon
                         course: $scope.course, professor: $scope.prof}})
                         .then(response => {
                             if (response.data.error === "") {
-                                window.alert("inserimento avvenuto");
-                                window.location.assign("admin.html");
-<<<<<<< HEAD
-                            }else{
-                                window.alert("errore di inserimento");
-=======
+                                var x = document.getElementById("snackbar");
+                                // Add the "show" class to DIV
+                                x.className = "show";
+                                setTimeout(function () {
+                                    window.location.assign("admin.html")
+                                }, 2000);
                             } else {
                                 window.alert(response.data.error);
->>>>>>> 8857527a59596dd259a9d474c98274f5843cf42f
                             }
                         });
             };
         });
-
