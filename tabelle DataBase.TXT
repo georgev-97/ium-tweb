@@ -27,7 +27,7 @@ create table professor(
 
 create table slot(
 	id serial primary key,
-	day date not null,
+	day varchar not null,
 	startHour integer not null,
 	endHour integer not null);
 
