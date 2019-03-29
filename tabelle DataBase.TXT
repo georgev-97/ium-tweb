@@ -47,3 +47,48 @@ create table reservations_user(
 	id serial primary key,
 	reservation integer references reservation(id),
 	userId integer references public.user(id));
+
+insert into slot(day, starthour, endhour)
+values('lunedì',9,11);
+insert into slot(day, starthour, endhour)
+values('lunedì',11,13);
+insert into slot(day, starthour, endhour)
+values('lunedì',14,16);
+insert into slot(day, starthour, endhour)
+values('lunedì',16,18);
+
+insert into slot(day, starthour, endhour)
+values('martedì',9,11);
+insert into slot(day, starthour, endhour)
+values('martedì',11,13);
+insert into slot(day, starthour, endhour)
+values('martedì',14,16);
+insert into slot(day, starthour, endhour)
+values('martedì',16,18);
+
+insert into slot(day, starthour, endhour)
+values('mercoledì',9,11);
+insert into slot(day, starthour, endhour)
+values('mercoledì',11,13);
+insert into slot(day, starthour, endhour)
+values('mercoledì',14,16);
+insert into slot(day, starthour, endhour)
+values('mercoledì',16,18);
+
+insert into slot(day, starthour, endhour)
+values('giovedì',9,11);
+insert into slot(day, starthour, endhour)
+values('giovedì',11,13);
+insert into slot(day, starthour, endhour)
+values('giovedì',14,16);
+insert into slot(day, starthour, endhour)
+values('giovedì',16,18);
+
+insert into slot(day, starthour, endhour)
+values('venerdì',9,11);
+insert into slot(day, starthour, endhour)
+values('venerdì',11,13);
+insert into slot(day, starthour, endhour)
+values('venerdì',14,16);
+insert into slot(day, starthour, endhour)
+values('venerdì',16,18);
