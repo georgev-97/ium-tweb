@@ -46,34 +46,32 @@ public class AdminModel {
     }
 
     public void courseProfessor(String course, String professorUsername) throws SQLException {
-        ResultSet r1 = dB.query("SELECT id FROM course WHERE name = '" + course + "'");
-        r1.next();
-        String courseId = r1.getString("id");
-
-        ResultSet r2 = dB.query("SELECT id FROM professor WHERE username = '" + professorUsername + "'");
-        r2.next();
-        String professorId = r2.getString("id");
-        
-        dB.update("INSERT INTO course_professor(course,professor)"
-                + "VALUES('" + courseId + "','" + professorId + "')");
-        
-        ResultSet courseProfessor = dB.query("select id from course_professor where course = "+courseId+" and professor = "+professorId);
-        courseProfessor.next();
-        String cP = courseProfessor.getString("id");
-        ResultSet slot = dB.query("select id from slot");
-        
-        String query = "";
-        while(slot.next()){
-            query = query + "INSERT INTO reservation(course_professor,slot,state) "
-                        + "VALUES("+cP+","+slot.getString("id")+", 'free');";
-        }
+        String query
+                = "DO\n"
+                + "$do$\n"
+                + "\n"
+                + "DECLARE c_p_id course_professor.id%type;\n"
+                + "DECLARE sl slot%rowtype;\n"
+                + "\n"
+                + "BEGIN\n"
+                + "	INSERT INTO course_professor ( course , professor)\n"
+                + " 	(SELECT id, (SELECT id FROM professor WHERE username = '"+professorUsername+"')\n"
+                + "    FROM course WHERE name = '"+course+"')\n"
+                + "	RETURNING id INTO c_p_id;\n"
+                + "\n"
+                + "	FOR sl IN select id from slot LOOP\n"
+                + "		INSERT INTO reservation(course_professor,slot,state)\n"
+                + "        VALUES( c_p_id , sl.id , 'free');\n"
+                + "	END LOOP;\n"
+                + "END;\n"
+                + "$do$";
         dB.update(query);
     }
-    
+
     public JSONArray getCourse() throws SQLException {
         JSONArray res = new JSONArray();
         ResultSet rs = dB.query("SELECT name FROM public.course");
-        
+
         while (rs.next()) {
             res.put(rs.getString("name"));
         }
@@ -85,26 +83,25 @@ public class AdminModel {
     public JSONArray getProfessor() throws SQLException {
         JSONArray res = new JSONArray();
         ResultSet rs = dB.query("select name, username from professor");
-        
+
         while (rs.next()) {
             res.put(rs.getString("name") + " (" + rs.getString("username") + ")");
         }
-        
+
         dB.closeConnection();
         return res;
     }
-    
+
     public JSONArray getFreeCourse(String professorUsername) throws SQLException {
         JSONArray res = new JSONArray();
-        ResultSet rs = dB.query
-        ("select name\n" +
-         "from course \n" +
-            "except\n" +
-         "select c.name\n" +
-         "from course c join course_professor c_p on c.id=c_p.course\n" +
-            "join professor p on c_p.professor=p.id\n" +
-          "where p.username='"+professorUsername+"'");
-        
+        ResultSet rs = dB.query("select name\n"
+                + "from course \n"
+                + "except\n"
+                + "select c.name\n"
+                + "from course c join course_professor c_p on c.id=c_p.course\n"
+                + "join professor p on c_p.professor=p.id\n"
+                + "where p.username='" + professorUsername + "'");
+
         while (rs.next()) {
             res.put(rs.getString("name"));
         }
@@ -112,18 +109,17 @@ public class AdminModel {
         dB.closeConnection();
         return res;
     }
-    
+
     public JSONArray getFreeProfessor(String course) throws SQLException {
         JSONArray res = new JSONArray();
-        ResultSet rs = dB.query
-        ("select name, username\n" +
-         "from professor\n" +
-            "except\n" +
-         "select p.name, p.username\n" +
-         "from course c join course_professor c_p on c.id=c_p.course\n" +
-            "join professor p on c_p.professor=p.id\n" +
-         "where c.name='"+course+"'");
-        
+        ResultSet rs = dB.query("select name, username\n"
+                + "from professor\n"
+                + "except\n"
+                + "select p.name, p.username\n"
+                + "from course c join course_professor c_p on c.id=c_p.course\n"
+                + "join professor p on c_p.professor=p.id\n"
+                + "where c.name='" + course + "'");
+
         while (rs.next()) {
             res.put(rs.getString("name") + " (" + rs.getString("username") + ")");
         }
