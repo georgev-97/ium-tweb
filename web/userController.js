@@ -75,6 +75,11 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                             window.alert(response.data.error);
                         }
                     });
+        }else{
+            $scope.slot = {'9 - 11': ['f','f','f','f','f']
+                , '11 - 13': ['f','f','f','f','f']
+                , '14 - 16': ['f','f','f','f','f']
+                , '16 - 18': ['f','f','f','f','f']};
         }
     };
     $scope.setValue = function (key, index) {
@@ -87,11 +92,13 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                 slotId: $scope.slotToSubmit}})
                 .then(response => {
                     if (response.data.error === "") {
+                        $scope.getReservation();
+                        
                         var x = document.getElementById("snackbar");
                         // Add the "show" class to DIV
                         x.className = "show";
-                        $scope.getReservation();
                         setTimeout(function () {
+                            x.className = "hide";
                         }, 2000);
                     } else {
                         window.alert(response.data.error);

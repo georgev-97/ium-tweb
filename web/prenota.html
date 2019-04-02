@@ -107,7 +107,7 @@
     <body ng-controller="userController">
 
         <!-- inizio blocco container -->
-        <div id="snackbar">Presnotazione aggiunta con successo</div>
+        <div id="snackbar">Prenotazione aggiunta con successo</div>
         <div id="container">
         
         <div id="container">
@@ -174,7 +174,7 @@
                                     <td scope="raw">{{key}}</td>
                                     <td ng-repeat="hr in value track by $index">
                                         <label class="container"  ng-show = "hr === 'free'"> 
-                                            <input type="radio" checked="checked" name="radio" ng-click="setValue(key, $index)">
+                                            <input type="radio" name="radio" ng-click="setValue(key, $index)">
                                         <span class="checkmark"></span></label>
                                         <img src="images/lock.png" width="20" height="20" ng-show="hr !== 'free'">
                                     </td>

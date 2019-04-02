@@ -6,6 +6,7 @@
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletConfig;
@@ -27,67 +28,112 @@ public class Controller extends HttpServlet {
     DataBase dB;
     ServletContext context;
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession s = request.getSession();
         this.context = request.getServletContext();
         String command = (String) request.getParameter("command");
-        if (command != null) {
-            switch (command) {
-                case "login":
-                    loginHandler(request, response);
-                    break;
-                case "register":
-                    registerHandler(request, response);
-                case "checkUser":
-                    checkUser(request, response);
-                    break;
-                case "getCourse":
-                    getCourse(request, response);
-                    break;
-                case "getProfessor":
-                    getProfessor(request, response);
-                    break;
-                case "getFreeCourse":
-                    getFreeCourse(request, response);
-                    break;
-                case "getCourseProfessor":
-                    getCourseProfessor(request, response);
-                    break;
-                case "addCourse":
-                    addCourse(request, response);
-                    break;
-                case "addProfessor":
-                    addProfessor(request, response);
-                    break;
-                case "courseProfessor":
-                    courseProfessor(request, response);
-                    break;
-                case "getReservation":
-                    getReservation(request, response);
-                    break;
-                case "reserve":
-                    reserve(request, response);
-                    break;
-                case "getSession":
-                    System.out.println(s.getAttribute("account") + "session");
-                    response.getWriter().print(new JSONObject().put("account", s.getAttribute("account")));
-                    break;
-                default:
-                    context.log("ERROR : Received invalid action!");
-                    response.getWriter().print(new JSONObject().put("ERROR", "unrecognized input"));
+        
+        //checking permission
+        if (checkPermission(command, request, response)) {
+        //checking permission
+        
+            if (command != null) {
+                switch (command) {
+                    case "login":
+                        loginHandler(request, response);
+                        break;
+                    case "register":
+                        register(request, response);
+                    case "checkUser":
+                        checkUser(request, response);
+                        break;
+                    case "getCourse":
+                        getCourse(request, response);
+                        break;
+                    case "getProfessor":
+                        getProfessor(request, response);
+                        break;
+                    case "getFreeCourse":
+                        getFreeCourse(request, response);
+                        break;
+                    case "getCourseProfessor":
+                        getCourseProfessor(request, response);
+                        break;
+                    case "addCourse":
+                        addCourse(request, response);
+                        break;
+                    case "addProfessor":
+                        addProfessor(request, response);
+                        break;
+                    case "courseProfessor":
+                        courseProfessor(request, response);
+                        break;
+                    case "getReservation":
+                        getReservation(request, response);
+                        break;
+                    case "reserve":
+                        reserve(request, response);
+                        break;
+                    case "getUserReservation":
+                        getUserReservation(request, response);
+                        break;
+                    case "getSession":
+                        System.out.println(s.getAttribute("account") + "session");
+                        response.getWriter().print(new JSONObject().put("account", s.getAttribute("account")));
+                        break;
+                    default:
+                        context.log("ERROR : Received invalid action!");
+                        response.getWriter().print(new JSONObject().put("ERROR", "unrecognized input"));
+                }
+            } else {
+                context.log("ERROR : Recived NULL command!");
+            }
+        }else{
+            context.log("ERROR : "+ command +" permission denied");
+        }
+    }
+    
+    private boolean checkPermission(String command,HttpServletRequest request  ,HttpServletResponse response) throws IOException{
+        String id = (String)request.getSession().getAttribute("id");
+        int role;
+        if(request.getSession().getAttribute("role")!=null)
+            role = ((Integer)request.getSession().getAttribute("role")).intValue();
+        else
+            role = -1;
+        String noPermission[] = {"checkUser","register","login","getSession"};
+        String basePermission[] = {"getCourse","getProfessor","getCourseProfessor","getReservation","reserve"};
+        String adminPermission[] = {"addCourse","addProfessor","getFreeCourse","courseProfessor"};
+        
+        
+        if(Arrays.asList(noPermission).contains(command) || id != null){
+            return true;
+        }else if(Arrays.asList(basePermission).contains(command) && id != null && role == 1){
+            return true;
+        }else if(Arrays.asList(adminPermission).contains(command) && id != null && role == 0){
+            return true;
+        }else{
+            context.log("ERROR : "+ command +" permission denied");
+            response.sendRedirect("permissionDenied.html");
+            return false;
+        }
+    }
+    
+    private void register(HttpServletRequest request, HttpServletResponse response) {
+        String account = request.getParameter("account");
+        String password = Hash.md5(request.getParameter("password"));
+        if (new RegisterModel(dB).addUser(account, password)) {
+            try {
+                request.getRequestDispatcher("login.html").forward(request, response);
+            } catch (ServletException | IOException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            context.log("ERROR : Recived NULL command!");
+            try {
+                response.getWriter().print(new JSONObject().put("error", "errore creazione account"));
+            } catch (IOException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -99,6 +145,8 @@ public class Controller extends HttpServlet {
             User res = new LoginModel(dB).checkLogin(account, password);
             if (res != null) {
                 request.getSession().setAttribute("account", res.getAccount());
+                request.getSession().setAttribute("id", res.getId());
+                request.getSession().setAttribute("role", res.getRole());
                 resp.put("account", account);
                 resp.put("error", "");
                 if (res.getRole() == 0) {
@@ -242,11 +290,23 @@ public class Controller extends HttpServlet {
             response.getWriter().print(new JSONObject().put("error", "sql error"));
         }
     }
-    
+
     private void reserve(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            new UserModel(dB).reserve(request.getParameter("slotId"));
+            new UserModel(dB).reserve(request.getParameter("slotId"), (String) request.getSession().getAttribute("id"));
             response.getWriter().print(new JSONObject().put("error", ""));
+        } catch (SQLException ex) {
+            context.log("reserve : " + ex.toString());
+            response.getWriter().print(new JSONObject().put("error", "sql error"));
+        }
+    }
+
+    private void getUserReservation(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            JSONArray ar = new UserModel(dB).getReservation((String) request.getSession().getAttribute("id"));
+            JSONObject re = new JSONObject();
+            re.put("reservationList", ar);
+            response.getWriter().print(re.put("error", ""));
         } catch (SQLException ex) {
             context.log("reserve : " + ex.toString());
             response.getWriter().print(new JSONObject().put("error", "sql error"));
@@ -263,60 +323,24 @@ public class Controller extends HttpServlet {
         }
     }
 
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+    
     @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    private void registerHandler(HttpServletRequest request, HttpServletResponse response) {
-        String account = request.getParameter("account");
-        String password = Hash.md5(request.getParameter("password"));
-        if (new RegisterModel(dB).addUser(account, password)) {
-            try {
-                request.getRequestDispatcher("login.html").forward(request, response);
-            } catch (ServletException | IOException ex) {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            try {
-                response.getWriter().print(new JSONObject().put("error", "errore creazione account"));
-            } catch (IOException ex) {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
 
 }
