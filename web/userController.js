@@ -10,9 +10,10 @@ var myApp = angular.module('user', []).controller('userController', function ($s
             }).catch(error => console.log(error));
 
     $scope.slot = {'9 - 11': ['f','f','f','f','f']
-        , '11 - 13': ['f','f','f','f','f']
-        , '14 - 16': ['f','f','f','f','f']
-        , '16 - 18': ['f','f','f','f','f']};
+                , '11 - 13': ['f','f','f','f','f']
+                , '14 - 16': ['f','f','f','f','f']
+                , '16 - 18': ['f','f','f','f','f']};
+    $scope.slotId = {'9 - 11': [], '11 - 13': [], '14 - 16': [], '16 - 18': []};
 
     $http.get("/Ripetizioni/Controller", {params: {command: 'getCourse'}})
             .then(response => {
@@ -45,22 +46,28 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                     .then(response => {
                         if (response.data.error === "") {
                             var reservationMatrix = response.data.reservationMatrix;
+                            console.log(reservationMatrix);
                             for (var i = 0; i < reservationMatrix.length; i++) {
                                 switch (reservationMatrix[i][0]) {
                                     case 'lunedì':
                                         $scope.slot[reservationMatrix[i][1] + " - " + reservationMatrix[i][2]][0] = reservationMatrix[i][3];
+                                        $scope.slotId[reservationMatrix[i][1] + " - " + reservationMatrix[i][2]][0] = reservationMatrix[i][4];
                                         break;
                                     case 'martedì':
                                         $scope.slot[reservationMatrix[i][1] + " - " + reservationMatrix[i][2]][1] = reservationMatrix[i][3];
+                                        $scope.slotId[reservationMatrix[i][1] + " - " + reservationMatrix[i][2]][1] = reservationMatrix[i][4];
                                         break;
                                     case 'mercoledì':
                                         $scope.slot[reservationMatrix[i][1] + " - " + reservationMatrix[i][2]][2] = reservationMatrix[i][3];
+                                        $scope.slotId[reservationMatrix[i][1] + " - " + reservationMatrix[i][2]][2] = reservationMatrix[i][4];
                                         break;
                                     case 'giovedì':
                                         $scope.slot[reservationMatrix[i][1] + " - " + reservationMatrix[i][2]][3] = reservationMatrix[i][3];
+                                        $scope.slotId[reservationMatrix[i][1] + " - " + reservationMatrix[i][2]][3] = reservationMatrix[i][4];
                                         break;
                                     case 'venerdì':
                                         $scope.slot[reservationMatrix[i][1] + " - " + reservationMatrix[i][2]][4] = reservationMatrix[i][3];
+                                        $scope.slotId[reservationMatrix[i][1] + " - " + reservationMatrix[i][2]][4] = reservationMatrix[i][4];
                                         break;
                                 }
                             }
@@ -70,18 +77,21 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                     });
         }
     };
-    $scope.submit = function () {
+    $scope.setValue = function (key, index) {
+        $scope.slotToSubmit = $scope.slotId[key][index];
+    };
+    $scope.addCourse = function () {
         $scope.prof = $scope.professor.match(/\(.*\)/)[0]
                 .replace(/\(/, "").replace(/\)/, "");
-        $http.get("/Ripetizioni/Controller", {params: {command: 'courseProfessor',
-                course: $scope.course, professor: $scope.prof}})
+        $http.get("/Ripetizioni/Controller", {params: {command: 'reserve',
+                slotId: $scope.slotToSubmit}})
                 .then(response => {
                     if (response.data.error === "") {
                         var x = document.getElementById("snackbar");
                         // Add the "show" class to DIV
                         x.className = "show";
+                        $scope.getReservation();
                         setTimeout(function () {
-                            window.location.assign("admin.html")
                         }, 2000);
                     } else {
                         window.alert(response.data.error);

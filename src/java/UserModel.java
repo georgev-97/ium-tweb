@@ -56,4 +56,12 @@ public class UserModel {
         }
         return re;
     }
+    
+    public void reserve(String slotId) throws SQLException{
+        String query = 
+                "update reservation\n" +
+                "set state = 'no-free'\n" +
+                "where id = "+slotId;
+        dB.update(query);
+    }
 }

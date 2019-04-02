@@ -75,6 +75,9 @@ public class Controller extends HttpServlet {
                 case "getReservation":
                     getReservation(request, response);
                     break;
+                case "reserve":
+                    reserve(request, response);
+                    break;
                 case "getSession":
                     System.out.println(s.getAttribute("account") + "session");
                     response.getWriter().print(new JSONObject().put("account", s.getAttribute("account")));
@@ -236,6 +239,16 @@ public class Controller extends HttpServlet {
             response.getWriter().print(res);
         } catch (SQLException ex) {
             context.log("getReservation : " + ex.toString());
+            response.getWriter().print(new JSONObject().put("error", "sql error"));
+        }
+    }
+    
+    private void reserve(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            new UserModel(dB).reserve(request.getParameter("slotId"));
+            response.getWriter().print(new JSONObject().put("error", ""));
+        } catch (SQLException ex) {
+            context.log("reserve : " + ex.toString());
             response.getWriter().print(new JSONObject().put("error", "sql error"));
         }
     }
