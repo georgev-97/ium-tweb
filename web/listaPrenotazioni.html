@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it" ng-app = "admin">
+<html lang="it" ng-app = "user">
     <head>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
         <title>Ripetizioni.it</title>
@@ -12,7 +12,7 @@
         <script
             src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
         </script>
-        <script src="adminController.js"></script>
+        <script src="userController.js"></script>
         <style>
             .bullet {
                 padding:12 px;
@@ -48,7 +48,7 @@
         </style>
     </head>
 
-    <body ng-controller="adminController">
+    <body ng-controller="userController">
 
         <!-- inizio blocco container -->
         <div id="container">
@@ -75,21 +75,10 @@
 
             <article>
                 <br><br><br><br>
-
                 <ol class="bullet">
-
-                    <li>Nome corso prenotato <br>
-                        Docente che tiene il corso <a href=""><img src="images/06.png" width="20" height="20" align="right"></a> <a href=""><img src="images/07.png" width="20" height="20"  align="right"></a><br>
-                        Data della prenotazione</li>
-                    <li>Nome corso prenotato <br>
-                        Docente che tiene il corso <a href=""><img src="images/06.png" width="20" height="20" align="right"></a> <a href=""><img src="images/07.png" width="20" height="20"  align="right"></a><br>
-                        Data della prenotazione</li>
-                    <li>Nome corso prenotato <br>
-                        Docente che tiene il corso <a href=""><img src="images/06.png" width="20" height="20" align="right"></a> <a href=""><img src="images/07.png" width="20" height="20"  align="right"></a><br>
-                        Data della prenotazione</li>
-                    <li>Nome corso prenotato <br>
-                        Docente che tiene il corso <a href=""><img src="images/06.png" width="20" height="20" align="right"></a> <a href=""><img src="images/07.png" width="20" height="20"  align="right"></a><br>
-                        Data della prenotazione</li>
+                    <li ng-repeat="res in userReservations">Corso: {{res.course}} <br>
+                        Nome Docente: {{res.professor}}<a href=""><img src="images/06.png" width="20" height="20" align="right"></a> <a href=""><img src="images/07.png" width="20" height="20"  align="right"></a><br>
+                        Orario: {{res.startHour+ "-" +res.endhour}}</li>
                 </ol>
 
             </article>
