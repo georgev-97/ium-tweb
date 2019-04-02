@@ -77,17 +77,11 @@
                 {{getUserReservation()}}
                 <br><br><br><br>
                 <ol class="bullet">
-<<<<<<< HEAD
-                    <li ng-repeat="res in userReservations">Corso: {{res.course}} <br>
-                        Nome Docente: {{res.professor}}<a href=""><img src="images/06.png" width="20" height="20" align="right"></a> <a href=""><img src="images/07.png" width="20" height="20"  align="right"></a><br>
-                        Orario: {{res.startHour+ "-" +res.endhour}}</li>
-=======
                     <li ng-repeat="res in userReservation">
                         corso :      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{res[0]}} <br>
                         professore : &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{res[1]}}  ({{res[2]}}) <a href=""><img src="images/06.png" width="20" height="20" align="right"></a> <a href=""><img src="images/07.png" width="20" height="20"  align="right"></a><br>
                         giorno/ora : &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{res[3]}} ({{res[4]}}-{{res[5]}})
                     </li>
->>>>>>> f2e448dfbfddb696835adef30acd7879d6989f34
                 </ol>
 
             </article>

@@ -4,14 +4,9 @@
  * and open the template in the editor.
  */
 
-import com.google.gson.*;
 import java.io.IOException;
 import java.sql.SQLException;
-<<<<<<< HEAD
-import java.util.ArrayList;
-=======
 import java.util.Arrays;
->>>>>>> f2e448dfbfddb696835adef30acd7879d6989f34
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletConfig;
@@ -24,7 +19,6 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/*"[{"id":0,"course":"fawfwaf","professor":"fwafawf","day":"2012-02-10","startHour":32,"endhour":32}]"*/
 
 /**
  *
@@ -40,52 +34,6 @@ public class Controller extends HttpServlet {
         HttpSession s = request.getSession();
         this.context = request.getServletContext();
         String command = (String) request.getParameter("command");
-<<<<<<< HEAD
-        if (command != null) {
-            switch (command) {
-                case "login":
-                    loginHandler(request, response);
-                    break;
-                case "register":
-                    registerHandler(request, response);
-                case "checkUser":
-                    checkUser(request, response);
-                    break;
-                case "getCourse":
-                    getCourse(request, response);
-                    break;
-                case "getProfessor":
-                    getProfessor(request, response);
-                    break;
-                case "getFreeCourse":
-                    getFreeCourse(request, response);
-                    break;
-                case "getFreeProfessor":
-                    getFreeProfessor(request, response);
-                    break;
-                case "addCourse":
-                    addCourse(request, response);
-                    break;
-                case "addProfessor":
-                    addProfessor(request, response);
-                    break;
-                case "courseProfessor":
-                    courseProfessor(request, response);
-                    break;
-                case "getSession":
-                    System.out.println(s.getAttribute("account") + "session");
-                    response.getWriter().print(new JSONObject().put("account", s.getAttribute("account")));
-                    break;
-                case "getBookings": {
-                    System.out.println("PORCODDDIOOO");
-                    getBookingsHandler(request, response, s);
-                    break;
-                }
-                default:
-                    context.log("ERROR : Received invalid action!");
-                    response.getWriter().print(new JSONObject().put("ERROR", "unrecognized input"));
-=======
-        
         //checking permission
         if (checkPermission(command, request, response)) {
         //checking permission
@@ -127,6 +75,9 @@ public class Controller extends HttpServlet {
                     case "reserve":
                         reserve(request, response);
                         break;
+                   /* case "getBookings":
+                        getBookingsHandler(request,response);
+                        break;*/
                     case "getUserReservation":
                         getUserReservation(request, response);
                         break;
@@ -179,7 +130,6 @@ public class Controller extends HttpServlet {
                 request.getRequestDispatcher("login.html").forward(request, response);
             } catch (ServletException | IOException ex) {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
->>>>>>> f2e448dfbfddb696835adef30acd7879d6989f34
             }
         } else {
             try {
@@ -269,22 +219,15 @@ public class Controller extends HttpServlet {
         }
     }
 
-<<<<<<< HEAD
-    private void getFreeProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
-=======
     private void getCourseProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
->>>>>>> f2e448dfbfddb696835adef30acd7879d6989f34
         try {
             JSONObject res = new JSONObject().put("professorList", new AdminModel(dB)
                     .getCourseProfessor(request.getParameter("course")));
             res.put("error", "");
             response.getWriter().print(res);
         } catch (SQLException ex) {
-<<<<<<< HEAD
             context.log("getFreeProfessor : " + ex.toString());
-=======
             context.log("getCourseProfessor : " + ex.toString());
->>>>>>> f2e448dfbfddb696835adef30acd7879d6989f34
             response.getWriter().print(new JSONObject().put("error", "sql error"));
         }
     }
@@ -331,8 +274,6 @@ public class Controller extends HttpServlet {
             response.getWriter().print(new JSONObject().put("error", ""));
         } catch (SQLException ex) {
             context.log("courseProfessor : " + ex.toString());
-<<<<<<< HEAD
-=======
             response.getWriter().print(new JSONObject().put("error", "sql error"));
         }
     }
@@ -372,7 +313,6 @@ public class Controller extends HttpServlet {
             response.getWriter().print(re.put("error", ""));
         } catch (SQLException ex) {
             context.log("reserve : " + ex.toString());
->>>>>>> f2e448dfbfddb696835adef30acd7879d6989f34
             response.getWriter().print(new JSONObject().put("error", "sql error"));
         }
     }
@@ -407,7 +347,6 @@ public class Controller extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-<<<<<<< HEAD
     private void registerHandler(HttpServletRequest request, HttpServletResponse response) {
         String account = request.getParameter("account");
         String password = Hash.md5(request.getParameter("password"));
@@ -426,7 +365,7 @@ public class Controller extends HttpServlet {
         }
     }
 
-    private void getBookingsHandler(HttpServletRequest request, HttpServletResponse response, HttpSession s) {
+    /*private void getBookingsHandler(HttpServletRequest request, HttpServletResponse response, HttpSession s) {
         ArrayList<UserReservation> u = new UserModel(dB).getUserReservation((String) s.getAttribute("account"));
         try {
             if (u != null) {
@@ -441,7 +380,5 @@ public class Controller extends HttpServlet {
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-=======
->>>>>>> f2e448dfbfddb696835adef30acd7879d6989f34
+    }*/
 }

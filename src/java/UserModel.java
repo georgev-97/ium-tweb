@@ -1,32 +1,13 @@
-<<<<<<< HEAD
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-=======
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author lorenzo
- */
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.json.JSONArray;
->>>>>>> f2e448dfbfddb696835adef30acd7879d6989f34
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-<<<<<<< HEAD
 
 /**
  *
@@ -34,13 +15,11 @@ import org.json.JSONArray;
  */
 public class UserModel {
     
-=======
 /**
  *
  * @author lorenzo
  */
-public class UserModel {
->>>>>>> f2e448dfbfddb696835adef30acd7879d6989f34
+
 
     //modello per la gestione delle attività di amministrazione 
     private final DataBase dB;
@@ -49,7 +28,6 @@ public class UserModel {
         this.dB = dB;
     }
 
-<<<<<<< HEAD
     ArrayList <UserReservation> getUserReservation(String user) {
         try{
             ResultSet rs1 = dB.query("Select * from public.user where account = '"+user+"'");
@@ -73,15 +51,12 @@ public class UserModel {
                 ur.add(new UserReservation(i, rs.getString("cname"), rs.getString("pname"), rs.getString("day"), rs.getInt("startHour"), rs.getInt("endHour")));
                         i++;
             }
-            ur.forEach((u) -> {
-                System.out.println(u.getCourse() + "A");
-            });
             return ur;
         } catch (SQLException ex) {
            System.out.println(ex);
            return null;
         }
-=======
+    }
     public JSONArray getReservation(String course, String professorUsername) throws SQLException {
         String query
                 = "select r.id, c.name, p.userName, p.name, day, startHour, endHour, state\n"
@@ -116,7 +91,7 @@ public class UserModel {
                 + "set state = 'no-free'\n"
                 + "where id = 3;\n"
                 + "\n"
-                + "insert into reservation_user(reservation, userId)\n"
+                + "insert into reservations_user(reservation, userId)\n"
                 + "values(" + slotId + "," + userId + ")";
         dB.update(query);
     }
@@ -126,7 +101,7 @@ public class UserModel {
                 = "select c.name as cname, p.name as pname,\n"
                 + "p.username as pusername, s.day, s.startHour, s.endHour\n"
                 + "from reservation r\n"
-                + "join reservation_user r_u\n"
+                + "join reservations_user r_u\n"
                 + "	on r.id=r_u.reservation\n"
                 + "join public.user u\n"
                 + "	on r_u.userid=u.id\n"
@@ -154,6 +129,5 @@ public class UserModel {
             reservation.put(a);
         }
         return reservation;
->>>>>>> f2e448dfbfddb696835adef30acd7879d6989f34
     }
 }

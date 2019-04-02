@@ -1,3 +1,5 @@
+/* global $scope, $http */
+
 var myApp = angular.module('user', []).controller('userController', function ($scope, $http) {
     $http.get("/Ripetizioni/Controller", {params: {command: 'getSession'}})
             .then(response => {
@@ -9,16 +11,14 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                 }
             }).catch(error => console.log(error));
 
-<<<<<<< HEAD
-     $http.get("/Ripetizioni/Controller", {params:{command:'getBookings'}})
+     /*$http.get("/Ripetizioni/Controller", {params:{command:'getBookings'}})
              .then(response=> {
                  if(response.data !== ""){
                      $scope.userReservations = JSON.parse(response.data.userReservations);
                  }
                  else(alert(response.data.error));
-     });
-});
-=======
+     });*/
+     
     $scope.slot = {'9 - 11': ['f', 'f', 'f', 'f', 'f']
         , '11 - 13': ['f', 'f', 'f', 'f', 'f']
         , '14 - 16': ['f', 'f', 'f', 'f', 'f']
@@ -130,4 +130,3 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                 });
     
 });
->>>>>>> f2e448dfbfddb696835adef30acd7879d6989f34
