@@ -15,6 +15,11 @@ public class DataBase{
     this.url = url;
     this.user = user;
     this.pass = pass;
+    try{
+      Class.forName("org.postgresql.Driver");//driver
+    }catch ( ClassNotFoundException e ) {
+      //TODO HANDLE ERROR
+    }
   }
 
   //Method used to perform sql quey.//
@@ -23,11 +28,6 @@ public class DataBase{
   public ResultSet query(String query) throws SQLException{
     ResultSet queryResult;      
             
-    try{
-      Class.forName("org.postgresql.Driver");//driver
-    }catch ( ClassNotFoundException e ) {
-      //TO DO HANDLE ERROR
-    }
 
     connection = DriverManager.getConnection(url, user, pass);//connection
 
@@ -43,11 +43,6 @@ public class DataBase{
   //Is not needed recall closeConnection()//
   public int update(String query) throws SQLException{
     int queryResult = -1;
-    try{
-      Class.forName("org.postgresql.Driver");//driver
-    }catch ( ClassNotFoundException e ) {
-      //TODO HANDLE ERROR
-    }
 
     connection = DriverManager.getConnection(url, user, pass);//connection
 

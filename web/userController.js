@@ -9,10 +9,10 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                 }
             }).catch(error => console.log(error));
 
-    $scope.slot = {'9 - 11': ['f','f','f','f','f']
-                , '11 - 13': ['f','f','f','f','f']
-                , '14 - 16': ['f','f','f','f','f']
-                , '16 - 18': ['f','f','f','f','f']};
+    $scope.slot = {'9 - 11': ['f', 'f', 'f', 'f', 'f']
+        , '11 - 13': ['f', 'f', 'f', 'f', 'f']
+        , '14 - 16': ['f', 'f', 'f', 'f', 'f']
+        , '16 - 18': ['f', 'f', 'f', 'f', 'f']};
     $scope.slotId = {'9 - 11': [], '11 - 13': [], '14 - 16': [], '16 - 18': []};
 
     $http.get("/Ripetizioni/Controller", {params: {command: 'getCourse'}})
@@ -75,11 +75,11 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                             window.alert(response.data.error);
                         }
                     });
-        }else{
-            $scope.slot = {'9 - 11': ['f','f','f','f','f']
-                , '11 - 13': ['f','f','f','f','f']
-                , '14 - 16': ['f','f','f','f','f']
-                , '16 - 18': ['f','f','f','f','f']};
+        } else {
+            $scope.slot = {'9 - 11': ['f', 'f', 'f', 'f', 'f']
+                , '11 - 13': ['f', 'f', 'f', 'f', 'f']
+                , '14 - 16': ['f', 'f', 'f', 'f', 'f']
+                , '16 - 18': ['f', 'f', 'f', 'f', 'f']};
         }
     };
     $scope.setValue = function (key, index) {
@@ -93,7 +93,7 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                 .then(response => {
                     if (response.data.error === "") {
                         $scope.getReservation();
-                        
+
                         var x = document.getElementById("snackbar");
                         // Add the "show" class to DIV
                         x.className = "show";
@@ -105,4 +105,18 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                     }
                 });
     };
+
+    
+
+        $http.get("/Ripetizioni/Controller", {params: {command: 'getUserReservation'}})
+                .then(response => {
+                    console.log("check");
+                    if (response.data.error === "") {
+                        $scope.userReservation = response.data.reservationList;
+                        console.log($scope.userReservation);
+                    } else {
+                        window.alert(response.data.error);
+                    }
+                });
+    
 });
