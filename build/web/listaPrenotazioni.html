@@ -5,9 +5,9 @@
         <title>Ripetizioni.it</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
         <link href="Style/admin.css" rel="stylesheet" />
-     
-       
-        
+
+
+
         <link rel="icon" href="images/favicon.png" type="images/png" />
         <script
             src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
@@ -19,12 +19,12 @@
                 list-style: none;
                 counter-reset: li;
             }
-            
+
             .bullet li {
                 position: relative;
                 margin-bottom: 1.5em;
                 margin-right: 12.5em;
-                 margin-left: 10.5em;
+                margin-left: 10.5em;
                 border: 3px solid #00aeef;
                 padding: 0.6em;
                 border-radius: 4px;
@@ -66,19 +66,28 @@
                             <li><a href="index.html">Esci</a></li>
                         </ul> <!-- FINE PRIMO SOTTOMENU -->
                     </li>
-                     <li><a href = "utente.html"><img src ="images/05.png"  width="25" height="27" ></a></li>
-                    
+                    <li><a href = "utente.html"><img src ="images/05.png"  width="25" height="27" ></a></li>
+
                 </ul>
 
             </div>
             <!--fine menu navigazione -->
 
             <article>
+                {{getUserReservation()}}
                 <br><br><br><br>
                 <ol class="bullet">
+<<<<<<< HEAD
                     <li ng-repeat="res in userReservations">Corso: {{res.course}} <br>
                         Nome Docente: {{res.professor}}<a href=""><img src="images/06.png" width="20" height="20" align="right"></a> <a href=""><img src="images/07.png" width="20" height="20"  align="right"></a><br>
                         Orario: {{res.startHour+ "-" +res.endhour}}</li>
+=======
+                    <li ng-repeat="res in userReservation">
+                        corso :      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{res[0]}} <br>
+                        professore : &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{res[1]}}  ({{res[2]}}) <a href=""><img src="images/06.png" width="20" height="20" align="right"></a> <a href=""><img src="images/07.png" width="20" height="20"  align="right"></a><br>
+                        giorno/ora : &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{res[3]}} ({{res[4]}}-{{res[5]}})
+                    </li>
+>>>>>>> f2e448dfbfddb696835adef30acd7879d6989f34
                 </ol>
 
             </article>
@@ -86,7 +95,7 @@
 
         <!-- blocco innerContent -->
         <div id="innerContent">
-            
+
             <article>
 
                 <hr class="linea">
@@ -99,10 +108,10 @@
                         <th>Prenota ripetizioni </th>
                     </tr>
                 </table>
-            
+
 
             </article>
-            
+
 
             <footer id="footer">
                 <div id="footer-wrapper">&nbsp;

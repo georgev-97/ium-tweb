@@ -66,6 +66,16 @@ var myApp = angular.module('admin', []).controller('adminController', function (
                     }
                 });
     };
+    $scope.updateProfessor = function () {
+        $http.get("/Ripetizioni/Controller", {params: {command: 'getCourseProfessor', course: $scope.course}})
+                .then(response => {
+                    if (response.data.error === "") {
+                        $scope.professorList = response.data.professorList;
+                    } else {
+                        window.alert(response.data.error);
+                    }
+                });
+    };
     $scope.submit = function () {
         $scope.prof = $scope.professor.match(/\(.*\)/)[0]
                 .replace(/\(/, "").replace(/\)/, "");

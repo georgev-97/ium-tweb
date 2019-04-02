@@ -1,6 +1,7 @@
 create table role(
 	id serial primary key,
-	name varchar not null unique);
+	name varchar not null unique,
+	check(id = 0 or id = 1));
 
 insert into role(id, name)
 	values('0','admin');
@@ -27,9 +28,10 @@ create table professor(
 
 create table slot(
 	id serial primary key,
-	day date not null,
+	day varchar not null,
 	startHour integer not null,
-	endHour integer not null);
+	endHour integer not null,
+	unique(day, startHour, endHour));
 
 create table course_professor(
 	id serial primary key,
@@ -47,3 +49,48 @@ create table reservations_user(
 	id serial primary key,
 	reservation integer references reservation(id),
 	userId integer references public.user(id));
+
+insert into slot(day, starthour, endhour)
+values('lunedì',9,11);
+insert into slot(day, starthour, endhour)
+values('lunedì',11,13);
+insert into slot(day, starthour, endhour)
+values('lunedì',14,16);
+insert into slot(day, starthour, endhour)
+values('lunedì',16,18);
+
+insert into slot(day, starthour, endhour)
+values('martedì',9,11);
+insert into slot(day, starthour, endhour)
+values('martedì',11,13);
+insert into slot(day, starthour, endhour)
+values('martedì',14,16);
+insert into slot(day, starthour, endhour)
+values('martedì',16,18);
+
+insert into slot(day, starthour, endhour)
+values('mercoledì',9,11);
+insert into slot(day, starthour, endhour)
+values('mercoledì',11,13);
+insert into slot(day, starthour, endhour)
+values('mercoledì',14,16);
+insert into slot(day, starthour, endhour)
+values('mercoledì',16,18);
+
+insert into slot(day, starthour, endhour)
+values('giovedì',9,11);
+insert into slot(day, starthour, endhour)
+values('giovedì',11,13);
+insert into slot(day, starthour, endhour)
+values('giovedì',14,16);
+insert into slot(day, starthour, endhour)
+values('giovedì',16,18);
+
+insert into slot(day, starthour, endhour)
+values('venerdì',9,11);
+insert into slot(day, starthour, endhour)
+values('venerdì',11,13);
+insert into slot(day, starthour, endhour)
+values('venerdì',14,16);
+insert into slot(day, starthour, endhour)
+values('venerdì',16,18);
