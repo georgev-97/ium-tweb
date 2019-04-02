@@ -110,12 +110,10 @@ public class AdminModel {
         return res;
     }
 
-    public JSONArray getFreeProfessor(String course) throws SQLException {
+    public JSONArray getCourseProfessor(String course) throws SQLException {
         JSONArray res = new JSONArray();
-        ResultSet rs = dB.query("select name, username\n"
-                + "from professor\n"
-                + "except\n"
-                + "select p.name, p.username\n"
+        ResultSet rs = dB.query
+                ( "select p.name, p.username\n"
                 + "from course c join course_professor c_p on c.id=c_p.course\n"
                 + "join professor p on c_p.professor=p.id\n"
                 + "where c.name='" + course + "'");

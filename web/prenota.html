@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it" ng-app = "admin">
+<html lang="it" ng-app = "user">
     <head>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
         <title>Ripetizioni.it</title>
@@ -12,7 +12,7 @@
         <script
             src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
         </script>
-        <script src="adminController.js"></script>
+        <script src="userController.js"></script>
         <style type="text/css">
             .table5 {
                 font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
@@ -104,7 +104,7 @@
         </style>
     </head>
 
-    <body ng-controller="adminController">
+    <body ng-controller="userController">
 
         <!-- inizio blocco container -->
         <div id="container">
@@ -143,13 +143,13 @@
                     <form class="login-form validate-form" method="POST">
                         <div class ="input-field m-b-20">
                             <label><b>Scegli il corso</b>
-                                <select class="input" ng-model="course">
+                                <select class="input" ng-model="course" ng-change="updateProfessor()">
                                     <option ng-repeat="cou in courseList" value="{{cou}}">{{cou}}</option>
                                 </select>
                             </label>
                             <br><br>
                             <label> <b>Scegli il docente</b> <br>
-                                <select class="input" ng-model="professor">
+                                <select class="input" ng-model="professor" ng-change="getReservation()">
                                     <option ng-repeat="pro in professorList" value="{{pro}}">{{pro}}</option>
                                 </select>
                             </label>
@@ -167,40 +167,43 @@
                                 </tr>
 
 
-                                <tr>
-                                    <td>09 - 11</td>
-                                    <td> <label class="container"> <input type="radio" checked="checked" name="radio"> <span class="checkmark"></span></label> </td>
-                                    <td> <img src="images/lock.png" width="20" height="20"></td>
-                                    <td> <img src="images/lock.png" width="20" height="20"></td>
-                                    <td> <label class="container"> <input type="radio" checked="checked" name="radio"> <span class="checkmark"></span> </label></td>
-                                    <td> <label class="container"> <input type="radio" checked="checked" name="radio"> <span class="checkmark"></span> </label></td>
+                                <tr >
+                                    <td scope="raw">09 - 11</td>
+                                    <td ng-repeat="h in slot.h9 track by $index">
+                                        <label class="container" ng-show = "h === 'free'"> 
+                                            <input type="radio" checked="checked" name="radio">
+                                        <span class="checkmark"></span></label>
+                                        <img src="images/lock.png" width="20" height="20" ng-show="h !== 'free'">
+                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <td>11 - 13</td>
-                                    <td> <label class="container"> <input type="radio" checked="checked" name="radio"> <span class="checkmark"></span></label> </td>
-                                    <td> <label class="container"> <input type="radio" checked="checked" name="radio"> <span class="checkmark"></span> </label></td>
-                                    <td> <label class="container"> <input type="radio" checked="checked" name="radio"> <span class="checkmark"></span> </label></td>
-                                    <td> <img src="images/lock.png" width="20" height="20"></td>
-                                    <td> <img src="images/lock.png" width="20" height="20"></td>
+                                    <td scope="raw">11 - 13</td>
+                                    <td ng-repeat="h in slot.h11 track by $index">
+                                        <label class="container" ng-show = "h === 'free'"> 
+                                            <input type="radio" checked="checked" name="radio">
+                                        <span class="checkmark"></span></label>
+                                        <img src="images/lock.png" width="20" height="20" ng-show="h !== 'free'">
+                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <td>14 - 16</td>
-                                    <td> <label class="container"> <input type="radio" checked="checked" name="radio"> <span class="checkmark"></span></label> </td>
-                                    <td> <img src="images/lock.png" width="20" height="20"></td>
-                                    <td> <label class="container"> <input type="radio" checked="checked" name="radio"> <span class="checkmark"></span> </label></td>
-                                    <td> <label class="container"> <input type="radio" checked="checked" name="radio"> <span class="checkmark"></span> </label></td>
-                                    <td> <label class="container"> <input type="radio" checked="checked" name="radio"> <span class="checkmark"></span> </label></td>
-                                </tr>
+                                    <td scope="raw">14 - 16</td>
+                                    <td ng-repeat="h in slot.h14 track by $index">
+                                        <label class="container" ng-show = "h === 'free'"> 
+                                            <input type="radio" checked="checked" name="radio">
+                                        <span class="checkmark"></span></label>
+                                        <img src="images/lock.png" width="20" height="20" ng-show="h !== 'free'">
+                                    </td>
 
                                 <tr>
-                                    <td>16 - 18</td>
-                                    <td> <label class="container"> <input type="radio" checked="checked" name="radio"> <span class="checkmark"></span></label> </td>
-                                    <td> <label class="container"> <input type="radio" checked="checked" name="radio"> <span class="checkmark"></span> </label></td>
-                                    <td> <label class="container"> <input type="radio" checked="checked" name="radio"> <span class="checkmark"></span> </label></td>
-                                    <td> <label class="container"> <input type="radio" checked="checked" name="radio"> <span class="checkmark"></span> </label></td>
-                                    <td> <img src="images/lock.png" width="20" height="20"></td>
+                                    <td scope="raw">16 - 18</td>
+                                    <td ng-repeat="h in slot.h16 track by $index">
+                                        <label class="container" ng-show = "h === 'free'"> 
+                                            <input type="radio" checked="checked" name="radio">
+                                        <span class="checkmark"></span></label>
+                                        <img src="images/lock.png" width="20" height="20" ng-show="h !== 'free'">
+                                    </td>
                                 </tr>
 
                             </table>

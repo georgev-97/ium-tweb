@@ -1,6 +1,7 @@
 create table role(
 	id serial primary key,
-	name varchar not null unique);
+	name varchar not null unique,
+	check(id = 0 or id = 1));
 
 insert into role(id, name)
 	values('0','admin');
@@ -29,7 +30,8 @@ create table slot(
 	id serial primary key,
 	day varchar not null,
 	startHour integer not null,
-	endHour integer not null);
+	endHour integer not null,
+	unique(day, startHour, endHour));
 
 create table course_professor(
 	id serial primary key,
