@@ -319,7 +319,6 @@ public class Controller extends HttpServlet {
     }
     
     private void deleteReservation(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        context.log(request.getParameter("reservationId")+" "+request.getParameter("reservationUserId")+" "+(String)request.getSession().getAttribute("id"));
         try {
             new UserModel(dB).deleteReservation(request.getParameter("reservationId"), 
                     request.getParameter("reservationUserId"),(String)request.getSession().getAttribute("id"));
