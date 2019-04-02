@@ -9,6 +9,11 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                 }
             }).catch(error => console.log(error));
 
+    $scope.slot = {'9 - 11': ['f','f','f','f','f']
+        , '11 - 13': ['f','f','f','f','f']
+        , '14 - 16': ['f','f','f','f','f']
+        , '16 - 18': ['f','f','f','f','f']};
+
     $http.get("/Ripetizioni/Controller", {params: {command: 'getCourse'}})
             .then(response => {
                 $scope.courseList = response.data.courseList;
@@ -40,23 +45,22 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                     .then(response => {
                         if (response.data.error === "") {
                             var reservationMatrix = response.data.reservationMatrix;
-                            $scope.slot = {h9: [], h11: [], h14: [], h16: []};
                             for (var i = 0; i < reservationMatrix.length; i++) {
                                 switch (reservationMatrix[i][0]) {
                                     case 'lunedì':
-                                        $scope.slot[reservationMatrix[i][1]][0] = reservationMatrix[i][3];
+                                        $scope.slot[reservationMatrix[i][1] + " - " + reservationMatrix[i][2]][0] = reservationMatrix[i][3];
                                         break;
                                     case 'martedì':
-                                        $scope.slot[reservationMatrix[i][1]][1] = reservationMatrix[i][3];
+                                        $scope.slot[reservationMatrix[i][1] + " - " + reservationMatrix[i][2]][1] = reservationMatrix[i][3];
                                         break;
                                     case 'mercoledì':
-                                        $scope.slot[reservationMatrix[i][1]][2] = reservationMatrix[i][3];
+                                        $scope.slot[reservationMatrix[i][1] + " - " + reservationMatrix[i][2]][2] = reservationMatrix[i][3];
                                         break;
                                     case 'giovedì':
-                                        $scope.slot[reservationMatrix[i][1]][3] = reservationMatrix[i][3];
+                                        $scope.slot[reservationMatrix[i][1] + " - " + reservationMatrix[i][2]][3] = reservationMatrix[i][3];
                                         break;
                                     case 'venerdì':
-                                        $scope.slot[reservationMatrix[i][1]][4] = reservationMatrix[i][3];
+                                        $scope.slot[reservationMatrix[i][1] + " - " + reservationMatrix[i][2]][4] = reservationMatrix[i][3];
                                         break;
                                 }
                             }

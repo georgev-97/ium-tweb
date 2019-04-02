@@ -48,8 +48,8 @@ public class UserModel {
         while (res.next()) {
             JSONArray a = new JSONArray();
             a.put(res.getString("day"));
-            a.put("h"+res.getString("startHour"));
-            a.put("h"+res.getString("endHour"));
+            a.put(res.getString("startHour"));
+            a.put(res.getString("endHour"));
             a.put(res.getString("state"));
             a.put(res.getString("id"));
             re.put(a);
