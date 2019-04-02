@@ -81,6 +81,9 @@ public class Controller extends HttpServlet {
                     case "getUserReservation":
                         getUserReservation(request, response);
                         break;
+                    case "deleteReservation":
+                        deleteReservation(request, response);
+                        break;
                     case "getSession":
                         System.out.println(s.getAttribute("account") + "session");
                         response.getWriter().print(new JSONObject().put("account", s.getAttribute("account")));
@@ -105,18 +108,16 @@ public class Controller extends HttpServlet {
         else
             role = -1;
         String noPermission[] = {"checkUser","register","login","getSession"};
-        String basePermission[] = {"getCourse","getProfessor","getCourseProfessor","getReservation","reserve"};
-        String adminPermission[] = {"addCourse","addProfessor","getFreeCourse","courseProfessor"};
+        String basePermission[] = {"getCourse","getProfessor","getCourseProfessor","getReservation","reserve","getUserReservation","deleteReservation"};
+        String adminPermission[] = {"getCourse","getProfessor","addCourse","addProfessor","getFreeCourse","courseProfessor"};
         
-        
-        if(Arrays.asList(noPermission).contains(command) || id != null){
+        if(Arrays.asList(noPermission).contains(command)){
             return true;
         }else if(Arrays.asList(basePermission).contains(command) && id != null && role == 1){
             return true;
         }else if(Arrays.asList(adminPermission).contains(command) && id != null && role == 0){
             return true;
         }else{
-            context.log("ERROR : "+ command +" permission denied");
             response.sendRedirect("permissionDenied.html");
             return false;
         }
@@ -313,6 +314,18 @@ public class Controller extends HttpServlet {
             response.getWriter().print(re.put("error", ""));
         } catch (SQLException ex) {
             context.log("reserve : " + ex.toString());
+            response.getWriter().print(new JSONObject().put("error", "sql error"));
+        }
+    }
+    
+    private void deleteReservation(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        context.log(request.getParameter("reservationId")+" "+request.getParameter("reservationUserId")+" "+(String)request.getSession().getAttribute("id"));
+        try {
+            new UserModel(dB).deleteReservation(request.getParameter("reservationId"), 
+                    request.getParameter("reservationUserId"),(String)request.getSession().getAttribute("id"));
+            response.getWriter().print(new JSONObject().put("error", ""));
+        } catch (SQLException ex) {
+            context.log("deleteReservation : " + ex.toString());
             response.getWriter().print(new JSONObject().put("error", "sql error"));
         }
     }

@@ -45,7 +45,7 @@ create table reservation(
 	slot integer references slot(id),
 	state varchar not null);
 
-create table reservations_user(
+create table reservation_user(
 	id serial primary key,
 	reservation integer references reservation(id),
 	userId integer references public.user(id));

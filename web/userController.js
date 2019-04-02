@@ -11,14 +11,14 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                 }
             }).catch(error => console.log(error));
 
-     /*$http.get("/Ripetizioni/Controller", {params:{command:'getBookings'}})
-             .then(response=> {
-                 if(response.data !== ""){
-                     $scope.userReservations = JSON.parse(response.data.userReservations);
-                 }
-                 else(alert(response.data.error));
+    /*$http.get("/Ripetizioni/Controller", {params:{command:'getBookings'}})
+     .then(response=> {
+     if(response.data !== ""){
+     $scope.userReservations = JSON.parse(response.data.userReservations);
+     }
+     else(alert(response.data.error));
      });*/
-     
+
     $scope.slot = {'9 - 11': ['f', 'f', 'f', 'f', 'f']
         , '11 - 13': ['f', 'f', 'f', 'f', 'f']
         , '14 - 16': ['f', 'f', 'f', 'f', 'f']
@@ -39,6 +39,11 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                 , course: $scope.course}})
 
                 .then(response => {
+                    $scope.slot = {'9 - 11': ['f', 'f', 'f', 'f', 'f']
+                        , '11 - 13': ['f', 'f', 'f', 'f', 'f']
+                        , '14 - 16': ['f', 'f', 'f', 'f', 'f']
+                        , '16 - 18': ['f', 'f', 'f', 'f', 'f']};
+                    $scope.professor = null;
                     if (response.data.error === "") {
                         $scope.professorList = response.data.professorList;
                     } else {
@@ -116,11 +121,18 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                 });
     };
 
-    
+    $scope.deleteReservation = function (rid, ruid) {
+        console.log("che" + rid + "---" + ruid);
+        $http.get("/Ripetizioni/Controller", {params: {command: 'deleteReservation',
+                reservationId: rid, reservationUserId: ruid}})
+                .then(response => {
+                    $scope.getUserReservation();
+                });
+    };
 
+    $scope.getUserReservation = function () {
         $http.get("/Ripetizioni/Controller", {params: {command: 'getUserReservation'}})
                 .then(response => {
-                    console.log("check");
                     if (response.data.error === "") {
                         $scope.userReservation = response.data.reservationList;
                         console.log($scope.userReservation);
@@ -128,5 +140,7 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                         window.alert(response.data.error);
                     }
                 });
-    
+    };
+    $scope.getUserReservation();
+
 });

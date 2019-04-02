@@ -91,7 +91,7 @@ public class UserModel {
                 + "set state = 'no-free'\n"
                 + "where id = 3;\n"
                 + "\n"
-                + "insert into reservations_user(reservation, userId)\n"
+                + "insert into reservation_user(reservation, userId)\n"
                 + "values(" + slotId + "," + userId + ")";
         dB.update(query);
     }
@@ -99,9 +99,10 @@ public class UserModel {
     public JSONArray getReservation(String userId) throws SQLException {
         String query
                 = "select c.name as cname, p.name as pname,\n"
-                + "p.username as pusername, s.day, s.startHour, s.endHour\n"
+                + "p.username as pusername, s.day, s.startHour, s.endHour,\n"
+                + "r.id as rid, r_u.id as ruid\n"
                 + "from reservation r\n"
-                + "join reservations_user r_u\n"
+                + "join reservation_user r_u\n"
                 + "	on r.id=r_u.reservation\n"
                 + "join public.user u\n"
                 + "	on r_u.userid=u.id\n"
@@ -116,8 +117,7 @@ public class UserModel {
                 + "where u.id=" + userId;
         ResultSet res = dB.query(query);
         JSONArray reservation = new JSONArray();
-        
-          
+
         while (res.next()) {
             JSONArray a = new JSONArray();
             a.put(res.getString("cname"));
@@ -126,8 +126,22 @@ public class UserModel {
             a.put(res.getString("day"));
             a.put(res.getString("startHour"));
             a.put(res.getString("endHour"));
+            a.put(res.getString("rid"));
+            a.put(res.getString("ruid"));
             reservation.put(a);
         }
         return reservation;
+    }
+    
+    public void deleteReservation(String rid, String ruid, String uid) throws SQLException {
+        String query
+                = "update reservation\n"
+                + "set state = 'free'\n"
+                + "from reservation_user\n"
+                + "where reservation = "+rid+" and reservation_user.reservation = reservation.id and userid = "+uid+";\n"
+                + "\n"
+                + "delete from reservation_user\n"
+                + "where id = "+ruid+" and userid = "+uid+";";
+        dB.update(query);
     }
 }
