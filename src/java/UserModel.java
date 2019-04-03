@@ -87,9 +87,6 @@ public class UserModel {
                 = "update reservation\n"
                 + "set state = 'no-free'\n"
                 + "where id = " + slotId + ";"
-                + "update reservation\n"
-                + "set state = 'no-free'\n"
-                + "where id = 3;\n"
                 + "\n"
                 + "insert into reservation_user(reservation, userId)\n"
                 + "values(" + slotId + "," + userId + ")";
