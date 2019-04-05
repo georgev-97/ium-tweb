@@ -18,17 +18,14 @@ public class RegisterModel {
         this.dB=dB;
     }
 
-    boolean addUser(String account, String password) {
+    public void addUser(String account, String password) throws SQLException {
         try {
             String insertion = "INSERT INTO public.user(account,password,role)"
                     + "VALUES('"+account+"','"+password+"',1)";
-            /*INSERT INTO public."user"(
-	id, account, password, role)
-	VALUES (?, ?, ?, ?);*/
+            
             dB.update(insertion);
-            return true;
         } catch (SQLException ex) {
-            return false;
+            throw ex;
         }
     }
 }

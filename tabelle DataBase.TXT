@@ -26,9 +26,24 @@ create table professor(
 	username varchar not null unique,
 	email varchar not null unique);
 
+create table day(
+	id integer primary key,
+	name varchar not null unique);
+	
+insert into day(id, name)
+values(0, 'lunedì');
+insert into day(id, name)
+values(1, 'martedì');
+insert into day(id, name)
+values(2, 'mercoledì');
+insert into day(id, name)
+values(3, 'giovedì');
+insert into day(id, name)
+values(4, 'venerdì');
+
 create table slot(
 	id serial primary key,
-	day varchar not null,
+	day integer not null references day(id),
 	startHour integer not null,
 	endHour integer not null,
 	unique(day, startHour, endHour));
@@ -48,49 +63,50 @@ create table reservation(
 create table reservation_user(
 	id serial primary key,
 	reservation integer references reservation(id),
-	userId integer references public.user(id));
+	userId integer references public.user(id),
+	unique(reservation, userId));
 
 insert into slot(day, starthour, endhour)
-values('lunedì',9,11);
+values(0,9,11);
 insert into slot(day, starthour, endhour)
-values('lunedì',11,13);
+values(0,11,13);
 insert into slot(day, starthour, endhour)
-values('lunedì',14,16);
+values(0,14,16);
 insert into slot(day, starthour, endhour)
-values('lunedì',16,18);
+values(0,16,18);
 
 insert into slot(day, starthour, endhour)
-values('martedì',9,11);
+values(1,9,11);
 insert into slot(day, starthour, endhour)
-values('martedì',11,13);
+values(1,11,13);
 insert into slot(day, starthour, endhour)
-values('martedì',14,16);
+values(1,14,16);
 insert into slot(day, starthour, endhour)
-values('martedì',16,18);
+values(1,16,18);
 
 insert into slot(day, starthour, endhour)
-values('mercoledì',9,11);
+values(2,9,11);
 insert into slot(day, starthour, endhour)
-values('mercoledì',11,13);
+values(2,11,13);
 insert into slot(day, starthour, endhour)
-values('mercoledì',14,16);
+values(2,14,16);
 insert into slot(day, starthour, endhour)
-values('mercoledì',16,18);
+values(2,16,18);
 
 insert into slot(day, starthour, endhour)
-values('giovedì',9,11);
+values(3,9,11);
 insert into slot(day, starthour, endhour)
-values('giovedì',11,13);
+values(3,11,13);
 insert into slot(day, starthour, endhour)
-values('giovedì',14,16);
+values(3,14,16);
 insert into slot(day, starthour, endhour)
-values('giovedì',16,18);
+values(3,16,18);
 
 insert into slot(day, starthour, endhour)
-values('venerdì',9,11);
+values(4,9,11);
 insert into slot(day, starthour, endhour)
-values('venerdì',11,13);
+values(4,11,13);
 insert into slot(day, starthour, endhour)
-values('venerdì',14,16);
+values(4,14,16);
 insert into slot(day, starthour, endhour)
-values('venerdì',16,18);
+values(4,16,18);

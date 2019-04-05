@@ -19,73 +19,71 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-
 /**
  *
- * @author george
+ * @author george, lorenzo
  */
 public class Controller extends HttpServlet {
 
-    DataBase dB;
-    ServletContext context;
+    private String url;
+    private String account;
+    private String password;
+    private ServletContext context;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession s = request.getSession();
         this.context = request.getServletContext();
+        DataBase dB  = new DataBase(url, account, password);
         String command = (String) request.getParameter("command");
         //checking permission
         if (checkPermission(command, request, response)) {
-        //checking permission
-        
+            //checking permission
+
             if (command != null) {
                 switch (command) {
                     case "login":
-                        loginHandler(request, response);
+                        loginHandler(request, response, dB);
                         break;
                     case "register":
-                        register(request, response);
+                        register(request, response, dB);
                     case "checkUser":
-                        checkUser(request, response);
+                        checkUser(request, response, dB);
                         break;
                     case "getCourse":
-                        getCourse(request, response);
+                        getCourse(request, response, dB);
                         break;
                     case "getProfessor":
-                        getProfessor(request, response);
+                        getProfessor(request, response, dB);
                         break;
                     case "getFreeCourse":
-                        getFreeCourse(request, response);
+                        getFreeCourse(request, response, dB);
                         break;
                     case "getCourseProfessor":
-                        getCourseProfessor(request, response);
+                        getCourseProfessor(request, response, dB);
                         break;
                     case "addCourse":
-                        addCourse(request, response);
+                        addCourse(request, response, dB);
                         break;
                     case "addProfessor":
-                        addProfessor(request, response);
+                        addProfessor(request, response, dB);
                         break;
                     case "courseProfessor":
-                        courseProfessor(request, response);
+                        courseProfessor(request, response, dB);
                         break;
                     case "getReservation":
-                        getReservation(request, response);
+                        getReservation(request, response, dB);
                         break;
                     case "reserve":
-                        reserve(request, response);
+                        reserve(request, response, dB);
                         break;
-                   /* case "getBookings":
-                        getBookingsHandler(request,response);
-                        break;*/
                     case "getUserReservation":
-                        getUserReservation(request, response);
+                        getUserReservation(request, response, dB);
                         break;
                     case "deleteReservation":
-                        deleteReservation(request, response);
+                        deleteReservation(request, response, dB);
                         break;
                     case "getSession":
-                        System.out.println(s.getAttribute("account") + "session");
                         response.getWriter().print(new JSONObject().put("account", s.getAttribute("account")));
                         break;
                     default:
@@ -95,58 +93,54 @@ public class Controller extends HttpServlet {
             } else {
                 context.log("ERROR : Recived NULL command!");
             }
-        }else{
-            context.log("ERROR : "+ command +" permission denied");
+        } else {
+            context.log("ERROR : " + command + " permission denied");
         }
     }
-    
-    private boolean checkPermission(String command,HttpServletRequest request  ,HttpServletResponse response) throws IOException{
-        String id = (String)request.getSession().getAttribute("id");
+
+    private boolean checkPermission(String command, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String id = (String) request.getSession().getAttribute("id");
         int role;
-        if(request.getSession().getAttribute("role")!=null)
-            role = ((Integer)request.getSession().getAttribute("role")).intValue();
-        else
+        if (request.getSession().getAttribute("role") != null) {
+            role = ((Integer) request.getSession().getAttribute("role")).intValue();
+        } else {
             role = -1;
-        String noPermission[] = {"checkUser","register","login","getSession"};
-        String basePermission[] = {"getCourse","getProfessor","getCourseProfessor","getReservation","reserve","getUserReservation","deleteReservation"};
-        String adminPermission[] = {"getCourse","getProfessor","addCourse","addProfessor","getFreeCourse","courseProfessor"};
-        
-        if(Arrays.asList(noPermission).contains(command)){
+        }
+        String noPermission[] = {"checkUser", "register", "login", "getSession"};
+        String basePermission[] = {"getCourse", "getProfessor", "getCourseProfessor", "getReservation", "reserve", "getUserReservation", "deleteReservation"};
+        String adminPermission[] = {"getCourse", "getProfessor", "addCourse", "addProfessor", "getFreeCourse", "courseProfessor"};
+
+        if (Arrays.asList(noPermission).contains(command)) {
             return true;
-        }else if(Arrays.asList(basePermission).contains(command) && id != null && role == 1){
+        } else if (Arrays.asList(basePermission).contains(command) && id != null && role == 1) {
             return true;
-        }else if(Arrays.asList(adminPermission).contains(command) && id != null && role == 0){
+        } else if (Arrays.asList(adminPermission).contains(command) && id != null && role == 0) {
             return true;
-        }else{
+        } else {
             response.sendRedirect("permissionDenied.html");
             return false;
         }
     }
-    
-    private void register(HttpServletRequest request, HttpServletResponse response) {
+
+    private void register(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws ServletException, IOException {
         String account = request.getParameter("account");
         String password = Hash.md5(request.getParameter("password"));
-        if (new RegisterModel(dB).addUser(account, password)) {
-            try {
-                request.getRequestDispatcher("login.html").forward(request, response);
-            } catch (ServletException | IOException ex) {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            try {
-                response.getWriter().print(new JSONObject().put("error", "errore creazione account"));
-            } catch (IOException ex) {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        try {
+            new RegisterModel(dB).addUser(account, password);
+            request.getRequestDispatcher("login.html").forward(request, response);
+        } catch (SQLException ex) {
+            response.getWriter().print(new JSONObject().put("error", "errore creazione account"));
+
         }
     }
 
-    private boolean loginHandler(HttpServletRequest request, HttpServletResponse response) {
+    private void loginHandler(HttpServletRequest request, HttpServletResponse response, DataBase dB) {
         String account = request.getParameter("account");
         String password = request.getParameter("password");
+
         JSONObject resp = new JSONObject();
         try {
-            User res = new LoginModel(dB).checkLogin(account, password);
+            User res = new LoginModel(dB).login(account, password);
             if (res != null) {
                 request.getSession().setAttribute("account", res.getAccount());
                 request.getSession().setAttribute("id", res.getId());
@@ -161,15 +155,13 @@ public class Controller extends HttpServlet {
                 response.getWriter().print(resp);
             } else {
                 response.getWriter().print(new JSONObject().put("error", "Wrong password"));
-                return false;
             }
         } catch (IOException ex) {
             resp.put("error", "sql error");
         }
-        return false;
     }
 
-    private boolean checkUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private boolean checkUser(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         String account = request.getParameter("account");
         context.log("logged as: " + account);
         if (account != null) {
@@ -194,7 +186,7 @@ public class Controller extends HttpServlet {
         return false;
     }
 
-    private void getCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void getCourse(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
             JSONObject res = new JSONObject().put("courseList", new AdminModel(dB).getCourse());
             res.put("error", "");
@@ -207,7 +199,7 @@ public class Controller extends HttpServlet {
         }
     }
 
-    private void getProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void getProfessor(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
             JSONObject res = new JSONObject().put("professorList", new AdminModel(dB).getProfessor());
             res.put("error", "");
@@ -220,7 +212,7 @@ public class Controller extends HttpServlet {
         }
     }
 
-    private void getCourseProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void getCourseProfessor(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
             JSONObject res = new JSONObject().put("professorList", new AdminModel(dB)
                     .getCourseProfessor(request.getParameter("course")));
@@ -233,7 +225,7 @@ public class Controller extends HttpServlet {
         }
     }
 
-    private void getFreeCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void getFreeCourse(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
             JSONArray ar = new AdminModel(dB).getFreeCourse(request.getParameter("professor"));
             JSONObject res = new JSONObject().put("courseList", ar);
@@ -250,26 +242,27 @@ public class Controller extends HttpServlet {
         }
     }
 
-    private void addProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (!new AdminModel(dB).addProfessor(request.getParameter("name"),
-                request.getParameter("username"), request.getParameter("email"))) {
-
-            response.getWriter().print(new JSONObject().put("error", "errore inserimento"));
-        } else {
+    private void addProfessor(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
+        try {
+            new AdminModel(dB).addProfessor(request.getParameter("name"),
+                    request.getParameter("username"), request.getParameter("email"));
             response.getWriter().print(new JSONObject().put("error", ""));
+
+        } catch (SQLException ex) {
+            response.getWriter().print(new JSONObject().put("error", "errore inserimento"));
         }
     }
 
-    private void addCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (!new AdminModel(dB).addCourse(request.getParameter("course"), request.getParameter("description"))) {
-
-            response.getWriter().print(new JSONObject().put("error", "errore inserimento"));
-        } else {
+    private void addCourse(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
+        try {
+            new AdminModel(dB).addCourse(request.getParameter("course"), request.getParameter("description"));
             response.getWriter().print(new JSONObject().put("error", ""));
+        } catch (SQLException ex) {
+            response.getWriter().print(new JSONObject().put("error", "errore inserimento"));
         }
     }
 
-    private void courseProfessor(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void courseProfessor(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
             new AdminModel(dB).courseProfessor(request.getParameter("course"), request.getParameter("professor"));
             response.getWriter().print(new JSONObject().put("error", ""));
@@ -279,7 +272,7 @@ public class Controller extends HttpServlet {
         }
     }
 
-    private void getReservation(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void getReservation(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
             JSONArray ar = new UserModel(dB).getReservation(request.getParameter("course"), request.getParameter("professor"));
             JSONObject res = new JSONObject().put("reservationMatrix", ar);
@@ -296,7 +289,7 @@ public class Controller extends HttpServlet {
         }
     }
 
-    private void reserve(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void reserve(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
             new UserModel(dB).reserve(request.getParameter("slotId"), (String) request.getSession().getAttribute("id"));
             response.getWriter().print(new JSONObject().put("error", ""));
@@ -306,7 +299,7 @@ public class Controller extends HttpServlet {
         }
     }
 
-    private void getUserReservation(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void getUserReservation(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
             JSONArray ar = new UserModel(dB).getReservation((String) request.getSession().getAttribute("id"));
             JSONObject re = new JSONObject();
@@ -317,11 +310,11 @@ public class Controller extends HttpServlet {
             response.getWriter().print(new JSONObject().put("error", "sql error"));
         }
     }
-    
-    private void deleteReservation(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    private void deleteReservation(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
-            new UserModel(dB).deleteReservation(request.getParameter("reservationId"), 
-                    request.getParameter("reservationUserId"),(String)request.getSession().getAttribute("id"));
+            new UserModel(dB).deleteReservation(request.getParameter("reservationId"),
+                    request.getParameter("reservationUserId"), (String) request.getSession().getAttribute("id"));
             response.getWriter().print(new JSONObject().put("error", ""));
         } catch (SQLException ex) {
             context.log("deleteReservation : " + ex.toString());
@@ -332,65 +325,27 @@ public class Controller extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         if (config != null) {
-            String url = config.getInitParameter("dbUrl");
-            String account = config.getInitParameter("account");
-            String password = config.getInitParameter("password");
-            dB = new DataBase(url, account, password);
+            url = config.getInitParameter("dbUrl");
+            account = config.getInitParameter("account");
+            password = config.getInitParameter("password");
         }
     }
 
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
-    private void registerHandler(HttpServletRequest request, HttpServletResponse response) {
-        String account = request.getParameter("account");
-        String password = Hash.md5(request.getParameter("password"));
-        if (new RegisterModel(dB).addUser(account, password)) {
-            try {
-                request.getRequestDispatcher("login.html").forward(request, response);
-            } catch (ServletException | IOException ex) {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            try {
-                response.getWriter().print(new JSONObject().put("error", "errore creazione account"));
-            } catch (IOException ex) {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 
-    /*private void getBookingsHandler(HttpServletRequest request, HttpServletResponse response, HttpSession s) {
-        ArrayList<UserReservation> u = new UserModel(dB).getUserReservation((String) s.getAttribute("account"));
-        try {
-            if (u != null) {
-                GsonBuilder gb = new GsonBuilder();
-                Gson gson = gb.create();
-                JSONObject res = new JSONObject();
-                res.put("userReservations", gson.toJson(u));
-                response.getWriter().print(res);
-            }else{
-                response.getWriter().print(new JSONObject().put("error", "errore"));
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }*/
 }
