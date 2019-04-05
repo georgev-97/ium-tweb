@@ -97,8 +97,7 @@ class Daemon extends Thread {
     }
 
     private int getDay() {
-        //return translate(LocalDate.now().getDayOfWeek().name());
-        return 1;
+        return translate(LocalDate.now().getDayOfWeek().name());
     }
 
     private int translate(String in) {
