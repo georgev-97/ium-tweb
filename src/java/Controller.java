@@ -32,9 +32,9 @@ public class Controller extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession s = request.getSession();
+        HttpSession ses = request.getSession();
         this.context = request.getServletContext();
-        DataBase dB  = new DataBase(url, account, password);
+        DataBase dB = new DataBase(url, account, password);
         String command = (String) request.getParameter("command");
         //checking permission
         if (checkPermission(command, request, response)) {
@@ -83,22 +83,32 @@ public class Controller extends HttpServlet {
                     case "deleteReservation":
                         deleteReservation(request, response, dB);
                         break;
-                    case "getSession":
-                        response.getWriter().print(new JSONObject().put("account", s.getAttribute("account")));
+                    case "getAutSesData":
+                        JSONObject gasd = new JSONObject();
+                        
+                        try {gasd.put("account", ses.getAttribute("account"));
+                        } catch (Exception e) {gasd.put("account", "");}
+                        try {gasd.put("id", ses.getAttribute("id"));
+                        } catch (Exception e) {gasd.put("id", "");}
+                        try {gasd.put("role", ses.getAttribute("role"));
+                        } catch (Exception e) {gasd.put("role", "");}
+                        
+                        response.getWriter().print(gasd);
                         break;
                     default:
                         context.log("ERROR : Received invalid action!");
-                        response.getWriter().print(new JSONObject().put("ERROR", "unrecognized input"));
+                        response.getWriter().print(new JSONObject().put("error", "unrecognized input"));
                 }
             } else {
                 context.log("ERROR : Recived NULL command!");
             }
         } else {
             context.log("ERROR : " + command + " permission denied");
+            response.getWriter().print(new JSONObject().put("error", "you don't have permission"));
         }
     }
 
-    private boolean checkPermission(String command, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private boolean checkPermission(String command, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String id = (String) request.getSession().getAttribute("id");
         int role;
         if (request.getSession().getAttribute("role") != null) {
@@ -106,7 +116,7 @@ public class Controller extends HttpServlet {
         } else {
             role = -1;
         }
-        String noPermission[] = {"checkUser", "register", "login", "getSession"};
+        String noPermission[] = {"checkUser", "register", "login", "getAutSesData"};
         String basePermission[] = {"getCourse", "getProfessor", "getCourseProfessor", "getReservation", "reserve", "getUserReservation", "deleteReservation"};
         String adminPermission[] = {"getCourse", "getProfessor", "addCourse", "addProfessor", "getFreeCourse", "courseProfessor"};
 
@@ -117,7 +127,6 @@ public class Controller extends HttpServlet {
         } else if (Arrays.asList(adminPermission).contains(command) && id != null && role == 0) {
             return true;
         } else {
-            response.sendRedirect("permissionDenied.html");
             return false;
         }
     }

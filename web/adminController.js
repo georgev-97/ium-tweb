@@ -1,13 +1,19 @@
 var myApp = angular.module('admin', []).controller('adminController', function ($scope, $http) {
-    $http.get("/Ripetizioni/Controller", {params: {command: 'getSession'}})
+    $scope.render = false;
+    $http.get("/Ripetizioni/Controller", {params: {command: 'getAutSesData'}})
             .then(response => {
-                if (response.data !== "") {
-                    console.log(response.data);
+                if (response.data.id === "")
+                    window.location.assign("login.html");
+                else if (response.data.role !== 0)
+                    window.location.assign("login.html");
+                else if (response.data.account === "")
+                    window.location.assign("login.html");
+                else {
                     $scope.user = response.data.account;
-                } else {
-                    $scope.user = "anonimo";
+                    $scope.render = true;
                 }
             }).catch(error => console.log(error));
+
     $scope.addCourse = function () {
         $http.get("/Ripetizioni/Controller", {params: {command: 'addCourse', course: $scope.name, description: $scope.description}})
                 .then(response => {
