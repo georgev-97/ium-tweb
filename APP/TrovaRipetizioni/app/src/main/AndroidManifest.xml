@@ -10,9 +10,14 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/icona"
         android:supportsRtl="true"
+<<<<<<< HEAD
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".MainActivity">
+=======
+        android:theme="@style/AppTheme">
+        <activity android:name=".utente_home">
+>>>>>>> 6b0f4d83bbb1c7156aa190c1ee544a5b25339641
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +26,11 @@
         </activity>
         <activity android:name=".Login" />
         <activity android:name=".Registration" />
+<<<<<<< HEAD
         <activity android:name=".UserHome"></activity>
+=======
+        <activity android:name=".MainActivity"></activity>
+>>>>>>> 6b0f4d83bbb1c7156aa190c1ee544a5b25339641
     </application>
 
 </manifest>
