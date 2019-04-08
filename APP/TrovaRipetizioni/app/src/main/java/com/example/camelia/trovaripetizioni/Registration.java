@@ -26,24 +26,7 @@ public class Registration extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
 
-
-
-      /*  btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Registration.this, Login.class);
-                startActivity(intent);
-            }
-        });
-
-        tw.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Registration.this, Login.class);
-                startActivity(intent);
-            }
-        });
-    */}
 }
