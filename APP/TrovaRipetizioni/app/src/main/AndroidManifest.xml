@@ -21,7 +21,7 @@
         </activity>
         <activity android:name=".Login" />
         <activity android:name=".Registration" />
-        <activity android:name=".UserHome"></activity>
+        <activity android:name=".UserHome"/>
     </application>
 
 </manifest>

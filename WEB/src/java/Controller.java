@@ -136,9 +136,10 @@ public class Controller extends HttpServlet {
         String password = Hash.md5(request.getParameter("password"));
         try {
             new RegisterModel(dB).addUser(account, password);
-            request.getRequestDispatcher("login.html").forward(request, response);
+            response.getWriter().print(new JSONObject().put("error", ""));
+            //request.getRequestDispatcher("login.html").forward(request, response);
         } catch (SQLException ex) {
-            response.getWriter().print(new JSONObject().put("error", "errore creazione account"));
+            response.getWriter().print(new JSONObject().put("error", "Nome utente già in uso"));
 
         }
     }

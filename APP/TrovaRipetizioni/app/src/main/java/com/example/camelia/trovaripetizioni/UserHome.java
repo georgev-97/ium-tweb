@@ -12,7 +12,7 @@ public class UserHome extends AppCompatActivity {
 
     Toolbar toolbar;
     Menu logout;
-
+    String account;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,10 +20,13 @@ public class UserHome extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Nome Utente");
+        Intent intent = getIntent();
+        account = intent.getStringExtra("account");
+        getSupportActionBar().setTitle(account);
         toolbar.setTitleTextColor(-1);
         toolbar.setSubtitle("Welcome");
         toolbar.setSubtitleTextColor(-1);
+
 
     }
 

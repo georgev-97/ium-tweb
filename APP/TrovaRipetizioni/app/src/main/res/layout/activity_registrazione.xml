@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -43,7 +42,7 @@
 
             <EditText
 
-                android:id="@+id/editTextEmailAddress"
+                android:id="@+id/account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -64,22 +63,6 @@
                 android:layout_height="1dp"
                 android:background="#ffff" />
 
-            <EditText
-
-                android:id="@+id/editTextMail"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:layout_marginTop="4dp"
-                android:background="@android:color/transparent"
-                android:drawableLeft="@drawable/mail"
-                android:drawablePadding="12dp"
-                android:ems="10"
-                android:hint="Mail"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:padding="12dp"
-                android:textColorHint="#ffff" />
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -87,7 +70,7 @@
 
             <EditText
 
-                android:id="@+id/editTextAddress"
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
                 android:layout_marginTop="4dp"
@@ -108,7 +91,7 @@
 
             <EditText
 
-                android:id="@+id/editConfirmPassword"
+                android:id="@+id/passwordConfirm"
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
                 android:layout_marginTop="4dp"
@@ -128,12 +111,13 @@
                 android:background="#ffff" />
 
             <Button
-                android:id="@+id/login_btn"
+                android:id="@+id/register"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bottom"
                 android:clickable="true"
+                android:onClick="register"
                 android:text="REGISTRATI"
 
                 android:textAllCaps="false"

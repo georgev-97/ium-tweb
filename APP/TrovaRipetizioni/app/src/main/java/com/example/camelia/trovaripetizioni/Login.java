@@ -65,7 +65,7 @@ public class Login extends AppCompatActivity {
                             toast.show();
                         }
                         else{
-                            startActivity(new Intent(getApplicationContext(), UserHome.class));
+                            startActivity(new Intent(getApplicationContext(), UserHome.class).putExtra("account", acc));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

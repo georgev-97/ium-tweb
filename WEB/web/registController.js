@@ -22,10 +22,22 @@ var myApp = angular.module('regist', []).controller("registController",
                         window.regForm.passwordConfirm.value) {
 
                     window.alert("le password non corrispondono");
-                }else if($scope.nameAlreadyUsed){
+                } else if ($scope.nameAlreadyUsed) {
                     window.alert("il nome utente è già in uso");
                 } else {
-                    window.regForm.submit();
+                    $http.get("/Ripetizioni/Controller", {params: {command: 'checkUser', account: $scope.account}})
+                            .then(response => {
+                                if (response.data.error !== "") {
+                                    window.location.assign("login.html");
+                                } else {
+                                    var x = document.getElementById("snackbar");
+                                    // Add the "show" class to DIV
+                                    x.className = "show";
+                                    setTimeout(function () {
+                                        x.className = "hide";
+                                    }, 2000);
+                                }
+                            });
                 }
             };
             $scope.checkUser = function () {
