@@ -5,38 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Registration"
-    android:background="@drawable/gradient_background"
-  >
-    >
+    android:background="@drawable/gradient_background">
 
-    <TextView
-        android:id="@+id/back"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="0dp"
-        android:padding="1dp"
-        android:background="@drawable/back" />
+
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="600dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="-43dp">
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
 
         <LinearLayout
             android:layout_width="329dp"
-            android:layout_height="204dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical"
             android:focusable="true"
             android:focusableInTouchMode="true">
 
+            <TextView
+                android:id="@+id/back"
+                android:layout_width="36dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/back"
+                android:padding="1dp" />
+
 
             <ImageView
                 android:layout_width="220dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="120dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/registrazione" />
 
@@ -130,7 +131,7 @@
                 android:id="@+id/login_btn"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                android:layout_marginTop="42dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/bottom"
                 android:clickable="true"
                 android:text="REGISTRATI"
