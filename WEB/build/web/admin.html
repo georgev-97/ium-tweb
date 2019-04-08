@@ -12,8 +12,7 @@
         <script src="adminController.js"></script>
     </head>
 
-    <body ng-controller="adminController">
-
+    <body ng-controller="adminController" ng-show="render">
         <!-- inizio blocco container -->
         <div id="container">
 
@@ -27,11 +26,11 @@
                     
                     <li><a href = "#"><img src ="images/01.png"  width="25" height="25" ></a>
                         <ul> <!-- PRIMO SOTTOMENU -->
-                            <li><a href="index.html">Esci</a></li>
+                            <li><a href="index.html" ng-click="logout()">Esci</a></li>
                         </ul> <!-- FINE PRIMO SOTTOMENU -->
                     </li>
-                    <li>
-                        <div>{{user}}</div>
+                    <li style="float:left">
+                        <div style="margin-left: 10px;margin-top:13px" class="username">{{user}}</div>
                     </li>
                 </ul>
 

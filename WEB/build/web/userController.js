@@ -1,44 +1,49 @@
-/* global $scope, $http */
-
 var myApp = angular.module('user', []).controller('userController', function ($scope, $http) {
-    $http.get("/Ripetizioni/Controller", {params: {command: 'getSession'}})
+    $scope.render = true;
+    $scope.slotToSubmit = "";
+    $http.get("/Ripetizioni/Controller", {params: {command: 'getAutSesData'}})
             .then(response => {
-                if (response.data !== "") {
-                    console.log(response.data);
+                if (response.data.id === "")
+                    window.location.assign("login.html");
+                else if (response.data.role !== 1)
+                    window.location.assign("login.html");
+                else if (response.data.account === "")
+                    window.location.assign("login.html");
+                else {
                     $scope.user = response.data.account;
-                } else {
-                    $scope.user = "anonimo";
+                    $scope.render = true;
+                    //             //
+                    //INIT DATA SET//
+                    //             //
+                    $scope.slot = {'9 - 11': ['f', 'f', 'f', 'f', 'f']
+                        , '11 - 13': ['f', 'f', 'f', 'f', 'f']
+                        , '14 - 16': ['f', 'f', 'f', 'f', 'f']
+                        , '16 - 18': ['f', 'f', 'f', 'f', 'f']};
+                    $scope.slotId = {'9 - 11': [], '11 - 13': [], '14 - 16': [], '16 - 18': []};
+
+                    $http.get("/Ripetizioni/Controller", {params: {command: 'getCourse'}})
+                            .then(response => {
+                                $scope.courseList = response.data.courseList;
+                            });
+                    $http.get("/Ripetizioni/Controller", {params: {command: 'getProfessor'}})
+                            .then(response => {
+                                $scope.professorList = response.data.professorList;
+                            });
+                    $scope.getUserReservation();
                 }
             }).catch(error => console.log(error));
 
-    /*$http.get("/Ripetizioni/Controller", {params:{command:'getBookings'}})
-     .then(response=> {
-     if(response.data !== ""){
-     $scope.userReservations = JSON.parse(response.data.userReservations);
-     }
-     else(alert(response.data.error));
-     });*/
-
-    $scope.slot = {'9 - 11': ['f', 'f', 'f', 'f', 'f']
-        , '11 - 13': ['f', 'f', 'f', 'f', 'f']
-        , '14 - 16': ['f', 'f', 'f', 'f', 'f']
-        , '16 - 18': ['f', 'f', 'f', 'f', 'f']};
-    $scope.slotId = {'9 - 11': [], '11 - 13': [], '14 - 16': [], '16 - 18': []};
-
-    $http.get("/Ripetizioni/Controller", {params: {command: 'getCourse'}})
-            .then(response => {
-                $scope.courseList = response.data.courseList;
-            });
-    $http.get("/Ripetizioni/Controller", {params: {command: 'getProfessor'}})
-            .then(response => {
-                $scope.professorList = response.data.professorList;
-            });
+    $scope.logout = function () {
+        $http.get("/Ripetizioni/Controller", {params: {command: 'logout'}});
+    }; 
+     
     $scope.updateProfessor = function () {
 
         $http.get("/Ripetizioni/Controller", {params: {command: 'getCourseProfessor'
                 , course: $scope.course}})
 
                 .then(response => {
+                    $scope.slotToSubmit = "";
                     $scope.slot = {'9 - 11': ['f', 'f', 'f', 'f', 'f']
                         , '11 - 13': ['f', 'f', 'f', 'f', 'f']
                         , '14 - 16': ['f', 'f', 'f', 'f', 'f']
@@ -100,25 +105,27 @@ var myApp = angular.module('user', []).controller('userController', function ($s
     $scope.setValue = function (key, index) {
         $scope.slotToSubmit = $scope.slotId[key][index];
     };
-    $scope.addCourse = function () {
-        $scope.prof = $scope.professor.match(/\(.*\)/)[0]
-                .replace(/\(/, "").replace(/\)/, "");
-        $http.get("/Ripetizioni/Controller", {params: {command: 'reserve',
-                slotId: $scope.slotToSubmit}})
-                .then(response => {
-                    if (response.data.error === "") {
-                        $scope.getReservation();
+    $scope.reserve = function () {
+        // if no one resrvation is select don't perform
+        if ($scope.slotToSubmit !== "") {
+            $http.get("/Ripetizioni/Controller", {params: {command: 'reserve',
+                    slotId: $scope.slotToSubmit}})
+                    .then(response => {
+                        $scope.slotToSubmit = "";//reset the reservation selection
+                        if (response.data.error === "") {
+                            $scope.getReservation();
 
-                        var x = document.getElementById("snackbar");
-                        // Add the "show" class to DIV
-                        x.className = "show";
-                        setTimeout(function () {
-                            x.className = "hide";
-                        }, 2000);
-                    } else {
-                        window.alert(response.data.error);
-                    }
-                });
+                            var x = document.getElementById("snackbar");
+                            // Add the "show" class to DIV
+                            x.className = "show";
+                            setTimeout(function () {
+                                x.className = "hide";
+                            }, 2000);
+                        } else {
+                            window.alert(response.data.error);
+                        }
+                    });
+        }
     };
 
     $scope.deleteReservation = function (rid, ruid) {
@@ -127,6 +134,9 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                 reservationId: rid, reservationUserId: ruid}})
                 .then(response => {
                     $scope.getUserReservation();
+                    if (response.data.error !== "") {
+                        window.alert(response.data.error);
+                    }
                 });
     };
 
@@ -141,6 +151,5 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                     }
                 });
     };
-    $scope.getUserReservation();
 
 });
