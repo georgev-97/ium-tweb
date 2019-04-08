@@ -47,6 +47,7 @@ public class Controller extends HttpServlet {
                         break;
                     case "register":
                         register(request, response, dB);
+                        break;
                     case "checkUser":
                         checkUser(request, response, dB);
                         break;
@@ -139,10 +140,13 @@ public class Controller extends HttpServlet {
         String password = Hash.md5(request.getParameter("password"));
         try {
             new RegisterModel(dB).addUser(account, password);
-            response.getWriter().print(new JSONObject().put("error",""));
+            JSONObject o = new JSONObject();
+            o.put("error", "");
+            context.log(o.toString());
+            response.getWriter().print(o);
         } catch (SQLException ex) {
             response.getWriter().print(new JSONObject().put("error", "errore creazione account"));
-
+            context.log("register : " + ex.toString());
         }
     }
 
@@ -172,20 +176,16 @@ public class Controller extends HttpServlet {
             resp.put("error", "sql error");
         }
     }
-
+    
     private boolean checkUser(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         String account = request.getParameter("account");
-        context.log("logged as: " + account);
         if (account != null) {
             try {
-                JSONObject res = new JSONObject();
                 if (new LoginModel(dB).checkAccountExistance(account)) {
-                    res.put("response", "true");
-                    response.getWriter().print(res);
+                    response.getWriter().print(new JSONObject().put("response", "true"));
                     return true;
                 } else {
-                    res.put("response", "false");
-                    response.getWriter().print(res);
+                    response.getWriter().print(new JSONObject().put("response", "false"));
                     return false;
                 }
             } catch (IOException ex) {
@@ -198,6 +198,7 @@ public class Controller extends HttpServlet {
         return false;
     }
 
+
     private void getCourse(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
             JSONObject res = new JSONObject().put("courseList", new AdminModel(dB).getCourse());
@@ -205,7 +206,6 @@ public class Controller extends HttpServlet {
             response.getWriter().print(res);
         } catch (SQLException ex) {
             response.getWriter().print(new JSONObject().put("error", ex.getMessage()));
-            context.log(ex.toString());
             context.log("getCourse : " + ex.toString());
             response.getWriter().print(new JSONObject().put("error", ex.getMessage()));
         }
