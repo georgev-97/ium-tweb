@@ -13,7 +13,7 @@ create table public.user(
 	id serial primary key,
 	account varchar not null unique,
 	password varchar not null,
-	role integer references role(id));
+	role integer not null references role(id));
 
 create table course(
 	id serial primary key,
@@ -50,20 +50,20 @@ create table slot(
 
 create table course_professor(
 	id serial primary key,
-	course integer references course(id),
-	professor integer references professor(id),
+	course integer not null references course(id),
+	professor integer not null references professor(id),
 	unique(course, professor));
 
 create table reservation(
 	id serial primary key,
-	course_professor integer references course_professor(id),
-	slot integer references slot(id),
+	course_professor integer not null references course_professor(id),
+	slot integer not null references slot(id),
 	state varchar not null);
 
 create table reservation_user(
 	id serial primary key,
-	reservation integer references reservation(id),
-	userId integer references public.user(id),
+	reservation integer not null references reservation(id),
+	userId integer not null references public.user(id),
 	unique(reservation, userId));
 
 insert into slot(day, starthour, endhour)

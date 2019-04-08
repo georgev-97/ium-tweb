@@ -1,5 +1,10 @@
 var myApp = angular.module('admin', []).controller('adminController', function ($scope, $http) {
     $scope.render = false;
+    $scope.name = "";
+    $scope.username = "";
+    $scope.email = "";
+    $scope.courseName = "";
+    $scope.description = "";
     $http.get("/Ripetizioni/Controller", {params: {command: 'getAutSesData'}})
             .then(response => {
                 if (response.data.id === "")
@@ -13,41 +18,75 @@ var myApp = angular.module('admin', []).controller('adminController', function (
                     $scope.render = true;
                 }
             }).catch(error => console.log(error));
+            
+    $scope.logout = function () {
+        $http.get("/Ripetizioni/Controller", {params: {command: 'logout'}});
+    };
 
     $scope.addCourse = function () {
-        $http.get("/Ripetizioni/Controller", {params: {command: 'addCourse', course: $scope.name, description: $scope.description}})
-                .then(response => {
-                    console.log(response.data);
-                    if (response.data !== "") {
-                        if (response.data.error === "") {
-                            var x = document.getElementById("snackbar");
-                            // Add the "show" class to DIV
-                            x.className = "show";
-                            setTimeout(function () {
-                                window.location.assign("admin.html")
-                            }, 2000);
-                        } else {
-                            alert(response.data.error);
+        if ($scope.courseName === "") {
+            passwordElement = document.getElementById("coursename");
+            passwordElement.setCustomValidity("inserire nome");
+            passwordElement.validity = false;
+            passwordElement.reportValidity();
+        } else if ($scope.description === "") {
+            passwordElement = document.getElementById("description");
+            passwordElement.setCustomValidity("inserire nome");
+            passwordElement.validity = false;
+            passwordElement.reportValidity();
+        } else {
+            $http.get("/Ripetizioni/Controller", {params: {command: 'addCourse', course: $scope.courseName, description: $scope.description}})
+                    .then(response => {
+                        console.log(response.data);
+                        if (response.data !== "") {
+                            if (response.data.error === "") {
+                                var x = document.getElementById("snackbar");
+                                // Add the "show" class to DIV
+                                x.className = "show";
+                                setTimeout(function () {
+                                    window.location.assign("admin.html")
+                                }, 2000);
+                            } else {
+                                alert(response.data.error);
+                            }
                         }
-                    }
-                });
+                    });
+        }
     };
     $scope.addProfessor = function () {
-        $http.get("/Ripetizioni/Controller", {params: {command: 'addProfessor', name: $scope.name, username: $scope.username, email: $scope.email}})
-                .then(response => {
-                    console.log(response.data);
-                    if (response.data !== "") {
-                        if (response.data.error === "") {
-                            var x = document.getElementById("snackbar");
-                            x.className = "show";
-                            setTimeout(function () {
-                                window.location.assign("admin.html")
-                            }, 2000);
-                        } else {
-                            alert(response.data.error);
+        if ($scope.name === "") {
+            passwordElement = document.getElementById("name");
+            passwordElement.setCustomValidity("inserire nome");
+            passwordElement.validity = false;
+            passwordElement.reportValidity();
+        } else if ($scope.username === "") {
+            passwordElement = document.getElementById("username");
+            passwordElement.setCustomValidity("inserire username");
+            passwordElement.validity = false;
+            passwordElement.reportValidity();
+        } else if ($scope.email === "") {
+            passwordElement = document.getElementById("email");
+            passwordElement.setCustomValidity("inserire email");
+            passwordElement.validity = false;
+            passwordElement.reportValidity();
+        } else {
+            $http.get("/Ripetizioni/Controller", {
+                params: {command: 'addProfessor', name: $scope.name, username: $scope.username, email: $scope.email}})
+                    .then(response => {
+                        console.log(response.data);
+                        if (response.data !== "") {
+                            if (response.data.error === "") {
+                                var x = document.getElementById("snackbar");
+                                x.className = "show";
+                                setTimeout(function () {
+                                    window.location.assign("admin.html")
+                                }, 2000);
+                            } else {
+                                alert(response.data.error);
+                            }
                         }
-                    }
-                });
+                    });
+        }
     };
     $http.get("/Ripetizioni/Controller", {params: {command: 'getCourse'}})
             .then(response => {
