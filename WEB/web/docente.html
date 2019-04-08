@@ -35,12 +35,12 @@
 
                     <li><a href = "#"><img src ="images/01.png"  width="25" height="25" ></a>
                         <ul> <!-- PRIMO SOTTOMENU -->
-                            <li><a href="index.html">Esci</a></li>
+                            <li><a href="index.html" ng-click="logout()">Esci</a></li>
                         </ul> <!-- FINE PRIMO SOTTOMENU -->
                     </li>
                     <li><a href = "admin.html"><img src ="images/05.png"  width="25" height="25" ></a></li>
-                    <li>
-                        <div>{{user}}</div>
+                    <li style="float:left">
+                        <div style="margin-left: 10px;margin-top:13px" class="username">{{user}}</div>
                     </li>
                 </ul>
 
@@ -60,15 +60,18 @@
                 <div class="login p-l-55 p-r-55 p-t-30 p-b-30">
                     <form class="login-form validate-form" method="POST">
                         <div class ="input-field m-b-20">
-                            <input class="input" type ="text" id="name" name="name" placeholder="name" ng-model="name"/>
+                            <input class="input" type ="text" id="name" name="name" placeholder="name" ng-model="name"
+                                   onkeydown="try {setCustomValidity('');} catch (e) {}"/>
                             <span class="focus-input"></span>
                         </div>
                         <div class ="input-field m-b-25">
-                            <input  class="input" type ="text" name = "username" id ="username" placeholder="username" ng-model="username"/>
+                            <input  class="input" type ="text" name = "username" id ="username" placeholder="username" 
+                                    ng-model="username" onkeydown="try {setCustomValidity('');} catch (e) {}"/>
                             <span class="focus-input"></span>
                         </div>
                         <div class ="input-field m-b-25">
-                            <input  class="input" type ="text" name = "email" id ="username" placeholder="email" ng-model="email"/>
+                            <input  class="input" type ="text" name = "email" id ="email" placeholder="email" 
+                                    ng-model="email" onkeydown="try {setCustomValidity('');} catch (e) {}"/>
                             <span class="focus-input"></span>
                         </div>
                         <div class ="button">

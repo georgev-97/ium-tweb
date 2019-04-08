@@ -11,7 +11,6 @@ var myApp = angular.module('login', []).controller('loginController', function (
             $http.get("/Ripetizioni/Controller", {params: {command: 'checkUser', account: $scope.account}})
                     .then(response => {
                         nameElement = document.getElementById("name");
-                        console.log(response.data.response);
                         if (response.data.response === "false") {
                             nameElement.setCustomValidity("L'utente non esiste");
                             nameElement.reportValidity();

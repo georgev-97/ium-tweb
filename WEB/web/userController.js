@@ -1,5 +1,6 @@
 var myApp = angular.module('user', []).controller('userController', function ($scope, $http) {
-    $scope.render = false;
+    $scope.render = true;
+    $scope.slotToSubmit = "";
     $http.get("/Ripetizioni/Controller", {params: {command: 'getAutSesData'}})
             .then(response => {
                 if (response.data.id === "")
@@ -31,14 +32,18 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                     $scope.getUserReservation();
                 }
             }).catch(error => console.log(error));
-            
 
+    $scope.logout = function () {
+        $http.get("/Ripetizioni/Controller", {params: {command: 'logout'}});
+    }; 
+     
     $scope.updateProfessor = function () {
 
         $http.get("/Ripetizioni/Controller", {params: {command: 'getCourseProfessor'
                 , course: $scope.course}})
 
                 .then(response => {
+                    $scope.slotToSubmit = "";
                     $scope.slot = {'9 - 11': ['f', 'f', 'f', 'f', 'f']
                         , '11 - 13': ['f', 'f', 'f', 'f', 'f']
                         , '14 - 16': ['f', 'f', 'f', 'f', 'f']
@@ -100,25 +105,27 @@ var myApp = angular.module('user', []).controller('userController', function ($s
     $scope.setValue = function (key, index) {
         $scope.slotToSubmit = $scope.slotId[key][index];
     };
-    $scope.addCourse = function () {
-        $scope.prof = $scope.professor.match(/\(.*\)/)[0]
-                .replace(/\(/, "").replace(/\)/, "");
-        $http.get("/Ripetizioni/Controller", {params: {command: 'reserve',
-                slotId: $scope.slotToSubmit}})
-                .then(response => {
-                    if (response.data.error === "") {
-                        $scope.getReservation();
+    $scope.reserve = function () {
+        // if no one resrvation is select don't perform
+        if ($scope.slotToSubmit !== "") {
+            $http.get("/Ripetizioni/Controller", {params: {command: 'reserve',
+                    slotId: $scope.slotToSubmit}})
+                    .then(response => {
+                        $scope.slotToSubmit = "";//reset the reservation selection
+                        if (response.data.error === "") {
+                            $scope.getReservation();
 
-                        var x = document.getElementById("snackbar");
-                        // Add the "show" class to DIV
-                        x.className = "show";
-                        setTimeout(function () {
-                            x.className = "hide";
-                        }, 2000);
-                    } else {
-                        window.alert(response.data.error);
-                    }
-                });
+                            var x = document.getElementById("snackbar");
+                            // Add the "show" class to DIV
+                            x.className = "show";
+                            setTimeout(function () {
+                                x.className = "hide";
+                            }, 2000);
+                        } else {
+                            window.alert(response.data.error);
+                        }
+                    });
+        }
     };
 
     $scope.deleteReservation = function (rid, ruid) {

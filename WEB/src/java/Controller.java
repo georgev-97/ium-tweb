@@ -92,8 +92,11 @@ public class Controller extends HttpServlet {
                         } catch (Exception e) {gasd.put("id", "");}
                         try {gasd.put("role", ses.getAttribute("role"));
                         } catch (Exception e) {gasd.put("role", "");}
-                        
+                        //request.getRequestDispatcher("permissionDenied.html").forward(request, response);
                         response.getWriter().print(gasd);
+                        break;
+                        case "logout":
+                            ses.invalidate();
                         break;
                     default:
                         context.log("ERROR : Received invalid action!");
@@ -117,8 +120,8 @@ public class Controller extends HttpServlet {
             role = -1;
         }
         String noPermission[] = {"checkUser", "register", "login", "getAutSesData"};
-        String basePermission[] = {"getCourse", "getProfessor", "getCourseProfessor", "getReservation", "reserve", "getUserReservation", "deleteReservation"};
-        String adminPermission[] = {"getCourse", "getProfessor", "addCourse", "addProfessor", "getFreeCourse", "courseProfessor"};
+        String basePermission[] = {"logout","getCourse", "getProfessor", "getCourseProfessor", "getReservation", "reserve", "getUserReservation", "deleteReservation"};
+        String adminPermission[] = {"logout","getCourse", "getProfessor", "addCourse", "addProfessor", "getFreeCourse", "courseProfessor"};
 
         if (Arrays.asList(noPermission).contains(command)) {
             return true;
