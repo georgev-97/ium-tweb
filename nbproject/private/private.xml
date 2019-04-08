@@ -2,19 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
         <group>
-            <file>file:/home/george/Workspace/iumtweb/web/Style/snackbar.css</file>
             <file>file:/home/george/Workspace/iumtweb/web/listaPrenotazioni.html</file>
+            <file>file:/home/george/Workspace/iumtweb/web/registrazione.html</file>
+            <file>file:/home/george/Workspace/iumtweb/web/utente.html</file>
+            <file>file:/home/george/Workspace/iumtweb/web/login.html</file>
             <file>file:/home/george/Workspace/iumtweb/web/docente-corso.html</file>
-            <file>file:/home/george/Workspace/iumtweb/web/adminController.js</file>
-            <file>file:/home/george/Workspace/iumtweb/src/java/Controller.java</file>
-            <file>file:/home/george/Workspace/iumtweb/src/java/UserReservation.java</file>
             <file>file:/home/george/Workspace/iumtweb/web/userController.js</file>
+            <file>file:/home/george/Workspace/iumtweb/web/registController.js</file>
             <file>file:/home/george/Workspace/iumtweb/src/java/UserModel.java</file>
         </group>
-=======
-        <group/>
->>>>>>> f2e448dfbfddb696835adef30acd7879d6989f34
     </open-files>
 </project-private>
