@@ -1,5 +1,5 @@
 var myApp = angular.module('user', []).controller('userController', function ($scope, $http) {
-    $scope.render = true;
+    $scope.render = false;
     $scope.slotToSubmit = "";
     $http.get("/Ripetizioni/Controller", {params: {command: 'getAutSesData'}})
             .then(response => {

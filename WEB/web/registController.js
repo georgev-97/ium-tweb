@@ -25,17 +25,19 @@ var myApp = angular.module('regist', []).controller("registController",
                 } else if ($scope.nameAlreadyUsed) {
                     window.alert("il nome utente è già in uso");
                 } else {
-                    $http.get("/Ripetizioni/Controller", {params: {command: 'checkUser', account: $scope.account}})
+                    $http.get("/Ripetizioni/Controller", {params: {command: 'register', account: $scope.account, password: $scope.password}})
                             .then(response => {
                                 if (response.data.error !== "") {
-                                    window.location.assign("login.html");
+                                    console.log(response.data);
+                                    console.log(response.data.error);
+                                    //window.location.assign("login.html");
                                 } else {
-                                    var x = document.getElementById("snackbar");
+                                    /*var x = document.getElementById("snackbar");
                                     // Add the "show" class to DIV
                                     x.className = "show";
                                     setTimeout(function () {
                                         x.className = "hide";
-                                    }, 2000);
+                                    }, 2000);*/
                                 }
                             });
                 }
