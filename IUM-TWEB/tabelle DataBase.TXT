@@ -1,0 +1,112 @@
+create table role(
+	id serial primary key,
+	name varchar not null unique,
+	check(id = 0 or id = 1));
+
+insert into role(id, name)
+	values('0','admin');
+
+insert into role(id, name)
+	values('1','base');
+
+create table public.user(
+	id serial primary key,
+	account varchar not null unique,
+	password varchar not null,
+	role integer references role(id));
+
+create table course(
+	id serial primary key,
+	name varchar not null unique,
+	description varchar not null);
+
+create table professor(
+	id serial primary key,
+	name varchar not null,
+	username varchar not null unique,
+	email varchar not null unique);
+
+create table day(
+	id integer primary key,
+	name varchar not null unique);
+	
+insert into day(id, name)
+values(0, 'lunedì');
+insert into day(id, name)
+values(1, 'martedì');
+insert into day(id, name)
+values(2, 'mercoledì');
+insert into day(id, name)
+values(3, 'giovedì');
+insert into day(id, name)
+values(4, 'venerdì');
+
+create table slot(
+	id serial primary key,
+	day integer not null references day(id),
+	startHour integer not null,
+	endHour integer not null,
+	unique(day, startHour, endHour));
+
+create table course_professor(
+	id serial primary key,
+	course integer references course(id),
+	professor integer references professor(id),
+	unique(course, professor));
+
+create table reservation(
+	id serial primary key,
+	course_professor integer references course_professor(id),
+	slot integer references slot(id),
+	state varchar not null);
+
+create table reservation_user(
+	id serial primary key,
+	reservation integer references reservation(id),
+	userId integer references public.user(id),
+	unique(reservation, userId));
+
+insert into slot(day, starthour, endhour)
+values(0,9,11);
+insert into slot(day, starthour, endhour)
+values(0,11,13);
+insert into slot(day, starthour, endhour)
+values(0,14,16);
+insert into slot(day, starthour, endhour)
+values(0,16,18);
+
+insert into slot(day, starthour, endhour)
+values(1,9,11);
+insert into slot(day, starthour, endhour)
+values(1,11,13);
+insert into slot(day, starthour, endhour)
+values(1,14,16);
+insert into slot(day, starthour, endhour)
+values(1,16,18);
+
+insert into slot(day, starthour, endhour)
+values(2,9,11);
+insert into slot(day, starthour, endhour)
+values(2,11,13);
+insert into slot(day, starthour, endhour)
+values(2,14,16);
+insert into slot(day, starthour, endhour)
+values(2,16,18);
+
+insert into slot(day, starthour, endhour)
+values(3,9,11);
+insert into slot(day, starthour, endhour)
+values(3,11,13);
+insert into slot(day, starthour, endhour)
+values(3,14,16);
+insert into slot(day, starthour, endhour)
+values(3,16,18);
+
+insert into slot(day, starthour, endhour)
+values(4,9,11);
+insert into slot(day, starthour, endhour)
+values(4,11,13);
+insert into slot(day, starthour, endhour)
+values(4,14,16);
+insert into slot(day, starthour, endhour)
+values(4,16,18);

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="it" ng-app = "user">
+    <head>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+        <title>Ripetizioni.it</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <link href="Style/admin.css" rel="stylesheet" />
+        <link href="Style/docente.css" rel="stylesheet" />
+        <link href="Style/util.css" rel="stylesheet" />
+        <link href="Style/snackbar.css" rel="stylesheet" />
+        <link rel="icon" href="images/favicon.png" type="images/png" />
+        <script
+            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
+        </script>
+        <script src="userController.js"></script>
+        <style type="text/css">
+            .table5 {
+                font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+                text-align: center;
+                border-collapse: collapse;
+                border-spacing: 5px;
+                background: #fff;
+
+            }
+            .table5 th {
+                font-size: 19px;
+                font-weight: 300;
+                padding: 12px 10px;
+
+                color: #00aeef;
+                background: #00aeef;
+            }
+            .table5 tr {
+                border-bottom: 2px solid #00aeef;
+            }
+            .table5 td {
+                padding: 10px;
+                color: #8D8173;
+            }
+
+            .container {
+                display: block;
+                position: relative;
+                padding-left: 35px;
+                margin-bottom: 12px;
+                cursor: pointer;
+                font-size: 22px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+            /* Hide the browser's default radio button */
+            .container input {
+                position: absolute;
+                opacity: 0;
+                cursor: pointer;
+            }
+
+            /* Create a custom radio button */
+            .checkmark {
+                position: absolute;
+                top: -5;
+                left: 0;
+
+                height: 25px;
+                width: 25px;
+                background-color: #eee;
+                border-radius: 50%;
+            }
+
+            /* On mouse-over, add a grey background color */
+            .container:hover input ~ .checkmark {
+                background-color: #ccc;
+            }
+
+            /* When the radio button is checked, add a blue background */
+            .container input:checked ~ .checkmark {
+                background-color: #2196F3;
+            }
+
+            /* Create the indicator (the dot/circle - hidden when not checked) */
+            .checkmark:after {
+                content: "";
+                position: absolute;
+                display: none;
+            }
+
+            /* Show the indicator (dot/circle) when checked */
+            .container input:checked ~ .checkmark:after {
+                display: block;
+            }
+
+            /* Style the indicator (dot/circle) */
+            .container .checkmark:after {
+                top: 9px;
+                left: 9px;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: white;
+            }
+        </style>
+    </head>
+
+    <body ng-controller="userController" ng-show="render">
+
+        <!-- inizio blocco container -->
+        <div id="snackbar">Prenotazione aggiunta con successo</div>
+        <div id="container">
+        
+        <div id="container">
+
+            <header><img alt="" class="logo" src="images/logo.png"> </header>
+            <br><br><br><br><br>
+
+            <!--inizio menu navigazione -->
+            <div class="topnav" id="myTopnav">
+
+                <ul id ="menu"> <!-- MENU PRINCIPALE -->
+                    <li><a href = "#"><img src ="images/01.png"  width="25" height="25" ></a>
+                        <ul> <!-- PRIMO SOTTOMENU -->
+                            <li><a href="index.html">Esci</a></li>
+                        </ul> <!-- FINE PRIMO SOTTOMENU -->
+                    </li>
+                    <li><a href = "utente.html"><img src ="images/05.png"  width="25" height="25" ></a></li>
+                </ul>
+
+
+            </div>
+            <!--fine menu navigazione -->
+
+            <br><br>
+            <center>
+                <br><br>
+                <table  width="200">
+                    <tr>
+                        <th colspan ="2"><img src="images/09.png" width="45" height="45" ></th>
+                        <th><b>Prenotazione</b></th>
+                    </tr>
+                </table>
+            </center>
+            <center>
+                <div class="login p-l-55 p-r-55 p-t-23 p-b-30">
+                    <form class="login-form validate-form" method="POST">
+                        <div class ="input-field m-b-20">
+                            <label><b>Scegli il corso</b>
+                                <select class="input" ng-model="course" ng-change="updateProfessor()">
+                                    <option ng-repeat="cou in courseList" value="{{cou}}">{{cou}}</option>
+                                </select>
+                            </label>
+                            <br><br>
+                            <label> <b>Scegli il docente</b> <br>
+                                <select value class="input" ng-model="professor" ng-change="getReservation()">
+                                    <option ng-repeat="pro in professorList" value="{{pro}}">{{pro}}</option>
+                                </select>
+                            </label>
+                            <br>
+                            <br>
+                            <label><b>Scegli quando</b></label><br><br>
+                            <table class="table5">
+                                <tr>
+                                    <th scope="col"> </th>
+                                    <th scope="col"><font color ="white">LUN</font></th>
+                                    <th scope="col"><font color ="white">MAR</font></th>
+                                    <th scope="col"><font color ="white">MER </font></th>
+                                    <th scope="col"><font color ="white">GIO </font></th>
+                                    <th scope="col"><font color ="white">VEN</font></th>
+                                </tr>
+
+
+                                <tr ng-repeat="(key, value) in slot ">
+                                    <td scope="raw">{{key}}</td>
+                                    <td ng-repeat="hr in value track by $index">
+                                        <label class="container"  ng-show = "hr === 'free'"> 
+                                            <input type="radio" name="radio" ng-click="setValue(key, $index)">
+                                        <span class="checkmark"></span></label>
+                                        <img src="images/lock.png" width="20" height="20" ng-show="hr !== 'free'">
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                        </div>
+                        <br>
+                        <div class ="button">
+                            <button type="button" class="form-button" ng-click = "addCourse()">
+                                Aggiungi prenotazione
+                            </button>
+                        </div> 
+                    </form>
+                </div>
+            </center>
+        </div>
+    </body>
+
+</html>
