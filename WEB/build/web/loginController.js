@@ -20,6 +20,7 @@ var myApp = angular.module('login', []).controller('loginController', function (
                             nameElement.validity = true;
                         }
                     }).catch(error => console.log(error));
+                    
         }
     };
     $scope.login = function () {

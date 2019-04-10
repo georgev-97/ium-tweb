@@ -51,7 +51,8 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    public void login(View view){
+    //TODO: attivare la funzione del login (che funziona) ma per adesso ti faccio passare direttamente alla schermata home
+    /*public void login(View view){
             final String acc = account.getText().toString();
             final String pass = password.getText().toString();
             Query query = new Query(acc, pass, "login", getApplicationContext());
@@ -72,5 +73,8 @@ public class Login extends AppCompatActivity {
                     }
                 }
             });
+    }*/
+    public void login(View view){
+        startActivity(new Intent(getApplicationContext(), UserHome.class));
     }
 }

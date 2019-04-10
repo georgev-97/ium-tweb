@@ -18,7 +18,7 @@ public class Query{
     private String password = null;
     private String command ;
     private Context context;
-    private String url = "http://172.16.71.49:8084/Ripetizioni/Controller";
+    private String url = "http://192.168.43.236:8084/Ripetizioni/Controller";
 
     protected Query(String account, String password, String command, Context context) {
         this.account = account;
