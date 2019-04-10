@@ -2,10 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+        <item android:id="@+id/view"
+            android:title="View list"
+            android:orderInCategory="100"
+            android:icon="@drawable/view"
+            app:showAsAction = "always"
+            android:titleCondensed="Vedi prenotazioni"/>
+
+        <item android:id="@+id/add"
+            android:title="add"
+            android:orderInCategory="100"
+            android:icon="@drawable/add"
+            app:showAsAction = "always"
+            android:titleCondensed="Aggiungi prenotazione"/>
+
     <item android:id="@+id/logout"
         android:title="Logout"
         android:orderInCategory="100"
-        app:showAsAction = "never"/>
-
+        app:showAsAction = "always"
+        android:icon="@drawable/logout"
+        android:titleCondensed="Esci"/>
 
 </menu>
