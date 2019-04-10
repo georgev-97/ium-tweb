@@ -1,7 +1,21 @@
-import socket, struct, sys, time
+import socket, struct, sys, time, pyautogui, re
 from ScreenRecorder import ScreenRecorder
+from threading import Thread
 
 client_address = ('localhost', 10000)
+mouseClientAddress = ('localhost', 10001)
+mouseSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+def mouseService(arg):
+    # Bind the socket to the port
+    mouseSock.bind(mouseClientAddress)
+
+    while True:
+        cord, address = mouseSock.recvfrom(4096)
+        c = cord.decode("utf-8")
+        xy = re.split("-",c)
+        print(int(xy[0]),int(xy[1]))
+        pyautogui.moveTo(int(xy[0]),int(xy[1]))
+        pyautogui.click()
 
 #try to revers connect to client, return true if connection is enstablished, false if not
 def tryConnection():
@@ -21,6 +35,10 @@ def waitForConnection(delay):
         time.sleep(delay)
 
 if __name__ == "__main__":
+    thread = Thread(target = mouseService, args = (10, ))
+    thread.daemon = True
+    thread.start()
+
     screen = ScreenRecorder()
     waitForConnection(1)
     run = True

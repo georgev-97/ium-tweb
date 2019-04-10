@@ -1,10 +1,27 @@
-import socket
-import time
-import sys
-import io
-import numpy
-import struct
-import cv2
+import socket, time, sys, io, numpy, struct, cv2
+from pynput import keyboard
+from threading import Thread
+
+mouseSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server_address = ('localhost', 10001)
+
+def clickSend(x,y):
+    cord = (str(x)+"-"+str(y)).encode("utf-8")
+    try:
+        # Send data
+        sent = mouseSock.sendto(cord, server_address)
+    except Exception as e:
+        print(str(e))
+
+def click_event(event, x, y, flags, param):
+    if event == cv2.EVENT_LBUTTONDOWN:
+        clickSend(x,y)
+        print(x,y)
+    if event == cv2.EVENT_LBUTTONDBLCLK:
+        clickSend(x,y)
+        print(x,y)
+
+    
 
 
 def recvall(connection, n):
@@ -51,12 +68,14 @@ def listen():
 
 if __name__ == "__main__":
     connection = listen()#waiting for reverse request
+    
     #start show remote desktop
     run = True
     while  run :
         img = getFrame(connection)
         cv2.imshow("imm",img)
-        if cv2.waitKey(30) & 0xFF == ord("q"):
+        cv2.setMouseCallback("imm", click_event)
+        if cv2.waitKey(1) & 0xFF == ord("q"):
             cv2.destroyAllWindows()
             exit(1)
         
