@@ -2,7 +2,7 @@ import socket, struct, sys, time, pyautogui, re
 from ScreenRecorder import ScreenRecorder
 from threading import Thread
 
-client_address = ('localhost', 10000)
+client_address = ('169.254.244.174', 10000)
 mouseClientAddress = ('localhost', 10001)
 mouseSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 def mouseService(arg):
