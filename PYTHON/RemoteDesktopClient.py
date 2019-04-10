@@ -2,14 +2,16 @@ import socket, time, sys, io, numpy, struct, cv2
 from pynput import keyboard
 from threading import Thread
 
-mouseSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server_address = ('localhost', 10001)
+mouseSock = None
+mouseClientAddress = ('localhost', 1998)
+clientAddress = ('localhost', 2000)
 
 def clickSend(x,y):
     cord = (str(x)+"-"+str(y)).encode("utf-8")
     try:
         # Send data
-        sent = mouseSock.sendto(cord, server_address)
+        cord = struct.pack('>I', len(cord)) + cord
+        mouseSock.sendall(cord)
     except Exception as e:
         print(str(e))
 
@@ -51,23 +53,20 @@ def getFrame (connection):
         connection.close()
         exit(1)
 
-def listen():
-    # Create a TCP/IP socket
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
+def listen(sock, address):
     # Bind the socket to the port
-    client_address = ('localhost', 10000)
-    sock.bind(client_address)
-
+    sock.bind(address)
     # Listen for incoming connections
     sock.listen(1)
-
     # Wait for a connection
-    connection, server_address = sock.accept()
+    connection, serverAddress = sock.accept()
     return connection
 
 if __name__ == "__main__":
-    connection = listen()#waiting for reverse request
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    connection = listen(sock, clientAddress)#waiting for reverse request
+    mSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    mouseSock = listen(mSock, mouseClientAddress)#waiting for reverse request
     
     #start show remote desktop
     run = True
