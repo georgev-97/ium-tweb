@@ -28,15 +28,6 @@ public class UserHome extends AppCompatActivity {
             BottomNavigationView bottonNav = findViewById(R.id.bottomNav);
             bottonNav.setOnNavigationItemSelectedListener(navListener);
             bottonNav.setSelectedItemId(R.id.view);
-            exit = findViewById(R.id.exit);
-            toolbar = findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-            Intent intent = getIntent();
-            account = intent.getStringExtra("account");
-            getSupportActionBar().setTitle(account);
-            toolbar.setTitleTextColor(-1);
-            toolbar.setSubtitle("Welcome");
-            toolbar.setSubtitleTextColor(-1);
         }
 
 
@@ -50,8 +41,8 @@ public class UserHome extends AppCompatActivity {
                                 selectedFragment = new ViewFragment();
                                 break;
                             case R.id.add:
-                                selectedFragment = new AddFragment();
-                                break;
+                                startActivity(new Intent(getApplicationContext(), UserHome.class));
+                                return true;
                             case R.id.logout:
                                 startActivity(new Intent(getApplicationContext(), Login.class));
                                 return true;
