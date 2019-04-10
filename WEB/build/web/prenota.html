@@ -104,7 +104,7 @@
         </style>
     </head>
 
-    <body ng-controller="userController">
+    <body ng-controller="userController" ng-show="render">
 
         <!-- inizio blocco container -->
         <div id="snackbar">Prenotazione aggiunta con successo</div>
@@ -121,10 +121,13 @@
                 <ul id ="menu"> <!-- MENU PRINCIPALE -->
                     <li><a href = "#"><img src ="images/01.png"  width="25" height="25" ></a>
                         <ul> <!-- PRIMO SOTTOMENU -->
-                            <li><a href="index.html">Esci</a></li>
+                            <li><a href="index.html" ng-click="logout()">Esci</a></li>
                         </ul> <!-- FINE PRIMO SOTTOMENU -->
                     </li>
                     <li><a href = "utente.html"><img src ="images/05.png"  width="25" height="25" ></a></li>
+                    <li style="float:left">
+                        <div style="margin-left: 10px;margin-top:13px" class="username">{{user}}</div>
+                    </li>
                 </ul>
 
 
@@ -174,7 +177,7 @@
                                     <td scope="raw">{{key}}</td>
                                     <td ng-repeat="hr in value track by $index">
                                         <label class="container"  ng-show = "hr === 'free'"> 
-                                            <input type="radio" name="radio" ng-click="setValue(key, $index)">
+                                            <input id="{{$index}}" type="radio" name="radio" ng-click="setValue(key, $index)">
                                         <span class="checkmark"></span></label>
                                         <img src="images/lock.png" width="20" height="20" ng-show="hr !== 'free'">
                                     </td>
@@ -185,7 +188,7 @@
                         </div>
                         <br>
                         <div class ="button">
-                            <button type="button" class="form-button" ng-click = "addCourse()">
+                            <button type="button" class="form-button" ng-click = "reserve()">
                                 Aggiungi prenotazione
                             </button>
                         </div> 

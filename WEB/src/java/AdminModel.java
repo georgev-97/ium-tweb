@@ -1,8 +1,6 @@
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.json.JSONArray;
 
 /*
@@ -47,13 +45,24 @@ public class AdminModel {
                 + "\n"
                 + "BEGIN\n"
                 + "	INSERT INTO course_professor ( course , professor)\n"
-                + " 	(SELECT id, (SELECT id FROM professor WHERE username = '" + professorUsername + "')\n"
-                + "    FROM course WHERE name = '" + course + "')\n"
+                + " 	(SELECT id, (SELECT id FROM professor WHERE username = '"+professorUsername+"')\n"
+                + "    FROM course WHERE name = '"+course+"')\n"
                 + "	RETURNING id INTO c_p_id;\n"
-                + "\n"
-                + "	FOR sl IN select id from slot LOOP\n"
+                + "	\n"
+                + "	FOR sl IN select id from slot s \n"
+                + "		where s.day <(select extract(dow from current_date)) LOOP\n"
+                + "		\n"
                 + "		INSERT INTO reservation(course_professor,slot,state)\n"
-                + "        VALUES( c_p_id , sl.id , 'free');\n"
+                + "       VALUES( c_p_id , sl.id , 'expried');\n"
+                + "	   \n"
+                + "	END LOOP;\n"
+                + "	\n"
+                + "	FOR sl IN select id from slot s \n"
+                + "		where s.day >=(select extract(dow from current_date)) LOOP\n"
+                + "		\n"
+                + "		INSERT INTO reservation(course_professor,slot,state)\n"
+                + "       VALUES( c_p_id , sl.id , 'free');\n"
+                + "	   \n"
                 + "	END LOOP;\n"
                 + "END;\n"
                 + "$do$";

@@ -1,0 +1,46 @@
+Server.py :
+
+il server all'avvio tenterà di effettuare una reverse connection verso il client
+ogni secondo 
+( ("piccola" parentesi necessaria) è necessario utilizzare una connessione inversa nel caso di malware,
+o programmi per il supporto-controllo remoto come nel nostro caso, in modo da bypassare il problema
+delle porte chiuse e dei firewall che proteggono dalle richieste in ingresso ma non in uscita).
+il server ad ora risponde ai seguenti comandi remoti:
+
+-close remote : chiude server e client;
+
+-clorse local : chiude il client (in realtà questo comando non è inviato al server ma eseguito in locale);
+
+-remote desktop : lancia un processo lato server e uno lato client per la trasmissione remota dello schermo,
+		la trasmissione dei frame è eseguita su un canale(altro socket) differenziato per evitare interferneze.
+
+da aggiungere:
+
+-movimento remoto del mouse
+
+-il cazzo che volete voi si può aggiungere esempio: script apertura vano cd, apertura reverse schell , comparsa finestra errore .........
+
+Nella console del server è inoltre possibile digitare comandi, i quali sono letti da un thread parallelo 
+per evitare blocchi 
+
+NOTA : se il client per qualsisi ragione viene terminato in maniera regolare o meno, il server cerca ogni secondo di ristabilire la connessioone
+
+lista comandi:
+
+-close :termina l'esecuzione del server, di conseguenza anche quella del client al quale è notificato "connection broken"
+
+-basta :segnala a george che non ci sono altri comandi
+
+Client.py :
+
+rimane in attesa di una connessione inversa da parte del server, dopo la connessione alterna
+stati di attesa per console input , a stati di invio comando e lettura risposta da parte 
+del server (è necessario che il server invii sempre una risposta per ogni operazione, altrimenti il client entrerebbe in uno stato di blocco)
+
+Le altre classi servono a fornire servizi e vengono lanciate su processi indipendenti , è sempre possibile operare sul loro pid
+
+
+NOTARE : se viene avviato su un monitor unico il servizio per desktop remoto, per ovvie ragioni, sicuramente si vedranno molte finestre annidate,
+è quindi necessario operare su 2 monitor o distinti computer collegati da cavo lan.
+
+PS : mercoledì infatti porto il cavo lan :)

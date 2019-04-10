@@ -38,30 +38,13 @@ and open the template in the editor.
                         <div class ="input-field m-b-20">
                             <input class="input" type ="text" id="name" name="account"
                                    ng-model="account" placeholder="username"
-                                   required  
-                                   ng-blur ="ajaxCheckUser()" onchange="try {
-                                                       setCustomValidity('');
-                                                   } catch (e) {
-                                                   }"
-                                   onkeydown="try {
-                                                       setCustomValidity('');
-                                                   } catch (e) {
-                                                   }"
-                                   />
+                                   onkeydown="try {setCustomValidity('');} catch (e) {}"/>
                             <span class="focus-input"></span>
                         </div>
                         <div class ="input-field m-b-25">
                             <input  class="input" type ="password" name = "password" id ="password"
                                     placeholder="Enter password" required
-                                    ng-model="password"
-                                    onchange="try {
-                                                       setCustomValidity('');
-                                                   } catch (e) {
-                                                   }"
-                                    onkeydown="try {
-                                                       setCustomValidity('');
-                                                   } catch (e) {
-                                                   }"/>
+                                    ng-model="password" onkeydown="try {setCustomValidity('');} catch (e) {}"/>
                             <span class="focus-input"></span>
                         </div>
                         <input type="hidden" name="command" value ="login"/>
