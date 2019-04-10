@@ -10,17 +10,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class UserHome extends AppCompatActivity {
     TextView exit;
     int icon [] = {R.drawable.elimina, R.drawable.modifica};
     @SuppressLint("ResourceType")
-        Toolbar toolbar;
+
         Menu logout;
         String account;
+
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -28,6 +34,7 @@ public class UserHome extends AppCompatActivity {
             BottomNavigationView bottonNav = findViewById(R.id.bottomNav);
             bottonNav.setOnNavigationItemSelectedListener(navListener);
             bottonNav.setSelectedItemId(R.id.view);
+
         }
 
 
@@ -38,8 +45,8 @@ public class UserHome extends AppCompatActivity {
                         Fragment selectedFragment = null;
                         switch (menuItem.getItemId()){
                             case R.id.view:
-                                selectedFragment = new ViewFragment();
-                                break;
+                                startActivity(new Intent(getApplicationContext(), UserHome.class));
+                                return true;
                             case R.id.add:
                                 startActivity(new Intent(getApplicationContext(), UserHome.class));
                                 return true;
