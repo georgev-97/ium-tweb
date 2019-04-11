@@ -3,8 +3,8 @@ from pynput import keyboard
 from threading import Thread
 
 mouseSock = None
-mouseClientAddress = ('localhost', 1998)
-clientAddress = ('localhost', 2000)
+mouseClientAddress = ('169.254.244.174', 1998)
+clientAddress = ('169.254.244.174', 2000)
 
 def clickSend(x,y):
     cord = (str(x)+"-"+str(y)).encode("utf-8")

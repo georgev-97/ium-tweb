@@ -46,7 +46,7 @@ def listen():
     # Create a TCP/IP socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # Bind the socket to the port
-    client_address = ('localhost', 1999)
+    client_address = ('169.254.244.174', 1999)
     print(sys.stderr, 'starting up on %s port %s' % client_address)
     sock.bind(client_address)
     # Listen for incoming connections
