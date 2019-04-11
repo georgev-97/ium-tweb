@@ -2,8 +2,8 @@ import socket, struct, sys, time, pyautogui, re
 from ScreenRecorder import ScreenRecorder
 from threading import Thread
 
-streamClientAddress = ('localhost', 2000)
-mouseClientAddress = ('localhost', 1998)
+streamClientAddress = ('192.168.1.8', 2000)
+mouseClientAddress = ('192.168.1.8', 1998)
 
 #recive n byte from socket
 def recvall(connection, n):
@@ -11,7 +11,7 @@ def recvall(connection, n):
     while len(data) < n:
         packet = connection.recv(n - len(data))
         if not packet:
-            print("remotroller> connection broken") 
+            print("remotroller> client have closed remote desktop, process will be stopped") 
             connection.close() 
             exit(0)
         data += packet
@@ -32,12 +32,10 @@ def inputService(arg):
         input = re.split("-",i)
         type = str(input[0])
         if(type=="click"):
-            print(type,int(input[1]),int(input[2]))
             pyautogui.moveTo(int(input[1]),int(input[2]))
             pyautogui.click()
         elif(type=="key"):
-            key = chr(int(input[1]))
-            print(str(input[0]),key,int(input[1]))
+            key = input[1]
             pyautogui.press(key)
 
 #try to revers connect to client, return true if connection is enstablished, false if not

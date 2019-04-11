@@ -2,9 +2,8 @@ import socket, struct, time, sys, os, subprocess
 from threading import Thread
 
 sock = None
-client_address = ('172.16.226.235', 1999)
-              
-
+client_address = ('192.168.1.8', 1999)
+         
 def close():
     sock.close()
     exit(1)
@@ -12,9 +11,9 @@ def close():
 def startRemotedesktop():
     pid = subprocess.Popen([sys.executable, "RemoteDesktopServer.py"])
     if pid:
-        return "opened, press q on the windows to close"
+        return "remotroller> service launced, press <pageUp> on the windows to close it"
     else:
-        return "error"
+        return "remotroller> error launching the service"
 
 def default():
     return "invalid command"
