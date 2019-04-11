@@ -2,7 +2,7 @@ import socket, struct, time, sys, os, subprocess
 from threading import Thread
 
 sock = None
-client_address = ('169.254.244.174', 1999)
+client_address = ('172.16.226.235', 1999)
               
 
 def close():

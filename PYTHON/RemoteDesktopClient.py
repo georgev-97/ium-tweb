@@ -6,21 +6,30 @@ mouseSock = None
 mouseClientAddress = ('localhost', 1998)
 clientAddress = ('localhost', 2000)
 
-def clickSend(x,y):
-    cord = (str(x)+"-"+str(y)).encode("utf-8")
+def clickSend(x,y,code):
+    cord = (code+"-"+str(x)+"-"+str(y)).encode("utf-8")
     try:
         # Send data
         cord = struct.pack('>I', len(cord)) + cord
         mouseSock.sendall(cord)
     except Exception as e:
-        print(str(e))
+        print("remotroller> "+str(e))
+
+def keySend(key,code):
+    cord = (code+"-"+str(key)).encode("utf-8")
+    try:
+        # Send data
+        cord = struct.pack('>I', len(cord)) + cord
+        mouseSock.sendall(cord)
+    except Exception as e:
+        print("remotroller> "+str(e))
 
 def click_event(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
-        clickSend(x,y)
+        clickSend(x,y,"click")
         print(x,y)
     if event == cv2.EVENT_LBUTTONDBLCLK:
-        clickSend(x,y)
+        clickSend(x,y,"click")
         print(x,y)
 
     
@@ -70,12 +79,13 @@ if __name__ == "__main__":
     
     #start show remote desktop
     run = True
+    img = getFrame(connection)
+    cv2.imshow("imm",img)
     while  run :
-        img = getFrame(connection)
-        cv2.imshow("imm",img)
         cv2.setMouseCallback("imm", click_event)
-        if cv2.waitKey(1) & 0xFF == ord("q"):
-            cv2.destroyAllWindows()
-            exit(1)
+        key = cv2.waitKey(1)
+        if (key != -1):
+            keySend(key, "key")
+            
         
         
