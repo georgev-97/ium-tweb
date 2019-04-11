@@ -3,8 +3,8 @@ from pynput import keyboard
 from threading import Thread
 
 mouseSock = None
-mouseClientAddress = ('169.254.244.174', 1998)
-clientAddress = ('169.254.244.174', 2000)
+mouseClientAddress = ('192.168.1.8', 1998)
+clientAddress = ('192.168.1.8', 2000)
 
 def clickSend(x,y,code):
     cord = (code+"-"+str(x)+"-"+str(y)).encode("utf-8")
@@ -15,22 +15,30 @@ def clickSend(x,y,code):
     except Exception as e:
         print("remotroller> "+str(e))
 
+def convertKey(key):
+    list = {13:"enter",2490368:"up",2621440:"down",2424832:"left",2555904:"right"}
+    if list.__contains__(key):
+        return list.get(key)
+    else:
+        try:
+            return chr(key)
+        except:
+            return ""    
+
 def keySend(key,code):
-    cord = (code+"-"+str(key)).encode("utf-8")
+    k = (code+"-"+convertKey(key)).encode("utf-8")
     try:
         # Send data
-        cord = struct.pack('>I', len(cord)) + cord
-        mouseSock.sendall(cord)
+        k = struct.pack('>I', len(k)) + k
+        mouseSock.sendall(k)
     except Exception as e:
         print("remotroller> "+str(e))
 
 def click_event(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
         clickSend(x,y,"click")
-        print(x,y)
     if event == cv2.EVENT_LBUTTONDBLCLK:
         clickSend(x,y,"click")
-        print(x,y)
 
     
 
@@ -79,12 +87,15 @@ if __name__ == "__main__":
     
     #start show remote desktop
     run = True
-    img = getFrame(connection)
-    cv2.imshow("imm",img)
     while  run :
+        img = getFrame(connection)
+        cv2.imshow("imm",img)
         cv2.setMouseCallback("imm", click_event)
-        key = cv2.waitKey(1)
+        key = cv2.waitKeyEx(1)
         if (key != -1):
+            if(key == 2162688):
+                cv2.destroyAllWindows()
+                exit(1)
             keySend(key, "key")
             
         
