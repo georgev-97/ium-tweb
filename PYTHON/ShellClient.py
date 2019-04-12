@@ -1,55 +1,43 @@
-import socket, time, sys, io, numpy, struct, cv2, subprocess
-
-client_address = ('192.168.1.8', 1997)
-
-connection = None
-run = True
+import socket,time,sys,subprocess,getopt
+from threading import Thread
 
 def getCommand(path):
     cm = input(path)
+    if cm=="-c shell":
+        exit(0)
     return cm
 
-def sendCommand(command,connection):
+def sendCommand(command, connection):
     try:
         connection.sendall(command)
     except:
         print("remotroller> connection broken")
         exit(0)
-
-
+   
 def getResponse(connection):
     packet = connection.recv(4096)
     if not packet:
-        print("remotroller> connection broken") 
-        connection.close() 
+        print("remotroller> connection broken")
+        connection.close()
         exit(0)
     return packet
 
+class ShellClient(Thread):
 
-def listen():
-    global connection
-    # Create a TCP/IP socket
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # Bind the socket to the port
-    print('remotroller> starting up on %s port %s' % client_address)
-    sock.bind(client_address)
-    # Listen for one incoming connections
-    sock.listen(1)
-    # Wait for a connection
-    print ('remotroller> waiting for connection ...')
-    connection, server_address = sock.accept()
-    print('remotroller> connection from', server_address)
-    return connection
+    def __init__(self,sock):
+        Thread.__init__(self)
+        self.connection = sock
 
-if __name__ == "__main__":
-    connection = listen()#waiting for reverse request from server
-    while run:
-        re = str(getResponse(connection),"utf-8")
-        cm = getCommand(re).encode("utf-8")
-        sendCommand(cm, connection)
+    def run(self):
+        connection = self.connection
+        jump = False
+        while True:
+            if not jump: 
+                re = str(getResponse(connection), "utf-8")
+            cm = getCommand(re).encode("utf-8")
+            if cm:
+                sendCommand(cm, connection)
+                jump = False
+            else:
+                jump = True
 
-
-    
-        
-        
-        

@@ -1,12 +1,18 @@
-import socket, time, sys, io, numpy, struct, cv2
+import socket
+import time
+import sys
+import io
+import numpy
+import struct
+import cv2
 from pynput import keyboard
 from threading import Thread
 
 mouseSock = None
-mouseClientAddress = ('192.168.1.8', 1998)
-clientAddress = ('192.168.1.8', 2000)
+clientAddress = ('192.168.1.8', 1999)
 
-def clickSend(x,y,code):
+
+def clickSend(x, y, code):
     cord = (code+"-"+str(x)+"-"+str(y)).encode("utf-8")
     try:
         # Send data
@@ -15,17 +21,20 @@ def clickSend(x,y,code):
     except Exception as e:
         print("remotroller> "+str(e))
 
+
 def convertKey(key):
-    list = {13:"enter",2490368:"up",2621440:"down",2424832:"left",2555904:"right"}
+    list = {13: "enter", 2490368: "up", 2621440: "down",
+            2424832: "left", 2555904: "right"}
     if list.__contains__(key):
         return list.get(key)
     else:
         try:
             return chr(key)
         except:
-            return ""    
+            return ""
 
-def keySend(key,code):
+
+def keySend(key, code):
     k = (code+"-"+convertKey(key)).encode("utf-8")
     try:
         # Send data
@@ -34,13 +43,12 @@ def keySend(key,code):
     except Exception as e:
         print("remotroller> "+str(e))
 
-def click_event(event, x, y, flags, param):
-    if event == cv2.EVENT_LBUTTONDOWN:
-        clickSend(x,y,"click")
-    if event == cv2.EVENT_LBUTTONDBLCLK:
-        clickSend(x,y,"click")
 
-    
+def clickEvent(event, x, y, flags, param):
+    if event == cv2.EVENT_LBUTTONDOWN:
+        clickSend(x, y, "click")
+    if event == cv2.EVENT_LBUTTONDBLCLK:
+        clickSend(x, y, "click")
 
 
 def recvall(connection, n):
@@ -52,6 +60,7 @@ def recvall(connection, n):
         data += packet
     return data
 
+
 def recvFrame(connection):
     try:
         raw_msglen = recvall(connection, 4)
@@ -60,7 +69,8 @@ def recvFrame(connection):
     except AssertionError:
         raise AssertionError
 
-def getFrame (connection):
+
+def getFrame(connection):
     try:
         compImg = io.BytesIO()
         compImg.write(recvFrame(connection))
@@ -70,33 +80,42 @@ def getFrame (connection):
         connection.close()
         exit(1)
 
-def listen(sock, address):
+
+def bindSock(sock, address):
     # Bind the socket to the port
     sock.bind(address)
-    # Listen for incoming connections
-    sock.listen(1)
+    sock.listen(2)
+
+
+def listen(sock):
     # Wait for a connection
-    connection, serverAddress = sock.accept()
+    try:
+        connection, serverAddress = sock.accept()
+    except:
+        sock.close()
+        exit(0)
     return connection
+
 
 if __name__ == "__main__":
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    connection = listen(sock, clientAddress)#waiting for reverse request
-    mSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    mouseSock = listen(mSock, mouseClientAddress)#waiting for reverse request
-    
-    #start show remote desktop
+    # binding the sock
+    bindSock(sock, clientAddress)
+    # first request coming from server is used to stream video
+    streamSock = listen(sock)
+    # second request coming from server is used to send input signal
+    mouseSock = listen(sock)
+
+    # start show remote desktop
     run = True
-    while  run :
-        img = getFrame(connection)
-        cv2.imshow("imm",img)
-        cv2.setMouseCallback("imm", click_event)
-        key = cv2.waitKeyEx(1)
+    while run:
+        img = getFrame(streamSock)  # getting a frame coming from the sock
+        cv2.imshow("imm", img)
+        cv2.setMouseCallback("imm", clickEvent) # listening for mouse input, 
+                                                #clickEvent() callback will send input to server
+        key = cv2.waitKeyEx(1)                  # listening for keyboard input
         if (key != -1):
-            if(key == 2162688):
+            if(key == 2162688):                 #if pageUp pressed close window
                 cv2.destroyAllWindows()
                 exit(1)
-            keySend(key, "key")
-            
-        
-        
+            keySend(key, "key")                 #else send key to server

@@ -1,22 +1,37 @@
-import socket, time, sys, io, numpy, struct, cv2, subprocess
+import socket
+import time
+import sys
+import io
+import numpy
+import struct
+import cv2
+import subprocess
+from ShellClient import ShellClient
 
-connection = None
 run = True
+address='192.168.1.8'
+port=2000
 
 def getCommand():
-    global run
     cm = input("remotroller> ")
-    
-    if(cm=="close remote"): 
-        run = False
-    elif(cm=="close local"):
+    if(cm == "-c local"):
         connection.close()
         exit(1)
-    elif(cm=="remote desktop"):
-        pid = subprocess.Popen([sys.executable, "RemoteDesktopClient.py"])
     return cm
 
-def sendCommand(command,connection):
+def performLocal(cm):
+    global run
+    if(cm == "-c remote"):
+        run = False
+    elif(cm == "-o desktop"):
+        pid = subprocess.Popen([sys.executable, "RemoteDesktopClient.py"])
+    elif(cm == "-o shell"):
+        s = listen(sock)
+        shell = ShellClient(s)
+        shell.start()
+        shell.join()
+
+def sendCommand(command, connection):
     try:
         command = struct.pack('>I', len(command)) + command
         connection.sendall(command)
@@ -24,50 +39,52 @@ def sendCommand(command,connection):
         print("remotroller> connection broken")
         exit(0)
 
+
 def recvall(connection, n):
     data = b''
     while len(data) < n:
         packet = connection.recv(n - len(data))
         if not packet:
-            print("remotroller> connection broken") 
-            connection.close() 
+            print("remotroller> connection broken")
+            connection.close()
             exit(0)
         data += packet
     return data
+
 
 def getResponse(connection):
     raw_msglen = recvall(connection, 4)
     msglen = struct.unpack('>I', raw_msglen)[0]
     return recvall(connection, msglen)
 
-
-def listen():
-    global connection
+def bind():
     # Create a TCP/IP socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # Bind the socket to the port
-    client_address = ('192.168.1.8', 1999)
-    print('remotroller> starting up on %s port %s' % client_address)
-    sock.bind(client_address)
-    # Listen for one incoming connections
-    sock.listen(1)
+    print('remotroller> starting up on %s port %s' % (address,port))
+    sock.bind((address,port))
+    sock.listen(0)
+    return sock
+
+def listen(sock):
     # Wait for a connection
-    print ('remotroller> waiting for connection ...')
-    connection, server_address = sock.accept()
-    print('remotroller> connection from', server_address)
+    print('remotroller> waiting for connection ...')
+    connection, serverAddress = sock.accept()
+    print('remotroller> connection from', serverAddress)
     return connection
 
-if __name__ == "__main__":
-    connection = listen()#waiting for reverse request from server
 
-    while  run :
-        
-        command = getCommand().encode("utf-8")
+if __name__ == "__main__":
+    global sock
+    sock = bind()
+    connection = listen(sock)  # waiting for reverse request from server
+
+    while run:
+
+        command = getCommand()
         if command:
-            sendCommand(command,connection)
+            sendCommand(command.encode("utf-8"), connection)
+            performLocal(command)
             if run:
                 response = getResponse(connection).decode("utf-8")
                 print("remotroller> "+response)
-        
-        
-        
