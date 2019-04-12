@@ -23,7 +23,7 @@
         android:layout_marginEnd="92dp"
         android:layout_marginRight="92dp"
         android:layout_marginBottom="222dp"
-        android:src="@drawable/pigreco"
+        android:src="@drawable/img_03"
         tools:layout_editor_absoluteX="67dp"
         tools:layout_editor_absoluteY="183dp" />
 

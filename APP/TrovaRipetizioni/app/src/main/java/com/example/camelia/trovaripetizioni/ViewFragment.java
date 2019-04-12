@@ -1,42 +1,48 @@
 package com.example.camelia.trovaripetizioni;
 
+import android.app.ListFragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ViewFragment extends AppCompatActivity {
+public class ViewFragment extends Fragment {
 
-    ListView listView;
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_view, container, false);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_view);
-        listView = (ListView) findViewById(R.id.listView1);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        List<String> values = new ArrayList<>();
+        ListView ls = view.findViewById(R.id.listView1);
+        values.add("foo");
+        values.add("bar");
+        values.add("foo");
+        values.add("bar");
+        values.add("foo");
+        values.add("bar");
+        values.add("foo");
+        values.add("bar");
+        values.add("foo");
+        values.add("bar");
 
-        ArrayList<String> arrayList = new ArrayList<>();
 
-        arrayList.add("IUM");
-        arrayList.add("TWEB");
-        arrayList.add("Programmazione I");
-        arrayList.add("Sistemi operativi");
-        arrayList.add("SAS");
-        arrayList.add("Analisi I");
-        arrayList.add("Fisica");
-
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
-        listView.setAdapter(arrayAdapter);
-
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
+                view.getContext(), android.R.layout.simple_list_item_1, values );
+        ls.setAdapter(arrayAdapter);
+        super.onViewCreated(view, savedInstanceState);
     }
 }
-
 

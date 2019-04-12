@@ -15,32 +15,17 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class AddFragment extends AppCompatActivity {
+public class AddFragment extends Fragment{
 
     Spinner spinner;
     Button prenota;
 
     String[] option = {"IUM", "programmazione I", "SAS", "Algoritmi"};
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_add);
-
-        spinner = findViewById(R.id.spinner1);
-        prenota = findViewById(R.id.prenota);
-
-        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, option);
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner.setAdapter(aa);
-
-        prenota.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AddFragment.this, UserHome.class);
-                startActivity(intent);
-            }
-        });
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_add, container, false);
     }
+
 }
