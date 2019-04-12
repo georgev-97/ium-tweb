@@ -11,9 +11,9 @@ def close():
 def startRemotedesktop():
     pid = subprocess.Popen([sys.executable, "RemoteDesktopServer.py"])
     if pid:
-        return "remotroller> service launced, press <pageUp> on the windows to close it"
+        return "service launced, press <pageUp> on the windows to close it"
     else:
-        return "remotroller> error launching the service"
+        return "error launching the service"
 
 def default():
     return "invalid command"

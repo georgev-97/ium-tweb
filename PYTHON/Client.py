@@ -46,15 +46,15 @@ def listen():
     # Create a TCP/IP socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # Bind the socket to the port
-    client_address = ('169.254.244.174', 1999)
-    print(sys.stderr, 'starting up on %s port %s' % client_address)
+    client_address = ('192.168.1.8', 1999)
+    print('remotroller> starting up on %s port %s' % client_address)
     sock.bind(client_address)
-    # Listen for incoming connections
+    # Listen for one incoming connections
     sock.listen(1)
     # Wait for a connection
-    print (sys.stderr, 'waiting for a connection')
+    print ('remotroller> waiting for connection ...')
     connection, server_address = sock.accept()
-    print(sys.stderr, 'connection from', server_address)
+    print('remotroller> connection from', server_address)
     return connection
 
 if __name__ == "__main__":

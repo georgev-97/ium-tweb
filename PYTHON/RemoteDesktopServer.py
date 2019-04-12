@@ -9,11 +9,11 @@ mouseClientAddress = ('192.168.1.8', 1998)
 def recvall(connection, n):
     data = b''
     while len(data) < n:
-        packet = connection.recv(n - len(data))
-        if not packet:
-            print("remotroller> client have closed remote desktop, process will be stopped") 
+        try:
+            packet = connection.recv(n - len(data))
+        except:
             connection.close() 
-            exit(0)
+            exit(1)
         data += packet
     return data
 #get remote mouse command
