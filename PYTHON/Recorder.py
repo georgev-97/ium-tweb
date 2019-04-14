@@ -21,10 +21,8 @@ class Recorder:
 
     def getCompressedCameraFrame(self):
         img = cam.read()[1]
-        if img:
-            compImg = io.BytesIO()
-            numpy.savez_compressed(compImg,img=img)
-            compImg.seek(0)
-            return compImg.read()
-        else:
-            return False
+        
+        compImg = io.BytesIO()
+        numpy.savez_compressed(compImg,img=img)
+        compImg.seek(0)
+        return compImg.read()

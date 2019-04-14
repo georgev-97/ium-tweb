@@ -51,13 +51,12 @@ def inputService():
 def cameraService(cameraSock, camera):
     while True:
         frame = camera.getCompressedCameraFrame()
-        if frame:
-            frame = struct.pack('>I', len(frame)) + frame
-            try:
-                cameraSock.sendall(frame)
-            except:
-                cameraSock.close()
-                sys.exit(0)
+        frame = struct.pack('>I', len(frame)) + frame
+        try:
+            cameraSock.sendall(frame)
+        except:
+            cameraSock.close()
+            sys.exit(0)
 
 # try to revers connect to client, return true if connection is enstablished, false if not
 
