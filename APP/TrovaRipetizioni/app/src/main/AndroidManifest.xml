@@ -6,9 +6,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/icona"
+        android:icon="@drawable/img_05"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/icona"
+        android:roundIcon="@drawable/img_05"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">

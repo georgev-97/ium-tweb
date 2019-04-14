@@ -28,7 +28,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="16dp"
                 android:padding="16dp"
-                android:src="@drawable/pigreco" />
+                android:src="@drawable/img_03" />
 
             <ImageView
                 android:layout_width="260dp"
@@ -36,7 +36,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="-54dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/regi"
+                android:background="@drawable/img_02"
                 android:padding="16dp" />
 
             <EditText
@@ -88,15 +88,15 @@
             <Button
                 android:id="@+id/login_btn"
                 android:layout_width="match_parent"
-                android:layout_height="51dp"
+                android:layout_height="65dp"
                 android:layout_marginTop="32dp"
                 android:background="@drawable/bottom"
                 android:clickable="true"
-                android:text="Login"
+                android:text="LOGIN"
                 android:onClick="login"
                 android:textAllCaps="false"
                 android:textColor="#20BDFF"
-                android:textSize="18sp"
+                android:textSize="18dp"
                 android:fontFamily="sans-serif-condensed"
                 android:textStyle="bold" />
 
