@@ -6,17 +6,19 @@ import numpy
 import struct
 import cv2
 import subprocess
+import re
 from ShellClient import ShellClient
+from SenderClient import SenderClient
 
 run = True
-address='192.168.1.8'
+address='localhost'
 port=2000
 
 def getCommand():
     cm = input("remotroller> ")
     if(cm == "-c local"):
         connection.close()
-        exit(1)
+        sys.exit(1)
     return cm
 
 def performLocal(cm):
@@ -24,10 +26,15 @@ def performLocal(cm):
     if(cm == "-c remote"):
         run = False
     elif(cm == "-o desktop"):
-        pid = subprocess.Popen([sys.executable, "RemoteDesktopClient.py"])
+        pid = subprocess.Popen([sys.executable, "RemoteDesktopClient.py"],shell=True)
     elif(cm == "-o shell"):
         s = listen(sock)
         shell = ShellClient(s)
+        shell.start()
+        shell.join()
+    elif(cm == "-o sender"):
+        s = listen(sock)
+        shell = SenderClient(s)
         shell.start()
         shell.join()
 
@@ -37,7 +44,7 @@ def sendCommand(command, connection):
         connection.sendall(command)
     except:
         print("remotroller> connection broken")
-        exit(0)
+        sys.exit(0)
 
 
 def recvall(connection, n):
@@ -47,7 +54,7 @@ def recvall(connection, n):
         if not packet:
             print("remotroller> connection broken")
             connection.close()
-            exit(0)
+            sys.exit(0)
         data += packet
     return data
 
@@ -84,7 +91,12 @@ if __name__ == "__main__":
         command = getCommand()
         if command:
             sendCommand(command.encode("utf-8"), connection)
-            performLocal(command)
             if run:
                 response = getResponse(connection).decode("utf-8")
+            if -1 == response.find("?!?£ab0rt£?!?"):#if service start fail on server, don't start it on client
                 print("remotroller> "+response)
+                performLocal(command)
+            else:
+                response = response.replace("?!?£ab0rt£?!?","")# ?!?£ab0rt£?!? is the abort code
+                print("remotroller> "+response)
+

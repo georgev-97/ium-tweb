@@ -7,24 +7,39 @@ import subprocess
 from threading import Thread
 
 sock = None
-address = '192.168.1.8'
+address = 'localhost'
 port = 2000
+errorCode = "?!?£ab0rt£?!?"
 
 
 def close():
     sock.close()
-    exit(1)
+    sys.exit(1)
 
 
 def startRemotedesktop():
-    pid = subprocess.Popen([sys.executable, "RemoteDesktopServer.py"])
-    if pid:
-        return "service launced, press <pageUp> on the windows to close it"
+    pid = subprocess.Popen([sys.executable, "RemoteDesktopServer.py"],shell=True)
+    time.sleep(1)
+    if not None == pid.poll():
+        return errorCode+"failed to launch remote service"
     else:
-        return "error launching the service"
+        return "remote service launced, press <pageUp> on the windows to close it"
 
 def startShell():
     pid = subprocess.Popen("python ShellServer.py -a "+address+" -p "+str(port),shell=True)
+    time.sleep(1)
+    if not None == pid.poll():
+        return errorCode+"failed to launch remote service"
+    else:
+        return "remote service started"
+
+def startSender():
+    pid = subprocess.Popen("python SenderServer.py -a "+address+" -p "+str(port),shell=True)
+    time.sleep(1)
+    if not None == pid.poll():
+        return errorCode+"failed to launch remote service"
+    else:
+        return "remote service started"
 
 
 def default():
@@ -36,7 +51,8 @@ def commandPerform(command):
         # command sended by client , to close both(server and client)
         "-c remote": close,
         "-o desktop": startRemotedesktop,
-        "-o shell":startShell
+        "-o shell":startShell,
+        "-o sender":startSender
     }
     if(switcher.__contains__(command)):
         return switcher.get(command)()

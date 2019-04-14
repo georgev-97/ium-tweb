@@ -9,7 +9,7 @@ from pynput import keyboard
 from threading import Thread
 
 mouseSock = None
-clientAddress = ('192.168.1.8', 1999)
+clientAddress = ('localhost', 1999)
 
 
 def clickSend(x, y, code):
@@ -78,7 +78,7 @@ def getFrame(connection):
         return numpy.load(compImg)['img']
     except AssertionError:
         connection.close()
-        exit(1)
+        sys.exit(1)
 
 
 def bindSock(sock, address):
@@ -93,7 +93,7 @@ def listen(sock):
         connection, serverAddress = sock.accept()
     except:
         sock.close()
-        exit(0)
+        sys.exit(0)
     return connection
 
 
@@ -117,5 +117,5 @@ if __name__ == "__main__":
         if (key != -1):
             if(key == 2162688):                 #if pageUp pressed close window
                 cv2.destroyAllWindows()
-                exit(1)
+                sys.exit(1)
             keySend(key, "key")                 #else send key to server

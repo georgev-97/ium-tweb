@@ -4,7 +4,7 @@ from threading import Thread
 def getCommand(path):
     cm = input(path)
     if cm=="-c shell":
-        exit(0)
+        sys.exit(0)
     return cm
 
 def sendCommand(command, connection):
@@ -12,14 +12,19 @@ def sendCommand(command, connection):
         connection.sendall(command)
     except:
         print("remotroller> connection broken")
-        exit(0)
+        sys.exit(0)
    
 def getResponse(connection):
-    packet = connection.recv(4096)
-    if not packet:
-        print("remotroller> connection broken")
+    try:
+        packet = connection.recv(4096)
+    except:
+        print("remotroller> connection broken from server")
         connection.close()
-        exit(0)
+        sys.exit(0)
+    if not packet:
+        print("remotroller> connection broken from server")
+        connection.close()
+        sys.exit(0)
     return packet
 
 class ShellClient(Thread):
