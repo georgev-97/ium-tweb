@@ -6,6 +6,7 @@ homeDir = os.getcwd()
 def getCommand(str="remotroller> "):
     cm = input(str)
     if cm=="-c sender":
+        os.chdir(homeDir) 
         sys.exit(0)
     return cm
 

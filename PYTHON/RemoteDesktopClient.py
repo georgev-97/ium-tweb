@@ -79,8 +79,8 @@ def getFrame(connection):
         sys.exit(1)
 
 def cameraService(cameraSock):
+    cv2.namedWindow('camera',cv2.WINDOW_FREERATIO)
     while True:
-        cv2.namedWindow('camera',cv2.WINDOW_FREERATIO)
         frame = getFrame(cameraSock)
         cv2.imshow("camera",frame)
         cv2.waitKey(1)
@@ -118,8 +118,8 @@ if __name__ == "__main__":
 
     # start show remote desktop
     run = True
+    cv2.namedWindow('desktop',cv2.WINDOW_FREERATIO)
     while run:
-        cv2.namedWindow('desktop',cv2.WINDOW_FREERATIO)
         img = getFrame(streamSock)  # getting a frame coming from the sock
         cv2.imshow("desktop", img)
         cv2.setMouseCallback("desktop", clickEvent) # listening for mouse input, 

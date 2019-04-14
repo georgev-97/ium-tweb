@@ -18,7 +18,7 @@ def close():
 
 
 def startRemotedesktop():
-    pid = subprocess.Popen([sys.executable, "RemoteDesktopServer.py"],shell=True)
+    pid = subprocess.Popen([sys.executable, "RemoteDesktopServer.py"])
     time.sleep(1)
     if not None == pid.poll():
         return errorCode+"failed to launch remote service"
@@ -26,7 +26,7 @@ def startRemotedesktop():
         return "remote service launced, press <pageUp> on the windows to close it"
 
 def startShell():
-    pid = subprocess.Popen("python ShellServer.py -a "+address+" -p "+str(port),shell=True)
+    pid = subprocess.Popen("python ShellServer.py -a "+address+" -p "+str(port))
     time.sleep(1)
     if not None == pid.poll():
         return errorCode+"failed to launch remote service"
@@ -34,7 +34,7 @@ def startShell():
         return "remote service started"
 
 def startSender():
-    pid = subprocess.Popen("python SenderServer.py -a "+address+" -p "+str(port),shell=True)
+    pid = subprocess.Popen("python SenderServer.py -a "+address+" -p "+str(port))
     time.sleep(1)
     if not None == pid.poll():
         return errorCode+"failed to launch remote service"
