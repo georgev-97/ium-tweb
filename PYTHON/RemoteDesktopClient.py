@@ -9,8 +9,7 @@ from pynput import keyboard
 from threading import Thread
 
 mouseSock = None
-clientAddress = ('localhost', 1999)
-
+clientAddress = ('localhost', 1999)  
 
 def clickSend(x, y, code):
     cord = (code+"-"+str(x)+"-"+str(y)).encode("utf-8")
@@ -69,7 +68,6 @@ def recvFrame(connection):
     except AssertionError:
         raise AssertionError
 
-
 def getFrame(connection):
     try:
         compImg = io.BytesIO()
@@ -80,6 +78,12 @@ def getFrame(connection):
         connection.close()
         sys.exit(1)
 
+def cameraService(cameraSock):
+    while True:
+        cv2.namedWindow('camera',cv2.WINDOW_FREERATIO)
+        frame = getFrame(cameraSock)
+        cv2.imshow("camera",frame)
+        cv2.waitKey(1)
 
 def bindSock(sock, address):
     # Bind the socket to the port
@@ -101,17 +105,24 @@ if __name__ == "__main__":
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # binding the sock
     bindSock(sock, clientAddress)
-    # first request coming from server is used to stream video
+    # 1° request coming from server is used to stream desktop
     streamSock = listen(sock)
-    # second request coming from server is used to send input signal
+    # 2° request coming from server is used to stream camera
+    cameraSock = listen(sock)
+    #starting camera service
+    cameraThread = Thread(target=cameraService,args=[cameraSock])
+    cameraThread.daemon = True
+    cameraThread.start()
+    # 3° request coming from server is used to send input signal
     mouseSock = listen(sock)
 
     # start show remote desktop
     run = True
     while run:
+        cv2.namedWindow('desktop',cv2.WINDOW_FREERATIO)
         img = getFrame(streamSock)  # getting a frame coming from the sock
-        cv2.imshow("imm", img)
-        cv2.setMouseCallback("imm", clickEvent) # listening for mouse input, 
+        cv2.imshow("desktop", img)
+        cv2.setMouseCallback("desktop", clickEvent) # listening for mouse input, 
                                                 #clickEvent() callback will send input to server
         key = cv2.waitKeyEx(1)                  # listening for keyboard input
         if (key != -1):

@@ -4,7 +4,7 @@ import sys
 import time
 import pyautogui
 import re
-from ScreenRecorder import ScreenRecorder
+from Recorder import Recorder
 from threading import Thread
 
 clientAddress = ('localhost', 1999)
@@ -33,9 +33,9 @@ def getInput(connection):
 # simulate mouse movement, following the remote mouse command
 
 
-def inputService(arg):
+def inputService():
     mouseSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    waitForConnection(mouseSock, clientAddress, 1)
+    waitForConnection(mouseSock, clientAddress, 0.2)
 
     while True:
         i = getInput(mouseSock).decode("utf-8")
@@ -47,6 +47,16 @@ def inputService(arg):
         elif(type == "key"):
             key = input[1]
             pyautogui.press(key)
+
+def cameraService(cameraSock, camera):
+    while True:
+        frame = camera.getCompressedCameraFrame()
+        frame = struct.pack('>I', len(frame)) + frame
+        try:
+            cameraSock.sendall(frame)
+        except:
+            cameraSock.close()
+            sys.exit(0)
 
 # try to revers connect to client, return true if connection is enstablished, false if not
 
@@ -69,25 +79,30 @@ def waitForConnection(sock, address, delay):
 
 
 if __name__ == "__main__":
+    screen = Recorder()
+    desktop = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    waitForConnection(desktop, clientAddress, 0.2)
 
-    # start catching and sending frame
-    screen = ScreenRecorder()
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    waitForConnection(sock, clientAddress, 1)
+    camera = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    waitForConnection(camera, clientAddress, 0.2)
+    #starting camera service
+    cameraThread = Thread(target=cameraService,args=[camera, screen])
+    cameraThread.daemon = True
+    cameraThread.start()
 
     # starting mouse service
-    thread = Thread(target=inputService, args=(10, ))
-    thread.daemon = True
-    thread.start()
+    mouseThread = Thread(target=inputService,)
+    mouseThread.daemon = True
+    mouseThread.start()
 
     run = True
     while run:
         # get a compressed desktop frame
-        imgOut = screen.getCompressedFrame()
+        imgOut = screen.getCompressedScreenFrame()
         # Send data
         imgOut = struct.pack('>I', len(imgOut)) + imgOut
         try:
-            sock.sendall(imgOut)
+            desktop.sendall(imgOut)
         except:
             print(
                 "remotroller> client have closed remote desktop, process will be stopped")
