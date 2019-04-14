@@ -73,7 +73,7 @@ class SenderClient(Thread):
             send(getCommand(str=re).encode("utf-8"),connection)
 
 
-        with open(fileName,"r") as f:
-            send(f.read().encode("utf-8"),connection)
+        with open(fileName,"rb") as f:
+            send(f.read(),connection)
         
 

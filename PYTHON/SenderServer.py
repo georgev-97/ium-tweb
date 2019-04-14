@@ -95,6 +95,6 @@ if __name__ == "__main__":
     waitForConnection(client,(address,port),1)
     fileName = getData(client).decode("utf-8")
     path = navigateFile(client)
-    data = getData(client).decode("utf-8")
-    with open(path+"\\"+fileName,"w+") as f:
+    data = getData(client)
+    with open(path+"\\"+fileName,"wb+") as f:
         f.write(data)
