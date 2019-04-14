@@ -14,7 +14,7 @@ errorCode = "?!?£ab0rt£?!?"
 
 def close():
     sock.close()
-    sys.exit(1)
+    os._exit(1)
 
 
 def startRemotedesktop():
@@ -66,7 +66,7 @@ def listenInputAsynchronous(arg):
     while True:
         command = input("remotroller> ")
 
-        if(command == "close"):  # command recived by server console, to close the server
+        if(command == "close"): 
             sock.close()
             os._exit(1)
 

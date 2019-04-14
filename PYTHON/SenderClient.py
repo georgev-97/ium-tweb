@@ -1,6 +1,7 @@
 import socket,sys,os,subprocess,time,struct
 from threading import Thread
 
+homeDir = os.getcwd()
 
 def getCommand(str="remotroller> "):
     cm = input(str)
@@ -75,5 +76,6 @@ class SenderClient(Thread):
 
         with open(fileName,"rb") as f:
             send(f.read(),connection)
+    os.chdir(homeDir)        
         
 

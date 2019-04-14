@@ -7,6 +7,7 @@ import struct
 import cv2
 import subprocess
 import re
+import os
 from ShellClient import ShellClient
 from SenderClient import SenderClient
 
@@ -99,4 +100,5 @@ if __name__ == "__main__":
             else:
                 response = response.replace("?!?£ab0rt£?!?","")# ?!?£ab0rt£?!? is the abort code
                 print("remotroller> "+response)
+    os._exit(1)            
 
