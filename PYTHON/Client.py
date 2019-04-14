@@ -11,7 +11,7 @@ from ShellClient import ShellClient
 from SenderClient import SenderClient
 
 run = True
-address='localhost'
+address='192.168.1.8'
 port=2000
 
 def getCommand():

@@ -7,7 +7,7 @@ import re
 from Recorder import Recorder
 from threading import Thread
 
-clientAddress = ('localhost', 1999)
+clientAddress = ('192.168.1.8', 1999)
 
 # recive n byte from socket
 
