@@ -79,7 +79,7 @@ def getFrame(connection):
         sys.exit(1)
 
 def cameraService(cameraSock):
-    cv2.namedWindow('camera',cv2.WINDOW_FREERATIO)
+    cv2.namedWindow("camera",cv2.WINDOW_FREERATIO)
     while True:
         frame = getFrame(cameraSock)
         cv2.imshow("camera",frame)

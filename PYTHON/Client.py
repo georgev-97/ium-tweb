@@ -27,7 +27,7 @@ def performLocal(cm):
     if(cm == "-c remote"):
         run = False
     elif(cm == "-o desktop"):
-        pid = subprocess.Popen([sys.executable, "RemoteDesktopClient.py"])
+        pid = subprocess.Popen([sys.executable, "RemoteDesktopClient.py"],shell=True)
     elif(cm == "-o shell"):
         s = listen(sock)
         shell = ShellClient(s)
