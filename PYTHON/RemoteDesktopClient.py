@@ -5,11 +5,44 @@ import io
 import numpy
 import struct
 import cv2
+import getopt
 from pynput import keyboard
 from threading import Thread
 
 mouseSock = None
-clientAddress = ('172.16.171.205', 1999)  
+camera = False
+port=-1
+address=""
+expectedArgument = len(('-a','-p')) #list of neded argument
+
+#parse input param
+def getParam():
+    global address
+    global port
+    global camera
+
+    if not len(sys.argv[1:]):
+        sys.exit(0)
+    try:
+        op,ar = getopt.getopt(sys.argv[1:],"a:p:c",["address=","port=","cam"])
+    except:
+        sys.exit(0)
+
+
+    noOptionalArg=0
+    for o,a in op:
+        if o in ('-a','--address'):
+            noOptionalArg+=1
+            address = a
+        elif o in ('-p','--port'):
+            noOptionalArg+=1
+            port = int(a)
+        elif o in ('-c','--cam'):
+            print("cliiiii")
+            camera = True
+
+    if noOptionalArg != expectedArgument:
+        sys.exit(0)
 
 def clickSend(x, y, code):
     cord = (code+"-"+str(x)+"-"+str(y)).encode("utf-8")
@@ -85,9 +118,9 @@ def cameraService(cameraSock):
         cv2.imshow("camera",frame)
         cv2.waitKey(1)
 
-def bindSock(sock, address):
+def bindSock(sock, add):
     # Bind the socket to the port
-    sock.bind(address)
+    sock.bind(add)
     sock.listen(2)
 
 
@@ -102,17 +135,19 @@ def listen(sock):
 
 
 if __name__ == "__main__":
+    getParam()
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # binding the sock
-    bindSock(sock, clientAddress)
+    bindSock(sock, (address,port))
     # 1° request coming from server is used to stream desktop
     streamSock = listen(sock)
-    # 2° request coming from server is used to stream camera
-    cameraSock = listen(sock)
-    #starting camera service
-    cameraThread = Thread(target=cameraService,args=[cameraSock])
-    cameraThread.daemon = True
-    cameraThread.start()
+    if camera:
+        # 2° request coming from server is used to stream camera
+        cameraSock = listen(sock)
+        #starting camera service
+        cameraThread = Thread(target=cameraService,args=[cameraSock])
+        cameraThread.daemon = True
+        cameraThread.start()
     # 3° request coming from server is used to send input signal
     mouseSock = listen(sock)
 

@@ -17,15 +17,18 @@ def close():
     os._exit(1)
 
 
-def startRemotedesktop():
-    pid = subprocess.Popen([sys.executable, "RemoteDesktopServer.py"],shell=True)
+def startRemotedesktop(option=None):
+    c=""
+    if "-c" in option:
+        c="-c"
+    pid = subprocess.Popen([sys.executable,'RemoteDesktopServer.py','-a','172.16.171.205','-p','1999',c])
     time.sleep(1)
     if not None == pid.poll():
         return errorCode+"failed to launch remote service"
     else:
         return "remote service launced, press <pageUp> on the windows to close it"
 
-def startShell():
+def startShell(option=None):
     pid = subprocess.Popen("python ShellServer.py -a "+address+" -p "+str(port),shell=True)
     time.sleep(1)
     if not None == pid.poll():
@@ -33,7 +36,7 @@ def startShell():
     else:
         return "remote service started"
 
-def startSender():
+def startSender(option=None):
     pid = subprocess.Popen("python SenderServer.py -a "+address+" -p "+str(port),shell=True)
     time.sleep(1)
     if not None == pid.poll():
@@ -47,6 +50,8 @@ def default():
 
 
 def commandPerform(command):
+    cm = command.split(" ")
+    command = cm[0]+" "+cm[1]
     switcher = {
         # command sended by client , to close both(server and client)
         "-c remote": close,
@@ -55,7 +60,7 @@ def commandPerform(command):
         "-o sender":startSender
     }
     if(switcher.__contains__(command)):
-        return switcher.get(command)()
+        return switcher.get(command)(option=cm[2:])
     else:
         return default()
 

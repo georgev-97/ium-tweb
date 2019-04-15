@@ -4,14 +4,44 @@ import sys
 import time
 import pyautogui
 import re
+import getopt
 from Recorder import Recorder
 from threading import Thread
 
-clientAddress = ('172.16.171.205', 1999)
+port=-1
+address=""
+expectedArgument = len(('-a','-p')) #list of neded argument
+camera = False
+
+#parse input param
+def getParam():
+    global address
+    global port
+    global camera
+
+    if not len(sys.argv[1:]):
+        sys.exit(0)
+    try:
+        op,ar = getopt.getopt(sys.argv[1:],"a:p:c",["address=","port=","cam"])
+    except:
+        sys.exit(0)
+
+    noOptionalArg=0
+    for o,a in op:
+        if o in ('-a','--address'):
+            noOptionalArg+=1
+            address = a
+        elif o in ('-p','--port'):
+            noOptionalArg+=1
+            port = int(a)
+        elif o in ('-c','--cam'):
+            camera = True
+
+
+    if noOptionalArg != expectedArgument:
+        sys.exit(0)
 
 # recive n byte from socket
-
-
 def recvall(connection, n):
     data = b''
     while len(data) < n:
@@ -35,7 +65,7 @@ def getInput(connection):
 
 def inputService():
     mouseSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    waitForConnection(mouseSock, clientAddress, 0.2)
+    waitForConnection(mouseSock, (address,port), 0.2)
 
     while True:
         i = getInput(mouseSock).decode("utf-8")
@@ -61,9 +91,9 @@ def cameraService(cameraSock, camera):
 # try to revers connect to client, return true if connection is enstablished, false if not
 
 
-def tryConnection(sock, address):
+def tryConnection(sock, add):
     try:
-        sock.connect(address)
+        sock.connect(add)
         return True
     except:
         return False
@@ -71,24 +101,26 @@ def tryConnection(sock, address):
 # try every delay second to connect
 
 
-def waitForConnection(sock, address, delay):
+def waitForConnection(sock, add, delay):
     connect = False
     while not connect:
-        connect = tryConnection(sock, address)
+        connect = tryConnection(sock, add)
         time.sleep(delay)
 
 
 if __name__ == "__main__":
+    getParam()
     screen = Recorder()
     desktop = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    waitForConnection(desktop, clientAddress, 0.2)
+    waitForConnection(desktop, (address,port), 0.2)
 
-    camera = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    waitForConnection(camera, clientAddress, 0.2)
-    #starting camera service
-    cameraThread = Thread(target=cameraService,args=[camera, screen])
-    cameraThread.daemon = True
-    cameraThread.start()
+    if camera:# if -c option
+        camera = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        waitForConnection(camera, (address,port), 0.2)
+        #starting camera service
+        cameraThread = Thread(target=cameraService,args=[camera, screen])
+        cameraThread.daemon = True
+        cameraThread.start()
 
     # starting mouse service
     mouseThread = Thread(target=inputService,)
