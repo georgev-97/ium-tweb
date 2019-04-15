@@ -9,7 +9,7 @@ from pynput import keyboard
 from threading import Thread
 
 mouseSock = None
-clientAddress = ('192.168.1.8', 1999)  
+clientAddress = ('172.16.171.205', 1999)  
 
 def clickSend(x, y, code):
     cord = (code+"-"+str(x)+"-"+str(y)).encode("utf-8")

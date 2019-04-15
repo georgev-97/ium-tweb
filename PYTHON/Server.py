@@ -7,7 +7,7 @@ import subprocess
 from threading import Thread
 
 sock = None
-address = '192.168.1.8'
+address = '172.16.171.205'
 port = 2000
 errorCode = "?!?£ab0rt£?!?"
 

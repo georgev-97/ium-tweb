@@ -12,7 +12,7 @@ from ShellClient import ShellClient
 from SenderClient import SenderClient
 
 run = True
-address='192.168.1.8'
+address='172.16.171.205'
 port=2000
 
 def getCommand():
