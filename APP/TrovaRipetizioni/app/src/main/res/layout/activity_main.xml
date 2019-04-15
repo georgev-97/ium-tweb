@@ -8,8 +8,8 @@
     android:background="@drawable/gradient_background">
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -23,7 +23,7 @@
         android:layout_marginEnd="92dp"
         android:layout_marginRight="92dp"
         android:layout_marginBottom="222dp"
-        android:src="@drawable/img_03"
+        android:src="@drawable/logo"
         tools:layout_editor_absoluteX="67dp"
         tools:layout_editor_absoluteY="183dp" />
 

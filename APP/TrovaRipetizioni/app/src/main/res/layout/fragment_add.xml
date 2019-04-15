@@ -5,93 +5,126 @@
     android:layout_height="match_parent"
     android:padding="5dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="127dp">
-
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            app:srcCompat="@drawable/docente" />
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/view1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="12dp"
-            android:text="Scegli il docente"
-            android:textSize="22dp" />
+            android:layout_height="35dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="83dp">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/docente" />
+
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal">
+
+            </Spinner>
+
+        </LinearLayout>
 
 
+        <LinearLayout
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/view1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="48dp">
 
-    <Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="175dp">
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/corso" />
 
-    </Spinner>
+            <Spinner
+                android:id="@+id/spinner2"
+                android:layout_width="match_parent"
+                android:layout_height="27dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center">
+
+            </Spinner>
+
+        </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="226dp">
+        <LinearLayout
+            android:id="@+id/view3"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/view2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="48dp">
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            app:srcCompat="@drawable/corso" />
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/data" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Scegli il corso"
-            android:textSize="22dp"
-            android:paddingLeft="12dp"
-            />
-    </LinearLayout>
+            <Spinner
+                android:id="@+id/spinner3"
+                android:layout_width="match_parent"
+                android:layout_height="27dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center">
 
-    <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/spinner1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="90dp"></Spinner>
+            </Spinner>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/view4"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/view3"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="48dp">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ora" />
+
+            <Spinner
+                android:id="@+id/spinner4"
+                android:layout_width="match_parent"
+                android:layout_height="27dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center">
+
+            </Spinner>
+
+        </LinearLayout>
+
 
     <Button
         android:id="@+id/prenota"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:layout_below="@+id/spinner2"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="50dp"
-
-        android:layout_marginEnd="0dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/round_view"
+        android:layout_below="@+id/view4"
         android:clickable="true"
-        android:fontFamily="sans-serif-condensed"
-        android:onClick="register"
-        android:text="PRENOTATI"
+        android:text="PRENOTA"
         android:textAllCaps="false"
-        android:textColor="#ffff"
-        android:textSize="18sp"
+        android:textColor="#fff"
+        android:textSize="18dp"
+        android:fontFamily="sans-serif-condensed"
         android:textStyle="bold" />
-
-
-
 
 </RelativeLayout>

@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Trova   Ripetizioni</string>
+
+    <string-array name="materie">
+        <item>IUM</item>
+        <item>Algoritmi</item>
+        <item>Programmazione I</item>
+        <item>Sistemi Operativi</item>
+        <item>Inglese</item>
+        <item>Database</item>
+        <item>Fisica I</item>
+    </string-array>
+
+
+    <string-array name="docenti">
+        <item>Prof 1</item>
+        <item>Prof 2</item>
+        <item>Prof 3</item>
+        <item>Prof 4</item>
+        <item>Prof 5</item>
+        <item>Prof 6</item>
+        <item>Prof 7</item>
+    </string-array>
 </resources>
