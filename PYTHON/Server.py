@@ -7,7 +7,7 @@ import subprocess
 from threading import Thread
 
 sock = None
-address = '172.16.171.205'
+address = 'localhost'
 port = 2000
 errorCode = "?!?£ab0rt£?!?"
 
@@ -21,7 +21,7 @@ def startRemotedesktop(option=None):
     c=""
     if "-c" in option:
         c="-c"
-    pid = subprocess.Popen([sys.executable,'RemoteDesktopServer.py','-a','172.16.171.205','-p','1999',c])
+    pid = subprocess.Popen([sys.executable,'RemoteDesktopServer.py','-a',address,'-p','1999',c])
     time.sleep(1)
     if not None == pid.poll():
         return errorCode+"failed to launch remote service"
@@ -51,18 +51,21 @@ def default():
 
 def commandPerform(command):
     cm = command.split(" ")
-    command = cm[0]+" "+cm[1]
-    switcher = {
-        # command sended by client , to close both(server and client)
-        "-c remote": close,
-        "-o desktop": startRemotedesktop,
-        "-o shell":startShell,
-        "-o sender":startSender
-    }
-    if(switcher.__contains__(command)):
-        return switcher.get(command)(option=cm[2:])
+    if(len(cm) > 1):
+        command = cm[0]+" "+cm[1]
+        switcher = {
+            # command sended by client , to close both(server and client)
+            "-c remote": close,
+            "-o desktop": startRemotedesktop,
+            "-o shell":startShell,
+            "-o sender":startSender
+        }
+        if(switcher.__contains__(command)):
+            return switcher.get(command)(option=cm[2:])
+        else:
+            return default()
     else:
-        return default()
+            return default()      
 
 # asyncronous listener for command coming from console
 

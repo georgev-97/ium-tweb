@@ -13,7 +13,7 @@ from ShellClient import ShellClient
 from SenderClient import SenderClient
 
 run = True
-address='172.16.171.205'
+address='localhost'
 port=2000
 
 def getCommand():
@@ -25,28 +25,32 @@ def getCommand():
 
 def performLocal(cm):
     cml=cm.split(" ")
-    cm = cml[0]+" "+cml[1]
-    global run
-    try:
-        if(cm == "-c remote"):
-            run = False
-        elif(cm == "-o desktop"):
-            c=""
-            if "-c" in cml[2:]:
-                c = "-c"
-            pid = subprocess.Popen([sys.executable,'RemoteDesktopClient.py','-a','172.16.171.205','-p','1999',c])
-        elif(cm == "-o shell"):
-            s = listen(sock)
-            shell = ShellClient(s)
-            shell.start()
-            shell.join()
-        elif(cm == "-o sender"):
-            s = listen(sock)
-            shell = SenderClient(s)
-            shell.start()
-            shell.join()
-    except:
-        pass
+    
+    if(len(cml) > 1):
+        cm = cml[0]+" "+cml[1]
+        global run
+        try:
+            if(cm == "-c remote"):
+                run = False
+            elif(cm == "-o desktop"):
+                c = ""
+                if "-c" in cml[2:]:
+                    c = "-c"
+                pid = subprocess.Popen(
+                    [sys.executable, 'RemoteDesktopClient.py', '-a', address, '-p', '1999', c])
+            elif(cm == "-o shell"):
+                s = listen(sock)
+                shell = ShellClient(s)
+                shell.start()
+                shell.join()
+            elif(cm == "-o sender"):
+                s = listen(sock)
+                shell = SenderClient(s)
+                shell.start()
+                shell.join()
+        except:
+            pass
+    
 
 def sendCommand(command, connection):
     try:
