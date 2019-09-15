@@ -2,6 +2,7 @@ var myApp = angular.module('login', []).controller('loginController', function (
     $scope.account = "";
     $scope.password = "";
     $scope.ajaxCheckUser = function () {
+        console.log("Works");
         if ($scope.account === "") {
             passwordElement = document.getElementById("name");
             passwordElement.setCustomValidity("inserire nome utente");

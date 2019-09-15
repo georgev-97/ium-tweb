@@ -23,6 +23,7 @@ public class DBDaemon implements ServletContextListener {
     
     ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     
+    @Override
     public void contextInitialized(ServletContextEvent sce) {
         //start Daemon task at init
         sce.getServletContext().log("COUNER DI PROVA ");
@@ -37,6 +38,7 @@ public class DBDaemon implements ServletContextListener {
                 TimeUnit.DAYS.toMillis(1), TimeUnit.MILLISECONDS);
     }
 
+    @Override
     public void contextDestroyed(ServletContextEvent sce) {
         scheduler.shutdownNow();
     }

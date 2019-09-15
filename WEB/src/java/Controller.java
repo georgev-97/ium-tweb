@@ -33,13 +33,15 @@ public class Controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession ses = request.getSession();
+        
         this.context = request.getServletContext();
         DataBase dB = new DataBase(url, account, password);
         String command = (String) request.getParameter("command");
+        System.out.println("Command"+command);
+        System.out.println("sessionid:"+request.getParameter("sessionid"));
         //checking permission
         if (checkPermission(command, request, response)) {
             //checking permission
-
             if (command != null) {
                 switch (command) {
                     case "login":
@@ -108,16 +110,28 @@ public class Controller extends HttpServlet {
             }
         } else {
             context.log("ERROR : " + command + " permission denied");
-            response.getWriter().print(new JSONObject().put("error", "you don't have permission"));
+            response.getWriter().print(new JSONObject().put("error", "yyyyyyyyyyyy"));
         }
     }
 
     private boolean checkPermission(String command, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        if(command.equals("login")){
+            return true;
+        }
         String id = (String) request.getSession().getAttribute("id");
         int role;
         if (request.getSession().getAttribute("role") != null) {
-            role = ((Integer) request.getSession().getAttribute("role")).intValue();
-        } else {
+            role = ((Integer) request.getSession().getAttribute("role"));
+        } else if(id == null){
+            if(id == null){
+                User u = (User)this.context.getAttribute(request.getHeader("sessionid"));
+                id= u.getId();
+                role = u.getRole();
+                System.out.println("USER:"+id+ " "+u.getAccount());
+            }else {
+                role = -1;
+            }
+        }else {
             role = -1;
         }
         String noPermission[] = {"checkUser", "register", "login", "getAutSesData"};
@@ -161,6 +175,9 @@ public class Controller extends HttpServlet {
                 request.getSession().setAttribute("account", res.getAccount());
                 request.getSession().setAttribute("id", res.getId());
                 request.getSession().setAttribute("role", res.getRole());
+                response.setHeader("sessionid", request.getSession().getId());
+                String sessionid= request.getSession().getId();
+                this.context.setAttribute(sessionid, new User(res.getId(),res.getAccount(),  res.getRole()));
                 resp.put("account", account);
                 resp.put("error", "");
                 if (res.getRole() == 0) {

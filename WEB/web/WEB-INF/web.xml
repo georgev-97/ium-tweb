@@ -42,5 +42,5 @@
     <listener>
         <listener-class>DBDaemon</listener-class>
     </listener>
-    <load-on-startup>1</load-on-startup> 
+    <load-on-startup>1</load-on-startup>
 </web-app>

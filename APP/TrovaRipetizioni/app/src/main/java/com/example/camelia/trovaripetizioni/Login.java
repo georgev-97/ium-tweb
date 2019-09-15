@@ -2,6 +2,7 @@ package com.example.camelia.trovaripetizioni;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,22 +18,21 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpClientStack;
+import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Login extends AppCompatActivity {
     Button btn;
     TextView tw;
     EditText account, password;
+    public static Context contextOfApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,30 +51,48 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    //TODO: attivare la funzione del login (che funziona) ma per adesso ti faccio passare direttamente alla schermata home
-    /*public void login(View view){
-            final String acc = account.getText().toString();
-            final String pass = password.getText().toString();
-            Query query = new Query(acc, pass, "login", getApplicationContext());
-            query.request(new Callback() {
-                @Override
-                public void onSuccess(JSONObject result) {
-                    try {
-                        if(!result.getString("error").equals("")){
-                            Toast toast = Toast.makeText(getApplicationContext(), result.getString("error"), Toast.LENGTH_SHORT);
-                            toast.setGravity(Gravity.TOP, 0, 0);
-                            toast.show();
-                        }
-                        else{
-                            startActivity(new Intent(getApplicationContext(), UserHome.class).putExtra("account", acc));
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-    }*/
     public void login(View view){
-        startActivity(new Intent(getApplicationContext(), UserHome.class));
+        final String acc = account.getText().toString();
+        final String pass = password.getText().toString();
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://192.168.43.236:8084/Ripetizioni/Controller";
+        CustomStringRequest strreq = new CustomStringRequest(Request.Method.POST,
+                url,
+                new Response.Listener<CustomStringRequest.ResponseM>() {
+                    @Override
+                    public void onResponse(CustomStringRequest.ResponseM result) {
+                        try {
+                            String sessionId = result.headers.get("sessionid");
+                            String response= result.response;
+                            JSONObject res = new JSONObject(response);
+                            if(res.getString("error").equals("")){
+                                Toast.makeText(getApplicationContext(), "Bentornato/a "+res.getString("account"), Toast.LENGTH_LONG).show();
+                                Intent i = new Intent(getApplicationContext(), UserHome.class);
+                                i.putExtra("cookie", sessionId);
+                                startActivity(i);
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Email e/o Password errati", Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError e) {
+                e.printStackTrace();
+            }
+        })
+        {
+            @Override
+        public Map<String, String> getParams(){
+            Map<String, String> params = new HashMap<>();
+            params.put("command", "login");
+            params.put("account", acc);
+            params.put("password", pass);
+            return params;
+        }
+        };
+        queue.add(strreq);
     }
 }
