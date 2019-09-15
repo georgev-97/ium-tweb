@@ -86,6 +86,9 @@ public class Controller extends HttpServlet {
                     case "deleteReservation":
                         deleteReservation(request, response, dB);
                         break;
+                        case "getAllReservation":
+                        getAllReservation(request, response, dB);
+                        break;
                     case "getAutSesData":
                         JSONObject gasd = new JSONObject();
                         
@@ -132,7 +135,7 @@ public class Controller extends HttpServlet {
         }
         String noPermission[] = {"checkUser", "register", "login", "getAutSesData"};
         String basePermission[] = {"logout","getCourse", "getProfessor", "getCourseProfessor", "getReservation", "reserve", "getUserReservation", "deleteReservation"};
-        String adminPermission[] = {"logout","getCourse", "getProfessor", "addCourse", "addProfessor", "getFreeCourse", "courseProfessor"};
+        String adminPermission[] = {"logout","getCourse", "getProfessor", "addCourse", "addProfessor", "getFreeCourse", "courseProfessor", "getAllReservation"};
 
         if (Arrays.asList(noPermission).contains(command)) {
             return true;
@@ -223,7 +226,18 @@ public class Controller extends HttpServlet {
             response.getWriter().print(new JSONObject().put("error", ex.getMessage()));
         }
     }
-
+    
+    private void getAllReservation(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
+        try {
+            JSONObject res = new JSONObject().put("allReservationList", new AdminModel(dB).getAllReservation());
+            res.put("error", "");
+            response.getWriter().print(res);
+        } catch (SQLException ex) {
+            response.getWriter().print(new JSONObject().put("error", ex.getMessage()));
+            context.log("allReservationList : " + ex.toString());
+            response.getWriter().print(new JSONObject().put("error", ex.getMessage()));
+        }
+    }
     private void getProfessor(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
             JSONObject res = new JSONObject().put("professorList", new AdminModel(dB).getProfessor());

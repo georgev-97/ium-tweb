@@ -139,4 +139,11 @@ var myApp = angular.module('admin', []).controller('adminController', function (
                     }
                 });
     };
+    
+     $scope.getAllReservation = function () {
+        $http.get("/Ripetizioni/Controller", {params: {command: 'getAllReservation'}})
+               
+               
+    };
+
 });

@@ -32,8 +32,8 @@
                 </div>
 
                 <div class="input-field validate-input m-b-25" data-validate = "Enter password">
-                    <input class="input" type="password" name="password" placeholder="Enter password" ng-model="password" 
-                           ng-change="checkPassword()" ng->
+                    <input class="input" type="password" name="password" placeholder="Enter password" ng-model="password" ng-minlength ="8"
+                           ng-change="checkPassword()" >
                     <span class="focus-input"></span>
                     
                 </div>

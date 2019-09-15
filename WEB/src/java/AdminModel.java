@@ -141,4 +141,21 @@ public class AdminModel {
         }
         return res;
     }
+    
+     public JSONArray getAllReservation() throws SQLException {
+        JSONArray res = new JSONArray();
+        ResultSet rs;
+        try {
+            rs = dB.query("");
+
+            while (rs.next()) {
+                res.put(rs.getString("name") + " (" + rs.getString("username") + " (\" + rs.getString(\"id\") + \")");
+            }
+        } catch (SQLException ex) {
+            dB.closeConnection();
+            throw ex;
+        }
+        return res;
+    }
+    
 }
