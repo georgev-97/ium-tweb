@@ -90,7 +90,7 @@ public class Reservation {
     public void delete(Context context) {
         //command: 'deleteReservation',
         //                reservationId: rid, reservationUserId: ruid
-        String url = "http://192.168.43.236:8084/Ripetizioni/Controller?command=deleteReservation&reservationId="+this.getId()+"&reservationUserId="+this.getUid()+"&sessionid="+this.getCookie();
+        String url = "http://192.168.1.9:8084/Ripetizioni/Controller?command=deleteReservation&reservationId="+this.getId()+"&reservationUserId="+this.getUid()+"&sessionid="+this.getCookie();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

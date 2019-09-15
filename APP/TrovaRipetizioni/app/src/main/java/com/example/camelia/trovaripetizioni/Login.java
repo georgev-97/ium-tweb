@@ -55,7 +55,7 @@ public class Login extends AppCompatActivity {
         final String acc = account.getText().toString();
         final String pass = password.getText().toString();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.43.236:8084/Ripetizioni/Controller";
+        String url = "http://192.168.1.9:8084/Ripetizioni/Controller";
         CustomStringRequest strreq = new CustomStringRequest(Request.Method.POST,
                 url,
                 new Response.Listener<CustomStringRequest.ResponseM>() {

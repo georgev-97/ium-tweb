@@ -32,7 +32,7 @@ public class ReservationListAdapter extends BaseAdapter implements ListAdapter {
         for(int i = 0; i < res.length(); i++){
             try {
                 JSONArray actual = res.getJSONArray(i);
-                list.add(new Reservation("corso: "+actual.getString(0), "docente: "+actual.getString(1), actual.getString(3),"h"+actual.getString(4)+"-"+actual.getString(5), actual.getString(6), actual.getString(7), cookie ));
+                list.add(new Reservation("Corso: "+actual.getString(0), "Docente: "+actual.getString(1), actual.getString(3)," "+actual.getString(4)+" - "+actual.getString(5), actual.getString(6), actual.getString(7), cookie ));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

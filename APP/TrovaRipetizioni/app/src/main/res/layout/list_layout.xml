@@ -3,64 +3,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/corso"
-        android:layout_width="310dp"
-        android:layout_height="50dp"
-        android:paddingLeft="20dp"
-        android:text="Corso: Matematica"
+    <LinearLayout
+        android:layout_width="339dp"
+        android:layout_height="152dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_below="@+id/hour"
-        android:layout_marginTop="47dp"
-        android:textStyle="bold" />
+        android:layout_marginStart="33dp"
+        android:layout_marginEnd="33dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/professore"
-        android:layout_width="310dp"
-        android:layout_height="50dp"
-        android:paddingLeft="20dp"
-        android:text="Professore: Mario"
-        android:layout_below="@+id/corso"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/corso"
+            android:layout_width="213dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/hour"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="86dp"
+            android:layout_marginTop="58dp"
+            android:layout_marginEnd="85dp"
+            android:paddingLeft="20dp"
+            android:text="Corso: Matematica"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/day"
-        android:layout_width="188dp"
-        android:layout_height="47dp"
-        android:paddingLeft="20dp"
-        android:text="Monday"
-        android:layout_below="@+id/delete_btn"
-        android:textSize="20dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="-106dp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/professore"
+            android:layout_width="207dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/corso"
+            android:layout_gravity="center"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="88dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginEnd="89dp"
+            android:paddingLeft="20dp"
+            android:text="Professore: Mario"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/hour"
-        android:layout_width="122dp"
-        android:layout_height="47dp"
-        android:text="9-11"
-        android:textSize="20dp"
-        android:layout_below="@+id/delete_btn"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="190dp"
-        android:layout_marginTop="-106dp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-89dp"
+            android:layout_marginEnd="91dp"
+            android:layout_gravity="center"
+            android:text="Monday"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/delete_btn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="0dp"
-        android:background="@drawable/elimina" />
+        <TextView
+            android:id="@+id/hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="-27dp"
+            android:paddingLeft="50dp"
+            android:text="9 - 11"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+
+        <Button
+            android:id="@+id/delete_btn"
+            android:layout_width="30dp"
+            android:layout_height="28dp"
+            android:layout_alignBaseline="@+id/day"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="145dp"
+            android:layout_marginTop="73dp"
+            android:background="@drawable/elimina" />
+
+
+    </LinearLayout>
 
 </RelativeLayout>
