@@ -8,30 +8,40 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 
 /**
  * Created by george on 3/23/18.
  */
 public class ReservationListAdapter extends BaseAdapter implements ListAdapter {
-    private ArrayList<String> list;
+    private ArrayList<Reservation> list;
     private Context context;
+    private String cookie;
 
-    /**
-     * Instantiates a new Favourite places adapter.
-     *
-     * @param list            the list
-     * @param favouritePlaces the favourite places
-     * @param context         the context
-     * @param userID          the user id
-     */
-    ReservationListAdapter() {
-
+    ReservationListAdapter(JSONArray res, Context context, String cookie) {
+        Log.d("Res", res.toString());
+        this.cookie = cookie;
+        this.context = context;
+        list = new ArrayList<>();
+        for(int i = 0; i < res.length(); i++){
+            try {
+                JSONArray actual = res.getJSONArray(i);
+                list.add(new Reservation("corso: "+actual.getString(0), "docente: "+actual.getString(1), actual.getString(3),"h"+actual.getString(4)+"-"+actual.getString(5), actual.getString(6), actual.getString(7), cookie ));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public int getCount() {
-        return list.size();
+       return list.size();
     }
 
     @Override
@@ -50,10 +60,15 @@ public class ReservationListAdapter extends BaseAdapter implements ListAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (inflater != null) {
             view = inflater.inflate(R.layout.list_layout, null);
-            //final TextView listItemText = view.findViewById(R.id.list_item_string);
-            //listItemText.setText(list.get(position));
+            final TextView course = view.findViewById(R.id.corso);
+            final TextView professor = view.findViewById(R.id.professore);
+            final TextView day = view.findViewById(R.id.day);
+            final TextView hour = view.findViewById(R.id.hour);
+            course.setText(list.get(position).getCourse());
+            professor.setText(list.get(position).getProfessor());
+            day.setText(list.get(position).getDay());
+            hour.setText(list.get(position).getHour());
             setButtonListeners(position, view);
-
         }
         return view;
     }
@@ -66,26 +81,16 @@ public class ReservationListAdapter extends BaseAdapter implements ListAdapter {
      */
     private void setButtonListeners(final int position, View view) {
         Button deleteBtn = view.findViewById(R.id.delete_btn);
+        final View t = view;
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                list.get(position).delete(t.getContext());
+                Toast.makeText(context, list.get(position).getCourse()+" "+list.get(position).getHour() + " deleted", Toast.LENGTH_LONG).show();
                 list.remove(position);
-                //deleteData(favouritePlaces.get(position));
                 notifyDataSetInvalidated();
-                Log.d("POSITION:", String.valueOf(position));
-                //Toast.makeText(context, favouritePlaces.get(position).getName() + " deleted", Toast.LENGTH_LONG).show();
             }
         });
     }
-
-    /**
-     * removes the favourite place from database
-     * after the user touches the delete button
-     *
-     * @param location the location to be deleted
-     */
-    //private void deleteData(Location location) {
-    //    refUserFavouritePlaces.child(location.getId()).removeValue();
-   // }
 
 }

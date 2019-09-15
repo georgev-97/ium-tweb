@@ -299,6 +299,7 @@ public class Controller extends HttpServlet {
 
     private void getReservation(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
+            System.out.println("S:"+request.getParameter("course")+ " "+request.getParameter("professor"));
             JSONArray ar = new UserModel(dB).getReservation(request.getParameter("course"), request.getParameter("professor"));
             JSONObject res = new JSONObject().put("reservationMatrix", ar);
             if (ar.isNull(0)) {
@@ -315,12 +316,14 @@ public class Controller extends HttpServlet {
     }
 
     private void reserve(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
+                    System.out.println("SLOT:" +request.getParameter("slotId"));
         try {
             if(this.u == null){
                 new UserModel(dB).reserve(request.getParameter("slotId"), (String) request.getSession().getAttribute("id"));
             }else{
                 new UserModel(dB).reserve(request.getParameter("slotId"), u.getId());
             }
+             
             response.getWriter().print(new JSONObject().put("error", ""));
         } catch (SQLException ex) {
             context.log("reserve : " + ex.toString());
@@ -347,6 +350,7 @@ public class Controller extends HttpServlet {
 
     private void deleteReservation(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
+                            System.out.println("COMMAND: "+ request.getParameter("reservationId")+ " "+ request.getParameter("reservationUserId"));
             if(this.u == null){
                 new UserModel(dB).deleteReservation(request.getParameter("reservationId"),
                     request.getParameter("reservationUserId"), (String) request.getSession().getAttribute("id"));

@@ -4,13 +4,20 @@
     android:layout_height="match_parent">
 
 
-
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lista Prenotazioni"
+        android:textSize="30dp"
+        android:textAlignment="center"/>
     <ListView
         android:id="@+id/listView1"
         android:layout_width="wrap_content"
+        android:layout_marginTop="30dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        android:layout_below="@+id/textView1"
         >
     </ListView>
 
