@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html lang="it" ng-app = "user">
+<html lang="it" ng-app = "admin">
     <head>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
         <title>Ripetizioni.it</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
         <link href="Style/admin.css" rel="stylesheet" />
 
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
 
         <link rel="icon" href="images/favicon.png" type="images/png" />
         <script
             src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
         </script>
-        <script src="userController.js"></script>
+        <script src="adminController.js"></script>
         <style>
             .bullet {
                 padding:12 px;
@@ -48,7 +49,7 @@
         </style>
     </head>
 
-    <body ng-controller="userController" ng-show="render">
+    <body ng-controller="adminController" ng-show="render">
 
         <!-- inizio blocco container -->
         <div id="container">
@@ -66,7 +67,7 @@
                             <li><a href="index.html" ng-click="logout()">Esci</a></li>
                         </ul> <!-- FINE PRIMO SOTTOMENU -->
                     </li>
-                    <li><a href = "utente.html"><img src ="images/05.png"  width="25" height="27" ></a></li>
+                    <li><a href = "admin.html"><img src ="images/05.png"  width="25" height="27" ></a></li>
                     <li style="float:left">
                         <div style="margin-left: 10px;margin-top:13px" class="username">{{user}}</div>
                     </li>
@@ -75,44 +76,13 @@
             </div>
             <!--fine menu navigazione -->
 
-            <article>
-                <br><br><br><br>
-                <ol class="bullet">
-                    <li ng-repeat="res in userReservation">
-                        corso :      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{res[0]}} <br>
-                        professore : &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{res[1]}}  ({{res[2]}})
-                        <a href="">
-                            <img src="images/06.png" width="20" height="20" align="right" ng-click="deleteReservation(res[6], res[7])">
-                        </a> 
-                        <a href="">
-                            <img src="" width="20" height="20"  align="right">
-                        </a><br>
-                        giorno/ora : &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{res[3]}} ({{res[4]}}-{{res[5]}})
-                    </li>
-                </ol>
-
-            </article>
         </div>
 
         <!-- blocco innerContent -->
         <div id="innerContent">
 
-            <article>
-
-                <hr class="linea">
-                <br>
-                <table align="center">
-                    <tr>
-                        <td><a href ="prenota.html"><center><img src="images/08.png" width="120" height="120"></center></a></td>
-                    </tr>
-                    <tr>
-                        <th>Prenota ripetizioni </th>
-                    </tr>
-                </table>
-
-
-            </article>
-
+          
+        </div>
 
             <footer id="footer">
                 <div id="footer-wrapper">&nbsp;
