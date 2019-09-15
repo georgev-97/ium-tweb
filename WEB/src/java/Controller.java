@@ -29,7 +29,7 @@ public class Controller extends HttpServlet {
     private String account;
     private String password;
     private ServletContext context;
-
+    User u;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession ses = request.getSession();
@@ -115,7 +115,7 @@ public class Controller extends HttpServlet {
     }
 
     private boolean checkPermission(String command, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if(command.equals("login")){
+        if(command.equals("login") || command.equals("register")){
             return true;
         }
         String id = (String) request.getSession().getAttribute("id");
@@ -123,14 +123,10 @@ public class Controller extends HttpServlet {
         if (request.getSession().getAttribute("role") != null) {
             role = ((Integer) request.getSession().getAttribute("role"));
         } else if(id == null){
-            if(id == null){
-                User u = (User)this.context.getAttribute(request.getHeader("sessionid"));
+                this.u = (User)this.context.getAttribute(request.getParameter("sessionid"));
                 id= u.getId();
                 role = u.getRole();
                 System.out.println("USER:"+id+ " "+u.getAccount());
-            }else {
-                role = -1;
-            }
         }else {
             role = -1;
         }
@@ -320,7 +316,11 @@ public class Controller extends HttpServlet {
 
     private void reserve(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
-            new UserModel(dB).reserve(request.getParameter("slotId"), (String) request.getSession().getAttribute("id"));
+            if(this.u == null){
+                new UserModel(dB).reserve(request.getParameter("slotId"), (String) request.getSession().getAttribute("id"));
+            }else{
+                new UserModel(dB).reserve(request.getParameter("slotId"), u.getId());
+            }
             response.getWriter().print(new JSONObject().put("error", ""));
         } catch (SQLException ex) {
             context.log("reserve : " + ex.toString());
@@ -330,7 +330,12 @@ public class Controller extends HttpServlet {
 
     private void getUserReservation(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
-            JSONArray ar = new UserModel(dB).getReservation((String) request.getSession().getAttribute("id"));
+            JSONArray ar;
+            if(this.u == null){
+                ar = new UserModel(dB).getReservation((String) request.getSession().getAttribute("id"));
+            }else{
+                ar = new UserModel(dB).getReservation(this.u.getId());
+            }
             JSONObject re = new JSONObject();
             re.put("reservationList", ar);
             response.getWriter().print(re.put("error", ""));
@@ -342,8 +347,13 @@ public class Controller extends HttpServlet {
 
     private void deleteReservation(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
         try {
-            new UserModel(dB).deleteReservation(request.getParameter("reservationId"),
+            if(this.u == null){
+                new UserModel(dB).deleteReservation(request.getParameter("reservationId"),
                     request.getParameter("reservationUserId"), (String) request.getSession().getAttribute("id"));
+            }else{
+                new UserModel(dB).deleteReservation(request.getParameter("reservationId"),
+                    request.getParameter("reservationUserId"), this.u.getId());
+            }
             response.getWriter().print(new JSONObject().put("error", ""));
         } catch (SQLException ex) {
             context.log("deleteReservation : " + ex.toString());

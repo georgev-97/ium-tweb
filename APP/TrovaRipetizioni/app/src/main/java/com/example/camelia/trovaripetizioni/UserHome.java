@@ -23,17 +23,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.util.HashMap;
-import java.util.Map;
 
 public class UserHome extends AppCompatActivity {
     TextView exit;
     int icon [] = {R.drawable.elimina, R.drawable.modifica};
+    JSONArray reservation;
     @SuppressLint("ResourceType")
     Toolbar toolbar;
     Menu logout;
@@ -57,7 +54,13 @@ public class UserHome extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("X", response);
+                        try {
+                            JSONObject j = new JSONObject(response);
+                            callback.onSuccess(lastInsertId);
+                            this.reservation= j.getJSONArray("reservationList");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {

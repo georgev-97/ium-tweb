@@ -27,21 +27,12 @@ public class ViewFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         List<String> values = new ArrayList<>();
         ListView ls = view.findViewById(R.id.listView1);
-        values.add("foo");
-        values.add("bar");
-        values.add("foo");
-        values.add("bar");
-        values.add("foo");
-        values.add("bar");
-        values.add("foo");
-        values.add("bar");
-        values.add("foo");
-        values.add("bar");
+        //ReservationListAdapter reservationListAdapter = new ReservationListAdapter();
+        //ls.setAdapter(reservationListAdapter);
 
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
+        /*ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 view.getContext(), android.R.layout.simple_list_item_1, values );
-        ls.setAdapter(arrayAdapter);
+        ls.setAdapter(arrayAdapter);*/
         super.onViewCreated(view, savedInstanceState);
     }
 }
