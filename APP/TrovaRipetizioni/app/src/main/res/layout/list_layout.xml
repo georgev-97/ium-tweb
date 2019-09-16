@@ -52,7 +52,8 @@
             android:layout_gravity="center"
             android:text="Monday"
             android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#20BDFF"/>
 
         <TextView
             android:id="@+id/hour"
@@ -65,6 +66,7 @@
             android:paddingLeft="50dp"
             android:text="9 - 11"
             android:textSize="20dp"
+            android:textColor="#20BDFF"
             android:textStyle="bold" />
 
 
@@ -82,3 +84,9 @@
     </LinearLayout>
 
 </RelativeLayout>
+
+
+
+
+
+

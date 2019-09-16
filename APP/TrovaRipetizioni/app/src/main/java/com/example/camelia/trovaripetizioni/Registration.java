@@ -77,7 +77,7 @@ public class Registration extends AppCompatActivity {
     }
 
     private void request(final VolleyCallBack callback, String params) {
-        String url = "http://192.168.43.236:8084/Ripetizioni/Controller?" + params;
+        String url = "http://192.168.1.9:8084/Ripetizioni/Controller?" + params;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
