@@ -33,12 +33,10 @@ public class Controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession ses = request.getSession();
-        
         this.context = request.getServletContext();
         DataBase dB = new DataBase(url, account, password);
         String command = (String) request.getParameter("command");
         System.out.println("Command"+command);
-        System.out.println("sessionid:"+request.getParameter("sessionid"));
         //checking permission
         if (checkPermission(command, request, response)) {
             //checking permission
@@ -122,20 +120,25 @@ public class Controller extends HttpServlet {
             return true;
         }
         String id = (String) request.getSession().getAttribute("id");
+        System.out.println("id:"+id);
         int role;
         if (request.getSession().getAttribute("role") != null) {
             role = ((Integer) request.getSession().getAttribute("role"));
         } else if(id == null){
-                this.u = (User)this.context.getAttribute(request.getParameter("sessionid"));
-                id= u.getId();
-                role = u.getRole();
-                System.out.println("USER:"+id+ " "+u.getAccount());
+                if(this.context != null){
+                    this.u = (User)this.context.getAttribute(request.getParameter("sessionid"));
+                    if(u != null){
+                        id= u.getId();
+                        role = u.getRole();
+                        System.out.println("USER:"+id+ " "+u.getAccount());
+                    }else role = -1;
+                }else role = -1;
         }else {
             role = -1;
         }
         String noPermission[] = {"checkUser", "register", "login", "getAutSesData"};
-        String basePermission[] = {"logout","getCourse", "getProfessor", "getCourseProfessor", "getReservation", "reserve", "getUserReservation", "deleteReservation"};
-        String adminPermission[] = {"logout","getCourse", "getProfessor", "addCourse", "addProfessor", "getFreeCourse", "courseProfessor", "getAllReservation"};
+        String basePermission[] = {"logout","getCourse", "getAutSesData","getProfessor", "getCourseProfessor", "getReservation", "reserve", "getUserReservation", "deleteReservation"};
+        String adminPermission[] = {"logout","getCourse","getAutSesData", "getProfessor", "addCourse", "addProfessor", "getFreeCourse", "courseProfessor", "getAllReservation"};
 
         if (Arrays.asList(noPermission).contains(command)) {
             return true;

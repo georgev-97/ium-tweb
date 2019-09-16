@@ -59,7 +59,7 @@ public class AddFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void request(final VolleyCallBack callback, String params){
-        String url = "http://192.168.1.9:8084/Ripetizioni/Controller?"+params+"&sessionid="+this.cookie;
+        String url = "http://192.168.43.236:8084/Ripetizioni/Controller?"+params+"&sessionid="+this.cookie;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

@@ -7,15 +7,16 @@ var myApp = angular.module('admin', []).controller('adminController', function (
     $scope.description = "";
     $http.get("/Ripetizioni/Controller", {params: {command: 'getAutSesData'}})
             .then(response => {
-                if (response.data.id === "")
-                    window.location.assign("login.html");
-                else if (response.data.role !== 0)
-                    window.location.assign("login.html");
-                else if (response.data.account === "")
-                    window.location.assign("login.html");
+                if (response.data.id === ""){
+                    window.location.assign("login.html");}
+                else if (response.data.role !== 0){
+                    window.location.assign("login.html");}
+                else if (response.data.account === ""){
+                    window.location.assign("login.html");}
                 else {
                     $scope.user = response.data.account;
                     $scope.render = true;
+                    $scope.getAllReservation();
                 }
             }).catch(error => console.log(error));
             
@@ -142,8 +143,14 @@ var myApp = angular.module('admin', []).controller('adminController', function (
     
      $scope.getAllReservation = function () {
         $http.get("/Ripetizioni/Controller", {params: {command: 'getAllReservation'}})
-               
-               
+                .then(response => {
+                    if (response.data.error === "") {
+                        $scope.userReservation = response.data.allReservationList;
+                        console.log($scope.userReservation);
+                    } else {
+                        window.alert(response.data.error);
+                    }
+                });
     };
 
 });

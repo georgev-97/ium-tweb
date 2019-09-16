@@ -146,10 +146,21 @@ public class AdminModel {
         JSONArray res = new JSONArray();
         ResultSet rs;
         try {
-            rs = dB.query("");
+            rs = dB.query("select c.name as cname,p.name as pname, u.account as user, d.name as dayName, s.starthour as startHour, s.endhour as endHour, r.id\n" +
+"from  reservation_user r_u,public.\"user\" u, reservation r, course_professor c_p, course c, professor p, slot s, day d\n" +
+"where r_u.userid = u.id and r_u.reservation = r.id and r.course_professor = c_p.id and c_p.professor = p.id and c.id = c_p.course and s.id =r.slot and s.day = d.id\n" +
+"group by c.name,p.name, u.account,d.name, s.starthour, s.endhour, r.id");
 
             while (rs.next()) {
-                res.put(rs.getString("name") + " (" + rs.getString("username") + " (\" + rs.getString(\"id\") + \")");
+                JSONArray ab = new JSONArray();
+                    ab.put(rs.getString("cname"));
+                    ab.put(rs.getString("pname"));
+                    ab.put(rs.getString("pname"));
+                    ab.put(rs.getString("dayName"));
+                    ab.put(rs.getString("startHour"));
+                    ab.put(rs.getString("endHour"));
+                    ab.put(rs.getString("user"));
+                    res.put(ab);
             }
         } catch (SQLException ex) {
             dB.closeConnection();

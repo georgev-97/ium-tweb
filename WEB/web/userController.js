@@ -136,6 +136,14 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                     $scope.getUserReservation();
                     if (response.data.error !== "") {
                         window.alert(response.data.error);
+                    }else{
+                        var x = document.getElementById("snackbar");
+                        // Add the "show" class to DIV
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className="hide";
+                            window.location.assign("utente.html")
+                        }, 2000);
                     }
                 });
     };
