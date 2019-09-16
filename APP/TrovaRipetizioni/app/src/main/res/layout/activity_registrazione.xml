@@ -22,6 +22,7 @@
             android:layout_gravity="center"
             android:orientation="vertical"
             android:focusable="true"
+            android:layout_marginTop="-80dp"
             android:focusableInTouchMode="true">
 
             <TextView
@@ -129,15 +130,7 @@
                 android:fontFamily="sans-serif-condensed"
                 android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/login_tw"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="25dp"
-                android:text="Imposta la tua password che deve rispettare le seguenti regole: \n - deve contenere almeno 8 cartateri \n - lettere maiuscole e minuscole \n - almeno un numero \n"
-                android:textColor="#ffff"
-                android:textSize="16dp" />
+
 
         </LinearLayout>
     </ScrollView>
