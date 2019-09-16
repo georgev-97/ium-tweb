@@ -120,6 +120,7 @@ var myApp = angular.module('user', []).controller('userController', function ($s
                             x.className = "show";
                             setTimeout(function () {
                                 x.className = "hide";
+                                window.location.assign("utente.html")
                             }, 2000);
                         } else {
                             window.alert(response.data.error);
