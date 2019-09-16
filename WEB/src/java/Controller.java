@@ -335,7 +335,7 @@ public class Controller extends HttpServlet {
     private void reserve(HttpServletRequest request, HttpServletResponse response, DataBase dB) throws IOException {
                     System.out.println("SLOT:" +request.getParameter("slotId"));
         try {
-            if(this.u == null){
+            if(request.getSession().getAttribute("id") != null){
                 new UserModel(dB).reserve(request.getParameter("slotId"), (String) request.getSession().getAttribute("id"));
             }else{
                 new UserModel(dB).reserve(request.getParameter("slotId"), u.getId());
